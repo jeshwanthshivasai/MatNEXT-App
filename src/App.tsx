@@ -57,7 +57,7 @@ function App() {
 
         requestAnimationFrame(raf)
 
-        lenis.on('scroll', (e: any) => {
+        lenis.on('scroll', () => {
             ScrollTrigger.update()
         })
 
