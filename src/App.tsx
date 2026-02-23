@@ -12,23 +12,19 @@ import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import {
+    ArrowRight,
     BarChart3,
     RotateCcw,
-    Users,
-    Factory,
-    Layers,
-    ArrowRight,
-    ChevronDown,
-    Mail,
-    MapPin,
-    Phone,
-    Zap,
+    Map,
+    ShieldAlert,
+    Globe,
+    Database,
     Network,
     Cpu,
-    Database,
-    Globe,
-    Map,
-    ShieldAlert
+    Zap,
+    Layers,
+    Users,
+    Factory
 } from 'lucide-react'
 import logo from './assets/MatNEXT.png'
 
@@ -270,10 +266,10 @@ function App() {
                 <div className="flex flex-col lg:flex-row justify-between items-end mb-32 border-b border-data-navy/10 pb-16">
                     <div>
                         <span className="text-electric-sulfur text-mono-label block mb-6">Platform Capabilities</span>
-                        <h2 className="text-[10vw] text-data-navy font-black leading-[0.8] uppercase tracking-tighter">Industrial<br />Intelligence</h2>
+                        <h2 className="text-[10vw] text-data-navy font-black leading-[0.8] uppercase tracking-tighter">Comprehensive<br />Supply Engine</h2>
                     </div>
                     <p className="max-w-sm text-[11px] uppercase font-mono opacity-50 text-right leading-loose pt-10 lg:pt-0">
-                        A massive 12-layer capability suite designed to automate regulatory extraction and circularity intelligence across 20+ tiers.
+                        A massive 12-layer tracking and traceability suite designed to automate regulatory extraction and circularity intelligence across 20+ tiers.
                     </p>
                 </div>
 
@@ -367,111 +363,159 @@ function App() {
                 </div>
             </section>
 
-            {/* SECTION 6: PREMIUM CONTACT FORM */}
-            <section id="customers" className="relative min-h-screen bg-neutral-900 text-white section-padding">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-32">
-                    <div>
-                        <span className="text-electric-sulfur text-mono-label block mb-8">Get In Touch</span>
-                        <h2 className="text-[8vw] font-black uppercase tracking-tighter leading-none mb-10">Ready to Get <span className="text-electric-sulfur">Sustainable?</span></h2>
-                        <p className="text-xl opacity-60 font-mono leading-loose mb-16 uppercase font-bold">
-                            Partner with MatNEXT to build resilient, compliant and sustainable supply chains across your value chain.
-                        </p>
+            {/* SECTION 6: PREMIUM CONTACT FORM - PRISTINE INDUSTRIAL */}
+            <section id="customers" className="relative min-h-screen bg-white text-data-navy section-padding border-t border-data-navy/5">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
+                        <div className="lg:col-span-5">
+                            <motion.span
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                className="text-electric-sulfur text-mono-label block mb-8"
+                            >
+                                Contact_Gateway
+                            </motion.span>
+                            <h2 className="text-[7vw] font-black uppercase tracking-tighter leading-[0.85] mb-12">
+                                Secure your <br />
+                                <span className="text-electric-sulfur outline-text">Competitive</span> <br />
+                                Advantage
+                            </h2>
+                            <p className="text-sm opacity-50 font-mono leading-loose mb-16 uppercase font-bold max-w-sm">
+                                Deploy MatNEXT traceability intelligence across your global industrial nodes.
+                            </p>
 
-                        <div className="space-y-12">
-                            <div className="flex items-center gap-8">
-                                <div className="p-6 bg-white/5 rounded-full"><Mail className="w-8 h-8 text-electric-sulfur" /></div>
-                                <div>
-                                    <span className="text-mono-label opacity-40 block mb-2">Email Address</span>
-                                    <span className="text-xl font-bold">info-matnext@genbanext.com</span>
+                            <div className="space-y-10 border-l border-data-navy/10 pl-10">
+                                <div className="group cursor-pointer">
+                                    <span className="text-[10px] opacity-30 block mb-2 uppercase tracking-widest font-mono">Channel_01</span>
+                                    <span className="text-lg font-bold group-hover:text-electric-sulfur transition-colors italic">info-matnext@genbanext.com</span>
+                                </div>
+                                <div className="group cursor-pointer">
+                                    <span className="text-[10px] opacity-30 block mb-2 uppercase tracking-widest font-mono">Channel_02</span>
+                                    <span className="text-lg font-bold group-hover:text-electric-sulfur transition-colors italic">+81 80-8529-3858</span>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-8">
-                                <div className="p-6 bg-white/5 rounded-full"><Phone className="w-8 h-8 text-electric-sulfur" /></div>
-                                <div>
-                                    <span className="text-mono-label opacity-40 block mb-2">Phone Number</span>
-                                    <span className="text-xl font-bold">+81 80-8529-3858</span>
+                        </div>
+
+                        <div className="lg:col-span-7 bg-slate-50 p-10 lg:p-20 border border-data-navy/5 relative overflow-hidden">
+                            {/* Subtle Grid Background */}
+                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                                style={{ backgroundImage: 'linear-gradient(#1A1D23 1px, transparent 1px), linear-gradient(90deg, #1A1D23 1px, transparent 1px)', backgroundSize: '40px 40px' }}
+                            />
+
+                            <form className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12">
+                                <div className="md:col-span-2 space-y-4">
+                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">01_Global_Identity</label>
+                                    <input type="text" className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all placeholder:opacity-20 uppercase" placeholder="Enter Full Name" />
                                 </div>
+                                <div className="space-y-4">
+                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">02_Secure_Email</label>
+                                    <input type="email" className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all placeholder:opacity-20 uppercase" placeholder="Email@Network.com" />
+                                </div>
+                                <div className="space-y-4">
+                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">03_Industrial_Sector</label>
+                                    <select className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all appearance-none uppercase">
+                                        <option>Select Tier</option>
+                                        <option>Automotive</option>
+                                        <option>Renewables</option>
+                                        <option>Aerospace</option>
+                                    </select>
+                                </div>
+                                <div className="md:col-span-2 space-y-4">
+                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">04_Data_Requirements</label>
+                                    <textarea className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all min-h-[100px] resize-none placeholder:opacity-20 uppercase" placeholder="Describe Project Scope" />
+                                </div>
+                                <div className="md:col-span-2 pt-10">
+                                    <button className="btn-premium w-full !py-8 text-sm group flex items-center justify-center gap-6 bg-data-navy text-white hover:bg-electric-sulfur hover:text-data-navy">
+                                        INITIALIZE ACCESS PROTOCOL <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* FOOTER: THE MUSEUM OF INNOVATION */}
+            <footer className="relative bg-white pt-32 pb-10 border-t border-data-navy/5 overflow-hidden">
+                {/* Massive Brand Watermark */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[25vw] font-black text-data-navy/[0.02] leading-none select-none pointer-events-none">
+                    MATNEXT
+                </div>
+
+                <div className="max-w-7xl mx-auto px-10 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-32 border-b border-data-navy/5 pb-20">
+                        <div className="lg:col-span-4">
+                            <img src={logo} alt="MatNEXT" className="h-6 w-auto mb-10" />
+                            <p className="max-w-xs text-[11px] font-mono opacity-40 leading-loose uppercase font-bold tracking-tight">
+                                Establishing the global standard for industrial material traceability and digital product passports.
+                            </p>
+                        </div>
+
+                        <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-12">
+                            <div>
+                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Platform_Node</span>
+                                <ul className="space-y-4 text-[10px] font-mono uppercase tracking-[0.2em] font-bold opacity-30">
+                                    {['Features', 'Traction', 'Intelligence', 'Network'].map(item => (
+                                        <li key={item}><a href="#" className="hover:text-data-navy hover:opacity-100 transition-all">/{item}</a></li>
+                                    ))}
+                                </ul>
                             </div>
-                            <div className="flex items-center gap-8">
-                                <div className="p-6 bg-white/5 rounded-full"><MapPin className="w-8 h-8 text-electric-sulfur" /></div>
-                                <div>
-                                    <span className="text-mono-label opacity-40 block mb-2">Global Nodes</span>
-                                    <span className="text-xl font-bold">Mumbai // Tokyo // San Francisco</span>
+                            <div>
+                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Resource_Center</span>
+                                <ul className="space-y-4 text-[10px] font-mono uppercase tracking-[0.2em] font-bold opacity-30">
+                                    {['Documentation', 'API_Vault', 'Library', 'Status'].map(item => (
+                                        <li key={item}><a href="#" className="hover:text-data-navy hover:opacity-100 transition-all">/{item}</a></li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div>
+                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Global_Operations</span>
+                                <ul className="space-y-4 text-[10px] font-mono uppercase tracking-[0.2em] font-bold opacity-30">
+                                    {['Mumbai', 'Tokyo', 'San Francisco', 'Berlin'].map(item => (
+                                        <li key={item} className="cursor-default hover:text-data-navy hover:opacity-100 transition-all">{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div>
+                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Connect_System</span>
+                                <div className="flex gap-4">
+                                    <div className="w-8 h-8 border border-data-navy/10 flex items-center justify-center hover:border-electric-sulfur transition-colors cursor-pointer opacity-40 hover:opacity-100">
+                                        <Globe className="w-4 h-4" />
+                                    </div>
+                                    <div className="w-8 h-8 border border-data-navy/10 flex items-center justify-center hover:border-electric-sulfur transition-colors cursor-pointer opacity-40 hover:opacity-100">
+                                        <Zap className="w-4 h-4" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-data-navy p-12 lg:p-24 border border-white/5">
-                        <form className="space-y-16">
-                            <div className="space-y-4">
-                                <label className="text-[10px] text-electric-sulfur font-bold uppercase tracking-widest opacity-60">01 // Full Name</label>
-                                <input type="text" className="w-full bg-transparent border-b border-white/10 py-6 focus:border-electric-sulfur outline-none font-mono text-xl transition-colors uppercase tracking-tight" placeholder="JOHN DOE" />
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                                <div className="space-y-4">
-                                    <label className="text-[10px] text-electric-sulfur font-bold uppercase tracking-widest opacity-60">02 // Business Email</label>
-                                    <input type="email" className="w-full bg-transparent border-b border-white/10 py-6 focus:border-electric-sulfur outline-none font-mono text-xl transition-colors uppercase tracking-tight" placeholder="EMAIL@COMPANY.COM" />
-                                </div>
-                                <div className="space-y-4">
-                                    <label className="text-[10px] text-electric-sulfur font-bold uppercase tracking-widest opacity-60">03 // Industry</label>
-                                    <div className="relative">
-                                        <select className="w-full bg-transparent border-b border-white/10 py-6 focus:border-electric-sulfur outline-none font-mono text-xl transition-colors appearance-none pr-10 uppercase tracking-tight">
-                                            <option>SELECT INDUSTRY</option>
-                                            <option>AUTOMOTIVE</option>
-                                            <option>STEEL</option>
-                                            <option>BATTERY</option>
-                                        </select>
-                                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                <label className="text-[10px] text-electric-sulfur font-bold uppercase tracking-widest opacity-60">04 // Message</label>
-                                <textarea className="w-full bg-transparent border-b border-white/10 py-6 focus:border-electric-sulfur outline-none font-mono text-xl transition-colors min-h-[120px] resize-none uppercase tracking-tight" placeholder="PROJECT DETAILS..." />
-                            </div>
-                            <button className="btn-premium w-full py-10 text-xl group flex items-center justify-center gap-6 bg-electric-sulfur text-data-navy hover:bg-white">
-                                SECURE PROTOCOL ACCESS <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </section>
+                    {/* 3D CAR MUSEUM SHOWCASE */}
+                    <div className="relative w-full h-[60vh] mb-20 bg-slate-50/50 border border-data-navy/5 flex items-center justify-center overflow-hidden group">
+                        {/* Labels for 3D showcase */}
+                        <div className="absolute top-8 left-8 text-mono-label opacity-30">Vehicle_Architecture_v4.2</div>
+                        <div className="absolute bottom-8 right-8 text-mono-label opacity-30 text-right">3D_Model_Exhibition<br />[Orbit_Enabled]</div>
 
-            {/* FOOTER */}
-            <footer className="bg-data-navy text-white section-padding border-t border-white/5">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 mb-32">
-                    <div className="lg:col-span-2">
-                        <img src={logo} alt="MatNEXT" className="h-6 w-auto mb-12 opacity-100" style={{ filter: 'none' }} />
-                        <p className="max-w-md text-[11px] font-mono opacity-30 leading-loose uppercase font-bold mb-12">
-                            Advanced traceability and sustainability intelligence for the industrial value chain. Real-time digital passports for a circular future.
-                        </p>
+                        <div className="absolute inset-0 z-0">
+                            <Canvas gl={{ antialias: true, alpha: true }}>
+                                <Suspense fallback={null}>
+                                    <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
+                                    {/* Exhibition Mode: Progress 0.35 (Partial deconstruction for artistic effect) */}
+                                    <DeconstructibleCar progress={0.35} isLoader={true} />
+                                    <Environment preset="city" />
+                                    <ambientLight intensity={0.5} />
+                                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#96CC39" />
+                                </Suspense>
+                            </Canvas>
+                        </div>
                     </div>
 
-                    <div>
-                        <span className="text-[10px] text-electric-sulfur font-bold block mb-12 uppercase tracking-widest">Platform_Core</span>
-                        <ul className="space-y-4 text-[11px] font-mono uppercase tracking-widest font-bold opacity-40">
-                            {['Features', 'Traction', 'AI', 'Why-MatNEXT', 'Access'].map(item => (
-                                <li key={item}><a href={`#${item.toLowerCase()}`} className="hover:text-electric-sulfur hover:opacity-100 transition-all">/{item}</a></li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    <div>
-                        <span className="text-[10px] text-electric-sulfur font-bold block mb-12 uppercase tracking-widest">Global_Nodes</span>
-                        <ul className="space-y-4 text-[11px] font-mono uppercase tracking-widest font-bold opacity-40">
-                            {['Mumbai', 'Tokyo', 'San Francisco', 'London', 'Berlin'].map(item => (
-                                <li key={item} className="cursor-default hover:text-white hover:opacity-100 transition-all">{item}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
-                    <span className="text-[10px] font-mono opacity-30 uppercase tracking-[0.3em]">© 2026 MatNext. All Rights Reserved.</span>
-                    <div className="flex gap-10 text-[10px] font-mono opacity-30 uppercase tracking-[0.3em]">
-                        <a href="#" className="hover:opacity-100 transition-opacity">Privacy Policy</a>
-                        <a href="#" className="hover:opacity-100 transition-opacity">Terms of Service</a>
+                    <div className="flex flex-col md:flex-row justify-between items-center py-10 border-t border-data-navy/5 gap-10">
+                        <span className="text-[9px] font-mono opacity-30 uppercase tracking-[0.4em]">© 2026 MatNext Terminal. Built for Global Industry.</span>
+                        <div className="flex gap-10 text-[9px] font-mono opacity-20 uppercase tracking-[0.4em]">
+                            <a href="#" className="hover:opacity-100 transition-opacity">Legal_Intellectual</a>
+                            <a href="#" className="hover:opacity-100 transition-opacity">System_Protocols</a>
+                        </div>
                     </div>
                 </div>
             </footer>
