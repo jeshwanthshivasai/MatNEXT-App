@@ -11,9 +11,8 @@ interface Infographic3DProps {
 export const Infographic3D = ({ progress, entryProgress }: Infographic3DProps) => {
     const groupRef = useRef<THREE.Group>(null!)
 
-    // Visibility logic: ONLY show during scroll-based reveal (0 -> 0.15) OR during traction section reveal (0.7 -> 0.9)
-    // We hide it during the entryProgress phase to focus on the car reveal
-    const reveal = (entryProgress > 0) ? 0 : (progress < 0.15 ? progress / 0.15 : (progress > 0.7 ? (progress - 0.7) / 0.2 : 0))
+    // Visibility logic: Appear after car/material transitions (0.35 -> 0.5) OR during traction section (0.7 -> 0.9)
+    const reveal = (entryProgress > 0) ? 0 : (progress < 0.55 ? THREE.MathUtils.smoothstep(progress, 0.35, 0.5) : (progress > 0.7 ? (progress - 0.7) / 0.2 : 0))
     const opacity = THREE.MathUtils.clamp(reveal, 0, 1)
 
     useFrame((state) => {
@@ -37,13 +36,13 @@ export const Infographic3D = ({ progress, entryProgress }: Infographic3DProps) =
         <group ref={groupRef} position={[0, -5, -2]}>
             <Text
                 position={[-4, 2, 0]}
-                fontSize={1.5}
+                fontSize={1.2}
                 color="#96CC39"
                 anchorX="left"
                 anchorY="middle"
                 fillOpacity={opacity}
             >
-                6
+                99.8%
             </Text>
             <Text
                 position={[-4, 1, 0]}
@@ -53,18 +52,18 @@ export const Infographic3D = ({ progress, entryProgress }: Infographic3DProps) =
                 anchorY="middle"
                 fillOpacity={opacity * 0.5}
             >
-                INDUSTRIES COVERED
+                COMPLIANCE SCORE
             </Text>
 
             <Text
                 position={[0, 2, 0]}
-                fontSize={1.5}
+                fontSize={1.2}
                 color="#96CC39"
                 anchorX="center"
                 anchorY="middle"
                 fillOpacity={opacity}
             >
-                25
+                2.4M
             </Text>
             <Text
                 position={[0, 1, 0]}
@@ -74,12 +73,12 @@ export const Infographic3D = ({ progress, entryProgress }: Infographic3DProps) =
                 anchorY="middle"
                 fillOpacity={opacity * 0.5}
             >
-                STAKEHOLDERS
+                UNITS TRACKED
             </Text>
 
             <Text
                 position={[4, 2, 0]}
-                fontSize={1.5}
+                fontSize={1.2}
                 color="#96CC39"
                 anchorX="right"
                 anchorY="middle"
@@ -95,7 +94,7 @@ export const Infographic3D = ({ progress, entryProgress }: Infographic3DProps) =
                 anchorY="middle"
                 fillOpacity={opacity * 0.5}
             >
-                TONS TRACKED
+                TONS TRACED
             </Text>
         </group>
     )

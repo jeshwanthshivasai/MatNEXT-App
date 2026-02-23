@@ -14,14 +14,14 @@ export const FloatingMaterial = ({ type, position, scrollProgress }: FloatingMat
     const textRef = useRef<THREE.Group>(null!)
     const materialRef = useRef<THREE.MeshPhysicalMaterial>(null!)
 
-    const { color, value } = useMemo(() => {
+    const { color, emissive, metalness, roughness, value } = useMemo(() => {
         switch (type) {
-            case 'steel': return { color: '#D1D1D1', value: '85%' }
-            case 'lithium': return { color: '#FFFFFF', value: '45%' }
-            case 'cobalt': return { color: '#FFFFFF', value: '25%' }
-            case 'copper': return { color: '#FFFFFF', value: '70%' }
-            case 'aluminium': return { color: '#96CC39', value: '60%' }
-            default: return { color: '#96CC39', value: '0%' }
+            case 'steel': return { color: '#8E9196', emissive: '#B0B3B8', roughness: 0.1, metalness: 1, value: '85%' }
+            case 'lithium': return { color: '#E5E7EB', emissive: '#FFFFFF', roughness: 0.2, metalness: 0.8, value: '45%' }
+            case 'cobalt': return { color: '#2563EB', emissive: '#3B82F6', roughness: 0.1, metalness: 0.9, value: '25%' }
+            case 'copper': return { color: '#EA580C', emissive: '#FB923C', roughness: 0.1, metalness: 1, value: '70%' }
+            case 'aluminium': return { color: '#94A3B8', emissive: '#CBD5E1', roughness: 0.3, metalness: 0.9, value: '60%' }
+            default: return { color: '#96CC39', emissive: '#96CC39', roughness: 0.5, metalness: 0.5, value: '0%' }
         }
     }, [type])
 
@@ -75,16 +75,16 @@ export const FloatingMaterial = ({ type, position, scrollProgress }: FloatingMat
         <Float speed={2} rotationIntensity={2} floatIntensity={1}>
             <group>
                 <mesh ref={meshRef} position={position} scale={0}>
-                    <icosahedronGeometry args={[1, 1]} /> {/* High poly obsidian */}
+                    <icosahedronGeometry args={[1, 1]} /> {/* High poly sharp crystal */}
                     <meshPhysicalMaterial
                         ref={materialRef}
-                        color="#050505"
-                        metalness={0.9}
-                        roughness={0}
+                        color={color}
+                        metalness={metalness}
+                        roughness={roughness}
                         clearcoat={1.0}
-                        clearcoatRoughness={0}
-                        emissive={color}
-                        emissiveIntensity={0.2}
+                        clearcoatRoughness={0.1}
+                        emissive={emissive}
+                        emissiveIntensity={0.5}
                         transparent
                         opacity={0}
                     />
@@ -106,7 +106,7 @@ export const FloatingMaterial = ({ type, position, scrollProgress }: FloatingMat
                         anchorX="center"
                         anchorY="middle"
                     >
-                        TRACE_DATA
+                        {type.toUpperCase()}
                     </Text>
                 </group>
             </group>

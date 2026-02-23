@@ -81,16 +81,16 @@ function App() {
             }
         })
 
-        // Hero fade on scroll
+        // Hero fade on scroll - FIX FADE TIMING
         gsap.to(".hero-fade", {
             scrollTrigger: {
                 trigger: ".hero-wrapper",
-                start: "0% top",
-                end: "20% top",
+                start: "top top", // Start immediately on scroll
+                end: "20% top", // Fade out quickly
                 scrub: true
             },
             opacity: 0,
-            y: -100,
+            y: -50,
             pointerEvents: "none"
         })
 
@@ -174,16 +174,16 @@ function App() {
             <div className="fixed inset-0 -z-10 h-screen w-full">
                 <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]}>
                     <Suspense fallback={null}>
-                        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
+                        <PerspectiveCamera makeDefault position={[0, 0, 12]} fov={30} far={2000} />
                         <BackgroundShader />
-                        <DeconstructibleCar progress={(loading || isLanding) ? -entryProgress : scrollProgress} isLoader={false} />
+                        <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : scrollProgress)} isLoader={false} />
 
-                        {/* Material Crystals */}
-                        <FloatingMaterial type="steel" position={[-2, 1, 0]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="lithium" position={[2.5, 2, -1]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="cobalt" position={[3, -1, 1]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="copper" position={[-3, -2, -2]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="aluminium" position={[1.5, -2.5, 0.5]} scrollProgress={scrollProgress} />
+                        {/* Material Crystals - Arranged in a single line beneath the car */}
+                        <FloatingMaterial type="steel" position={[-3, -2.5, 0]} scrollProgress={scrollProgress} />
+                        <FloatingMaterial type="lithium" position={[-1.5, -2.5, 0]} scrollProgress={scrollProgress} />
+                        <FloatingMaterial type="cobalt" position={[0, -2.5, 0]} scrollProgress={scrollProgress} />
+                        <FloatingMaterial type="copper" position={[1.5, -2.5, 0]} scrollProgress={scrollProgress} />
+                        <FloatingMaterial type="aluminium" position={[3, -2.5, 0]} scrollProgress={scrollProgress} />
 
                         {/* 3D Infographics */}
                         <Infographic3D progress={scrollProgress} entryProgress={entryProgress} />
