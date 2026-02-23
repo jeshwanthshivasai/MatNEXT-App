@@ -63,6 +63,10 @@ export const DeconstructibleCar = ({ progress, isLoader = false }: Deconstructib
                         (Math.random() - 0.5) * 2
                     ).normalize()
                     clone.userData.explodeDir = radialDir.lerp(randomDir, 0.3).normalize()
+
+                    // DISABLE FRUSTUM CULLING TO PREVENT CLIPPING
+                    clone.frustumCulled = false
+
                     parts.push(clone)
                 }
             })
@@ -149,7 +153,7 @@ export const DeconstructibleCar = ({ progress, isLoader = false }: Deconstructib
     })
 
     return (
-        <group ref={groupRef} scale={1.2}>
+        <group ref={groupRef} scale={1.4}>
             {activeItems.map((mesh, i) => (
                 <primitive key={`${progress < 0 ? 'w' : 'h'}-${i}`} object={mesh} />
             ))}

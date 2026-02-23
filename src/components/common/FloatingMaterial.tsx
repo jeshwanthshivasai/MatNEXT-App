@@ -68,6 +68,19 @@ export const FloatingMaterial = ({ type, position, scrollProgress }: FloatingMat
                 })
                 textRef.current.rotation.y = Math.sin(time) * 0.2
             }
+
+            // FADE OUT DURING EXPLOSION (Sync with car)
+            if (scrollProgress > 0.75) {
+                const fadeFactor = Math.max(0, 1 - (scrollProgress - 0.75) / 0.15)
+                materialRef.current.opacity = Math.min(materialRef.current.opacity, fadeFactor)
+                if (textRef.current) {
+                    textRef.current.traverse((child) => {
+                        if (child instanceof THREE.Mesh && child.material) {
+                            child.material.fillOpacity *= fadeFactor
+                        }
+                    })
+                }
+            }
         }
     })
 

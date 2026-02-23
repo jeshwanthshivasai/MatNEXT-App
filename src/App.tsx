@@ -86,7 +86,7 @@ function App() {
             scrollTrigger: {
                 trigger: ".hero-wrapper",
                 start: "top top", // Start immediately on scroll
-                end: "20% top", // Fade out quickly
+                end: "25% top", // Align with car centering
                 scrub: true
             },
             opacity: 0,
@@ -174,7 +174,7 @@ function App() {
             <div className="fixed inset-0 -z-10 h-screen w-full">
                 <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]}>
                     <Suspense fallback={null}>
-                        <PerspectiveCamera makeDefault position={[0, 0, 12]} fov={30} far={2000} />
+                        <PerspectiveCamera makeDefault position={[0, 0, 12]} fov={30} far={5000} />
                         <BackgroundShader />
                         <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : scrollProgress)} isLoader={false} />
 
@@ -222,13 +222,12 @@ function App() {
                 <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-56 bg-transparent">
                     <div className="hero-fade hero-content z-10">
                         <h1
-                            className="hero-reveal text-editorial-h1 uppercase text-data-navy max-w-4xl mb-10 opacity-0"
+                            className="hero-reveal text-editorial-h1 uppercase text-data-navy max-w-5xl my-12 opacity-0"
                         >
-                            Product and Material Tracking,<br />
-                            Traceability and Sustainability Platform
+                            Product and Material Tracking, Traceability <br/> and Sustainability Platform
                         </h1>
                         <p
-                            className="hero-reveal max-w-xl text-editorial-p opacity-0 mb-12"
+                            className="hero-reveal max-w-5xl text-editorial-p opacity-0 mb-12"
                         >
                             MatNEXT is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
                         </p>
@@ -248,7 +247,7 @@ function App() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: (!loading && !isLanding && scrollProgress < 0.1) ? 1 : 0 }}
                     transition={{ delay: 1 }}
-                    className="absolute bottom-10 left-10 flex items-center gap-6 opacity-40 z-20 pointer-events-none"
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40 z-20 pointer-events-none"
                 >
                     <div className="flex flex-col gap-1 items-center">
                         <div className="w-[1px] h-12 bg-data-navy/20 relative overflow-hidden">
@@ -268,11 +267,11 @@ function App() {
                 <div className="flex flex-col lg:flex-row justify-between items-end mb-32 border-b border-data-navy/10 pb-16">
                     <div>
                         <span className="text-electric-sulfur text-mono-label block mb-6">Platform Capabilities</span>
-                        <h2 className="text-[10vw] text-data-navy font-black leading-[0.8] uppercase tracking-tighter">Comprehensive<br />Supply Engine</h2>
+                        <h2 className="text-[5.18vw] text-data-navy font-black leading-[0.8] uppercase tracking-tighter">Comprehensive Sustainability Engine</h2>
                     </div>
-                    <p className="max-w-sm text-[11px] uppercase font-mono opacity-50 text-right leading-loose pt-10 lg:pt-0">
+                    {/* <p className="max-w-sm text-[11px] uppercase font-mono opacity-50 text-right leading-loose pt-10 lg:pt-0">
                         A massive 12-layer tracking and traceability suite designed to automate regulatory extraction and circularity intelligence across 20+ tiers.
-                    </p>
+                    </p> */}
                 </div>
 
                 <div className="flex flex-col">
