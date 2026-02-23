@@ -27,6 +27,8 @@ import {
     Factory
 } from 'lucide-react'
 import logo from './assets/MatNEXT.png'
+import { Analytics } from '@vercel/analytics/react'
+
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -519,6 +521,7 @@ function App() {
                     </div>
                 </div>
             </footer>
+            <Analytics />
         </main>
     )
 }
