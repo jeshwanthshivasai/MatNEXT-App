@@ -1,0 +1,11 @@
+Model Information:
+* title:	Generic Sedan Car
+* source:	https://sketchfab.com/3d-models/generic-sedan-car-58c33766470d46e7b2aed542650494e5
+* author:	Márcio Meireles (https://sketchfab.com/marciomeireles)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Generic Sedan Car" (https://sketchfab.com/3d-models/generic-sedan-car-58c33766470d46e7b2aed542650494e5) by Márcio Meireles (https://sketchfab.com/marciomeireles) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FFFFFF;
+  --color-data-navy: #1A1D23; /* Sophisticated industrial slate, not black */
+  --color-electric-sulfur: #96CC39;
+  
+  --font-sans: "Space Grotesk", "sans-serif";
+  --font-mono: "JetBrains Mono", "monospace";
+  
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.02em;
+  --tracking-widest: 0.2em;
+}
+
+@layer base {
+  html {
+    @apply antialiased selection:bg-electric-sulfur selection:text-white;
+    background-color: var(--color-background);
+    color: var(--color-data-navy);
+  }
+
+  body {
+    @apply m-0 min-h-screen text-[16px];
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tighter uppercase leading-[0.85];
+    font-family: var(--font-sans);
+  }
+
+  p, span, div, button {
+    font-family: var(--font-mono);
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn-premium {
+    @apply relative overflow-hidden bg-data-navy text-white px-10 py-5 rounded-none uppercase font-bold text-[10px] tracking-widest transition-all duration-700 hover:bg-electric-sulfur hover:text-data-navy;
+  }
+
+  .btn-outline {
+    @apply relative overflow-hidden border border-data-navy/10 px-10 py-5 rounded-none uppercase font-bold text-[10px] tracking-widest transition-all duration-700 hover:border-electric-sulfur hover:text-electric-sulfur;
+  }
+
+  .glass-container {
+    @apply bg-white/40 backdrop-blur-[100px] border border-data-navy/5;
+  }
+
+  .section-padding {
+    @apply px-10 md:px-20 py-24 md:py-32;
+  }
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px currentColor;
+}
+
+/* Custom Utilities */
+.text-hero {
+  font-size: clamp(3rem, 15vw, 12rem);
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+  font-weight: 900;
+}
+
+.text-editorial-h1 {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.text-editorial-p {
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.text-mono-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Noise Grain Overaly - More aggressive for texture */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Lenis - Smooth Scroll Support */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Scrollytelling Helpers */
+.scrolly-container {
+  height: 400vh;
+}
+
+.scrolly-section {
+  @apply sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden;
+}

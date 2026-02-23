@@ -1,0 +1,115 @@
+import { useRef, useMemo } from 'react'
+import { useFrame } from '@react-three/fiber'
+import * as THREE from 'three'
+import { Float, Text } from '@react-three/drei'
+
+interface FloatingMaterialProps {
+    type: 'steel' | 'lithium' | 'cobalt' | 'copper' | 'aluminium'
+    position: [number, number, number]
+    scrollProgress: number
+}
+
+export const FloatingMaterial = ({ type, position, scrollProgress }: FloatingMaterialProps) => {
+    const meshRef = useRef<THREE.Mesh>(null!)
+    const textRef = useRef<THREE.Group>(null!)
+    const materialRef = useRef<THREE.MeshPhysicalMaterial>(null!)
+
+    const { color, value } = useMemo(() => {
+        switch (type) {
+            case 'steel': return { color: '#D1D1D1', value: '85%' }
+            case 'lithium': return { color: '#FFFFFF', value: '45%' }
+            case 'cobalt': return { color: '#FFFFFF', value: '25%' }
+            case 'copper': return { color: '#FFFFFF', value: '70%' }
+            case 'aluminium': return { color: '#96CC39', value: '60%' }
+            default: return { color: '#96CC39', value: '0%' }
+        }
+    }, [type])
+
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime()
+        if (meshRef.current && materialRef.current) {
+            // SEQUENTIAL REVEAL LOGIC
+            // 1. Fade In (0.15 -> 0.25)
+            const fadeIn = THREE.MathUtils.smoothstep(scrollProgress, 0.15, 0.25)
+
+            // 2. Flash Spike (0.25 -> 0.3)
+            const flash = Math.max(0, 1 - Math.abs(scrollProgress - 0.275) / 0.025)
+            const emissiveIntensity = flash * 15 // Bright shine
+
+            // 3. Text Reveal (0.3 -> 0.4)
+            const textReveal = THREE.MathUtils.smoothstep(scrollProgress, 0.3, 0.4)
+
+            // Apply visibility
+            const scale = fadeIn * 0.45
+            meshRef.current.scale.setScalar(scale)
+            materialRef.current.opacity = fadeIn * 0.9
+            materialRef.current.emissiveIntensity = 0.1 + emissiveIntensity
+
+            // Falling logic (crystals appear from above)
+            const fallingOffset = (1 - fadeIn) * 5
+            meshRef.current.position.set(
+                position[0],
+                position[1] + fallingOffset + Math.sin(time + position[0]) * 0.1,
+                position[2]
+            )
+
+            if (textRef.current) {
+                textRef.current.scale.setScalar(scale * 2.5)
+                textRef.current.position.set(
+                    meshRef.current.position.x,
+                    meshRef.current.position.y + 0.7,
+                    meshRef.current.position.z
+                )
+                // Text opacity ties to textReveal
+                textRef.current.traverse((child) => {
+                    if (child instanceof THREE.Mesh && child.material) {
+                        child.material.fillOpacity = textReveal
+                    }
+                })
+                textRef.current.rotation.y = Math.sin(time) * 0.2
+            }
+        }
+    })
+
+    return (
+        <Float speed={2} rotationIntensity={2} floatIntensity={1}>
+            <group>
+                <mesh ref={meshRef} position={position} scale={0}>
+                    <icosahedronGeometry args={[1, 1]} /> {/* High poly obsidian */}
+                    <meshPhysicalMaterial
+                        ref={materialRef}
+                        color="#050505"
+                        metalness={0.9}
+                        roughness={0}
+                        clearcoat={1.0}
+                        clearcoatRoughness={0}
+                        emissive={color}
+                        emissiveIntensity={0.2}
+                        transparent
+                        opacity={0}
+                    />
+                </mesh>
+
+                <group ref={textRef} position={position}>
+                    <Text
+                        fontSize={0.15}
+                        color="#96CC39"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        {value}
+                    </Text>
+                    <Text
+                        position={[0, -0.08, 0]}
+                        fontSize={0.06}
+                        color="#FFFFFF"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        TRACE_DATA
+                    </Text>
+                </group>
+            </group>
+        </Float>
+    )
+}
