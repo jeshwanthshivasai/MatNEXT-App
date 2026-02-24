@@ -229,7 +229,7 @@ function App() {
                         <p
                             className="hero-reveal text-sm max-w-4xl opacity-0 mb-12"
                         >
-                            <span className="text-electric-sulfur text-2xl font-bold font-arial"><img src={logo} alt="MatNEXT Logo" className="h-5 w-auto object-contain" style={{ filter: 'none' }} /></span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
+                            <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
                         </p>
                         <div
                             className="hero-reveal flex gap-6 opacity-0"
