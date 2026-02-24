@@ -29,24 +29,24 @@ const fragmentShader = `
 `
 
 export const BackgroundShader = () => {
-    const meshRef = useRef<THREE.Mesh>(null!)
-    const uniforms = useRef({
-        uTime: { value: 0 }
-    })
+  const meshRef = useRef<THREE.Mesh>(null!)
+  const uniforms = useRef({
+    uTime: { value: 0 }
+  })
 
-    useFrame((state) => {
-        uniforms.current.uTime.value = state.clock.getElapsedTime()
-    })
+  useFrame((state) => {
+    uniforms.current.uTime.value = state.clock.getElapsedTime()
+  })
 
-    return (
-        <mesh ref={meshRef} position={[0, 0, -1]}>
-            <planeGeometry args={[20, 20]} />
-            <shaderMaterial
-                vertexShader={vertexShader}
-                fragmentShader={fragmentShader}
-                uniforms={uniforms.current}
-                transparent
-            />
-        </mesh>
-    )
+  return (
+    <mesh ref={meshRef} position={[0, 0, -10]}>
+      <planeGeometry args={[100, 100]} />
+      <shaderMaterial
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={uniforms.current}
+        transparent
+      />
+    </mesh>
+  )
 }

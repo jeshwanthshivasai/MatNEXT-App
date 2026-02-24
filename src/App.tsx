@@ -174,7 +174,7 @@ function App() {
             <div className="fixed inset-0 -z-10 h-screen w-full">
                 <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]}>
                     <Suspense fallback={null}>
-                        <PerspectiveCamera makeDefault position={[0, 0, 12]} fov={30} far={5000} />
+                        <PerspectiveCamera makeDefault position={[0, 0.5, 20]} fov={18} near={0.1} far={10000} />
                         <BackgroundShader />
                         <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : scrollProgress)} isLoader={false} />
 

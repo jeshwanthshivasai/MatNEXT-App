@@ -97,7 +97,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
     })
 
     return (
-        <group ref={groupRef} scale={1.2}>
+        <group ref={groupRef} scale={1.2} frustumCulled={false}>
             {parts.map((mesh, i) => (
                 <primitive key={i} object={mesh} />
             ))}
