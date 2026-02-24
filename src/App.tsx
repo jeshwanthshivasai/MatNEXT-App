@@ -222,14 +222,14 @@ function App() {
                 <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-56 bg-transparent">
                     <div className="hero-fade hero-content z-10">
                         <h1
-                            className="hero-reveal text-editorial-h1 uppercase text-data-navy max-w-5xl my-12 opacity-0"
+                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur text-data-navy max-w-5xl my-12 opacity-0"
                         >
                             Product and Material Tracking, Traceability <br/> and Sustainability Platform
                         </h1>
                         <p
-                            className="hero-reveal max-w-5xl text-editorial-p opacity-0 mb-12"
+                            className="hero-reveal text-sm max-w-4xl opacity-0 mb-12"
                         >
-                            MatNEXT is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
+                            <span className="text-electric-sulfur text-2xl font-bold font-arial"><img src={logo} alt="MatNEXT Logo" className="h-5 w-auto object-contain" style={{ filter: 'none' }} /></span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
                         </p>
                         <div
                             className="hero-reveal flex gap-6 opacity-0"
@@ -237,7 +237,7 @@ function App() {
                             <button className="btn-premium group flex items-center gap-4 pointer-events-auto">
                                 Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                             </button>
-                            <button className="btn-outline pointer-events-auto">Explore the <span className="text-electric-sulfur font-bold">Engine</span></button>
+                            <button className="btn-outline text-data-navy tracking-widest py-2.5 px-6 font-bold text-[10px] hover:btn-outline-electric-sulfur hover:text-white bg-electric-sulfur pointer-events-auto">Explore the Engine</button>
                         </div>
                     </div>
                 </section>
@@ -250,10 +250,10 @@ function App() {
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40 z-20 pointer-events-none"
                 >
                     <div className="flex flex-col gap-1 items-center">
-                        <div className="w-[1px] h-12 bg-data-navy/20 relative overflow-hidden">
+                        <div className="w-[2px] h-12 bg-data-navy/20 relative overflow-hidden">
                             <motion.div
                                 animate={{ y: [0, 48] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                                 className="w-full h-1/2 bg-electric-sulfur"
                             />
                         </div>
