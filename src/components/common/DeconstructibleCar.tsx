@@ -63,6 +63,8 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         const scale = 1.2
         groupRef.current.scale.setScalar(scale)
 
+        const verticalLift = 0.25
+
         let yOffset = 0
         let xOffset = 0
         if (!isLoader) {
@@ -77,7 +79,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
                 }
             }
         }
-        groupRef.current.position.y = -yOffset + hover
+        groupRef.current.position.y = -yOffset + hover + verticalLift
         groupRef.current.position.x = xOffset
 
         // ORBITING MODE: After centering (0.2+), add auto-rotate

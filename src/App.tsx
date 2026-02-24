@@ -205,7 +205,7 @@ function App() {
 
             {/* SECTION 1: HERO OVERHAUL */}
             <div className="hero-wrapper relative w-full overflow-hidden bg-transparent">
-                <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-32 bg-transparent">
+                <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-20 bg-transparent">
                     <div
                         style={{
                             opacity: Math.max(0, 1 - scrollProgress * 5),
@@ -215,7 +215,7 @@ function App() {
                         className="hero-content z-10 w-full"
                     >
                         <h1
-                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl my-12 opacity-0"
+                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl relative top-12 opacity-0"
                         >
                             Product and Material Tracking, Traceability <br /> and Sustainability Platform
                         </h1>
@@ -238,7 +238,7 @@ function App() {
                             </div>
 
                             {/* HERO STATS - REPOSITIONED UNDER CAR */}
-                            <div className="hero-reveal opacity-0 pb-2 md:mr-24 lg:mr-48">
+                            <div className="hero-reveal opacity-0 md:mr-24 lg:mr-48">
                                 <HeroStats />
                             </div>
                         </div>

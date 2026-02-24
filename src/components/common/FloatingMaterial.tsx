@@ -1,7 +1,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { Float, Text } from '@react-three/drei'
+import { Float, Text, useTexture } from '@react-three/drei'
 
 interface FloatingMaterialProps {
     type: 'steel' | 'lithium' | 'cobalt' | 'copper' | 'aluminium'
@@ -14,16 +14,25 @@ export const FloatingMaterial = ({ type, position, scrollProgress }: FloatingMat
     const textRef = useRef<THREE.Group>(null!)
     const materialRef = useRef<THREE.MeshPhysicalMaterial>(null!)
 
-    const { color, emissive, metalness, roughness, value } = useMemo(() => {
+    // Load all material textures
+    const textures = useTexture({
+        steel: '/materials/steel.jpg',
+        lithium: '/materials/lithium.jpg',
+        cobalt: '/materials/cobalt.jpg',
+        copper: '/materials/copper.jpg',
+        aluminium: '/materials/aluminium.jpg',
+    })
+
+    const { color, emissive, metalness, roughness, value, map } = useMemo(() => {
         switch (type) {
-            case 'steel': return { color: '#8E9196', emissive: '#B0B3B8', roughness: 0.1, metalness: 1, value: '85%' }
-            case 'lithium': return { color: '#E5E7EB', emissive: '#FFFFFF', roughness: 0.2, metalness: 0.8, value: '45%' }
-            case 'cobalt': return { color: '#2563EB', emissive: '#3B82F6', roughness: 0.1, metalness: 0.9, value: '25%' }
-            case 'copper': return { color: '#EA580C', emissive: '#FB923C', roughness: 0.1, metalness: 1, value: '70%' }
-            case 'aluminium': return { color: '#94A3B8', emissive: '#CBD5E1', roughness: 0.3, metalness: 0.9, value: '60%' }
-            default: return { color: '#96CC39', emissive: '#96CC39', roughness: 0.5, metalness: 0.5, value: '0%' }
+            case 'steel': return { color: '#ffffff', map: textures.steel, emissive: '#111111', roughness: 0.1, metalness: 1, value: '85%' }
+            case 'lithium': return { color: '#ffffff', map: textures.lithium, emissive: '#222222', roughness: 0.2, metalness: 0.5, value: '45%' }
+            case 'cobalt': return { color: '#ffffff', map: textures.cobalt, emissive: '#001133', roughness: 0.1, metalness: 0.8, value: '25%' }
+            case 'copper': return { color: '#ffffff', map: textures.copper, emissive: '#221100', roughness: 0.1, metalness: 1, value: '70%' }
+            case 'aluminium': return { color: '#ffffff', map: textures.aluminium, emissive: '#111111', roughness: 0.2, metalness: 0.9, value: '60%' }
+            default: return { color: '#96CC39', map: null, emissive: '#96CC39', roughness: 0.5, metalness: 0.5, value: '0%' }
         }
-    }, [type])
+    }, [type, textures])
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime()
@@ -88,9 +97,10 @@ export const FloatingMaterial = ({ type, position, scrollProgress }: FloatingMat
         <Float speed={2} rotationIntensity={2} floatIntensity={1}>
             <group>
                 <mesh ref={meshRef} position={position} scale={0}>
-                    <icosahedronGeometry args={[1, 1]} /> {/* High poly sharp crystal */}
+                    <icosahedronGeometry args={[1, 1]} /> {/* Reduced subdivisions for a sharper, jagged nugget look */}
                     <meshPhysicalMaterial
                         ref={materialRef}
+                        map={map}
                         color={color}
                         metalness={metalness}
                         roughness={roughness}
