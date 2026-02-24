@@ -54,9 +54,15 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
     useFrame((state) => {
         const time = state.clock.getElapsedTime()
         if (!groupRef.current) return
+
         const rotationPhase = Math.max(0, Math.min(1, progress / 0.75))
         const explodePhase = Math.max(0, (progress - 0.75) / 0.25)
         const hover = Math.sin(time * 0.5) * 0.05
+
+        // FIXED SCALE: 1.2
+        const scale = 1.2
+        groupRef.current.scale.setScalar(scale)
+
         let yOffset = 0
         let xOffset = 0
         if (!isLoader) {
@@ -73,7 +79,11 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         }
         groupRef.current.position.y = -yOffset + hover
         groupRef.current.position.x = xOffset
-        groupRef.current.rotation.y = rotationPhase * Math.PI * 1.5
+
+        // ORBITING MODE: After centering (0.2+), add auto-rotate
+        const baseAutoRotate = progress > 0.2 ? time * 0.2 : 0
+        groupRef.current.rotation.y = baseAutoRotate + rotationPhase * Math.PI * 1.5
+
         parts.forEach((child, i) => {
             if (explodePhase > 0) {
                 const explodeFactor = explodePhase * 25
@@ -97,7 +107,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
     })
 
     return (
-        <group ref={groupRef} scale={1.2} frustumCulled={false}>
+        <group ref={groupRef} frustumCulled={false}>
             {parts.map((mesh, i) => (
                 <primitive key={i} object={mesh} />
             ))}

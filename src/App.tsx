@@ -3,8 +3,8 @@ import { Canvas } from '@react-three/fiber'
 import { Environment, PerspectiveCamera } from '@react-three/drei'
 import { BackgroundShader } from '@/components/common/BackgroundShader'
 import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
+import { HeroStats } from '@/components/common/HeroStats'
 import { FloatingMaterial } from '@/components/common/FloatingMaterial'
-import { Infographic3D } from '@/components/common/Infographic3D'
 import { Loader } from '@/components/common/Loader'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
@@ -81,18 +81,7 @@ function App() {
             }
         })
 
-        // Hero fade on scroll - FIX FADE TIMING
-        gsap.to(".hero-fade", {
-            scrollTrigger: {
-                trigger: ".hero-wrapper",
-                start: "top top", // Start immediately on scroll
-                end: "25% top", // Align with car centering
-                scrub: true
-            },
-            opacity: 0,
-            y: -50,
-            pointerEvents: "none"
-        })
+        // Hero fade on scroll - Handled by state in render now
 
         const horizontalSection = document.querySelector('.horizontal-scroll-content')
         if (horizontalSection) {
@@ -185,9 +174,6 @@ function App() {
                         <FloatingMaterial type="copper" position={[1.5, -2.5, 0]} scrollProgress={scrollProgress} />
                         <FloatingMaterial type="aluminium" position={[3, -2.5, 0]} scrollProgress={scrollProgress} />
 
-                        {/* 3D Infographics */}
-                        <Infographic3D progress={scrollProgress} entryProgress={entryProgress} />
-
                         <Environment preset="city" />
                         <ambientLight intensity={1.5} />
                         <pointLight position={[10, 10, 10]} intensity={1} />
@@ -219,25 +205,42 @@ function App() {
 
             {/* SECTION 1: HERO OVERHAUL */}
             <div className="hero-wrapper relative w-full overflow-hidden bg-transparent">
-                <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-56 bg-transparent">
-                    <div className="hero-fade hero-content z-10">
+                <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-32 bg-transparent">
+                    <div
+                        style={{
+                            opacity: Math.max(0, 1 - scrollProgress * 5),
+                            transform: `translateY(${scrollProgress * -100}px)`,
+                            pointerEvents: scrollProgress > 0.15 ? 'none' : 'auto'
+                        }}
+                        className="hero-content z-10 w-full"
+                    >
                         <h1
-                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur text-data-navy max-w-5xl my-12 opacity-0"
+                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl my-12 opacity-0"
                         >
                             Product and Material Tracking, Traceability <br /> and Sustainability Platform
                         </h1>
-                        <p
-                            className="hero-reveal text-[14.5px] max-w-2xl opacity-0 mb-12"
-                        >
-                            <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
-                        </p>
-                        <div
-                            className="hero-reveal flex gap-6 opacity-0"
-                        >
-                            <button className="btn-premium group flex items-center gap-4 pointer-events-auto">
-                                Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-                            </button>
-                            <button className="btn-premium text-data-navy tracking-widest py-2.5 px-6 font-bold text-[10px] text-data-navy bg-electric-sulfur hover:bg-data-navy hover:text-white pointer-events-auto">Explore the Engine</button>
+
+                        <div className="flex flex-col md:flex-row items-end justify-between w-full">
+                            <div className="max-w-xl">
+                                <p
+                                    className="hero-reveal text-[15px] opacity-0 mb-6 leading-relaxed"
+                                >
+                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
+                                </p>
+                                <div
+                                    className="hero-reveal flex gap-6 opacity-0"
+                                >
+                                    <button className="btn-premium group flex items-center gap-4 pointer-events-auto">
+                                        Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                    </button>
+                                    <button className="btn-premium text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto">Explore the Engine</button>
+                                </div>
+                            </div>
+
+                            {/* HERO STATS - REPOSITIONED UNDER CAR */}
+                            <div className="hero-reveal opacity-0 pb-2 md:mr-24 lg:mr-48">
+                                <HeroStats />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -438,8 +441,7 @@ function App() {
 
             {/* FOOTER: THE MUSEUM OF INNOVATION */}
             <footer className="relative bg-white pt-32 pb-10 border-t border-data-navy/5 overflow-hidden">
-                {/* Massive Brand Watermark */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[25vw] font-black text-data-navy/[0.02] leading-none select-none pointer-events-none">
+                <div style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="absolute top-0 left-1/2 -translate-x-1/2 text-[20vw] font-black text-electric-sulfur/10 leading-none select-none pointer-events-none font-">
                     MATNEXT
                 </div>
 
@@ -491,9 +493,7 @@ function App() {
                         </div>
                     </div>
 
-                    {/* 3D CAR MUSEUM SHOWCASE */}
                     <div className="relative w-full h-[60vh] mb-20 bg-slate-50/50 border border-data-navy/5 flex items-center justify-center overflow-hidden group">
-                        {/* Labels for 3D showcase */}
                         <div className="absolute top-8 left-8 text-mono-label opacity-30">Vehicle_Architecture_v4.2</div>
                         <div className="absolute bottom-8 right-8 text-mono-label opacity-30 text-right">3D_Model_Exhibition<br />[Orbit_Enabled]</div>
 
@@ -501,7 +501,6 @@ function App() {
                             <Canvas gl={{ antialias: true, alpha: true }}>
                                 <Suspense fallback={null}>
                                     <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
-                                    {/* Exhibition Mode: Progress 0.35 (Partial deconstruction for artistic effect) */}
                                     <DeconstructibleCar progress={0.35} isLoader={true} />
                                     <Environment preset="city" />
                                     <ambientLight intensity={0.5} />
@@ -526,3 +525,4 @@ function App() {
 }
 
 export default App
+
