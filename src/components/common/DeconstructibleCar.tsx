@@ -118,15 +118,12 @@ const HeroLayer = ({ progress }: { progress: number }) => {
 export const DeconstructibleCar = ({ progress, isLoader = false }: DeconstructibleCarProps) => {
     const showHero = !isLoader && progress >= 0
     return (
-        <>
-            <Suspense fallback={null}>
+        <Suspense fallback={null}>
+            {showHero ? (
+                <HeroLayer progress={progress} />
+            ) : (
                 <WireframeLayer progress={progress} isLoader={isLoader} />
-            </Suspense>
-            {showHero && (
-                <Suspense fallback={null}>
-                    <HeroLayer progress={progress} />
-                </Suspense>
             )}
-        </>
+        </Suspense>
     )
 }

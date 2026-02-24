@@ -224,7 +224,7 @@ function App() {
                         <h1
                             className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur text-data-navy max-w-5xl my-12 opacity-0"
                         >
-                            Product and Material Tracking, Traceability <br/> and Sustainability Platform
+                            Product and Material Tracking, Traceability <br /> and Sustainability Platform
                         </h1>
                         <p
                             className="hero-reveal text-sm max-w-4xl opacity-0 mb-12"
