@@ -1,37 +1,45 @@
 import { useState, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment, PerspectiveCamera } from '@react-three/drei'
+import { Environment, PerspectiveCamera, useProgress } from '@react-three/drei'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DeconstructibleCar } from './DeconstructibleCar'
 
 export const Loader = ({ onComplete }: { onComplete: () => void }) => {
-    const [progress, setProgress] = useState(0)
+    const { progress: downloadProgress } = useProgress()
+    const [aestheticProgress, setAestheticProgress] = useState(0)
     const [showWebsite, setShowWebsite] = useState(false)
+
+    // Compute effective progress: The minimum of aesthetic and download progress
+    // This ensures we don't finish until assets are downloaded AND the animation looks good
+    const effectiveProgress = Math.min(aestheticProgress, downloadProgress || 0)
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setProgress((prev) => {
+            setAestheticProgress((prev) => {
                 if (prev >= 100) {
-                    clearInterval(interval)
-                    // Wait for explosion animation to finish
-                    setTimeout(() => {
-                        setShowWebsite(true)
-                        setTimeout(onComplete, 1000)
-                    }, 2000)
+                    // Only finish if actual download is also done
+                    if (downloadProgress >= 100) {
+                        clearInterval(interval)
+                        setTimeout(() => {
+                            setShowWebsite(true)
+                            setTimeout(onComplete, 1000)
+                        }, 2000)
+                        return 100
+                    }
                     return 100
                 }
-                return prev + 0.5 // Slower, smoother boot
+                return prev + 0.4 // Steady aesthetic climb
             })
         }, 30)
 
         return () => clearInterval(interval)
-    }, [onComplete])
+    }, [onComplete, downloadProgress])
 
     // Map loader progress (0-100):
     // 0 to 75 -> Rotation (0 to 0.75 in DeconstructibleCar)
     // 75 to 100 -> Explosion (0.75 to 1.0 in DeconstructibleCar)
     const getCarProgress = () => {
-        return progress / 100
+        return effectiveProgress / 100
     }
 
     return (
@@ -57,7 +65,7 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
 
                     <motion.div
                         initial={{ opacity: 1 }}
-                        animate={{ opacity: progress === 100 ? 0 : 1 }}
+                        animate={{ opacity: effectiveProgress === 100 ? 0 : 1 }}
                         transition={{ duration: 1, ease: "easeOut" }}
                         className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none"
                     >
@@ -70,14 +78,14 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                                 <span className="text-5xl font-black tracking-tighter italic leading-none">BOOTING</span>
                                 <div className="text-right">
                                     <span className="block text-[10px] opacity-40 uppercase tracking-widest mb-1">System_Integrity</span>
-                                    <span className="text-4xl font-black tabular-nums">{Math.floor(progress)}%</span>
+                                    <span className="text-4xl font-black tabular-nums">{Math.floor(effectiveProgress)}%</span>
                                 </div>
                             </div>
 
                             <div className="w-full h-[1px] bg-white/10 overflow-hidden relative">
                                 <motion.div
                                     initial={{ width: 0 }}
-                                    animate={{ width: `${progress}%` }}
+                                    animate={{ width: `${effectiveProgress}%` }}
                                     className="h-full bg-electric-sulfur shadow-[0_0_20px_#96CC39]"
                                 />
                             </div>
