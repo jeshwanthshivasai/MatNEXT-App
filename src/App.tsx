@@ -227,9 +227,9 @@ function App() {
                             Product and Material Tracking, Traceability <br /> and Sustainability Platform
                         </h1>
                         <p
-                            className="hero-reveal text-sm max-w-4xl opacity-0 mb-12"
+                            className="hero-reveal text-[14.5px] max-w-2xl opacity-0 mb-12"
                         >
-                            <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
+                            <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
                         </p>
                         <div
                             className="hero-reveal flex gap-6 opacity-0"
@@ -237,7 +237,7 @@ function App() {
                             <button className="btn-premium group flex items-center gap-4 pointer-events-auto">
                                 Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                             </button>
-                            <button className="btn-outline text-data-navy tracking-widest py-2.5 px-6 font-bold text-[10px] hover:btn-outline-electric-sulfur hover:text-white bg-electric-sulfur pointer-events-auto">Explore the Engine</button>
+                            <button className="btn-premium text-data-navy tracking-widest py-2.5 px-6 font-bold text-[10px] text-data-navy bg-electric-sulfur hover:bg-data-navy hover:text-white pointer-events-auto">Explore the Engine</button>
                         </div>
                     </div>
                 </section>
