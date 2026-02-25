@@ -182,7 +182,6 @@ function App() {
 
     return (
         <main ref={container} className="relative w-full selection:bg-electric-sulfur selection:text-white overflow-x-hidden">
-            <div className="noise-overlay" />
 
             {/* GLOBAL 3D CANVAS */}
             <div className="fixed inset-0 -z-10 h-screen w-full">
@@ -266,11 +265,11 @@ function App() {
                         <div className="flex flex-col md:flex-row items-end justify-between w-full">
                             <div className="max-w-xl">
                                 <p
-                                    className="hero-reveal text-[15px] opacity-0 mb-6 leading-relaxed"
+                                    className="hero-reveal text-[14px] text-justify opacity-0 mb-6 leading-relaxed"
                                 >
-                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
+                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
                                 </p>
-                                <div className="hero-reveal flex gap-6 opacity-0">
+                                <div className="hero-reveal flex gap-10 opacity-0">
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
@@ -281,9 +280,9 @@ function App() {
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
-                                        className="btn-premium text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto"
+                                        className="btn-premium group flex items-center gap-4 text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto"
                                     >
-                                        Explore the Engine
+                                        Explore the Engine <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                                     </button>
                                 </div>
                             </div>

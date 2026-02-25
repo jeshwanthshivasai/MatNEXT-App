@@ -59,8 +59,7 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                 <motion.div
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1] }}
-                    className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-data-navy text-electric-sulfur font-mono overflow-hidden"
-                >
+                    className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-white text-electric-sulfur font-mono overflow-hidden"                >
                     {/* 3D LOADING CANVAS */}
                     <div className="absolute inset-0 w-full h-full">
                         <Canvas gl={{ antialias: true, alpha: true }}>
@@ -80,20 +79,19 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                         transition={{ duration: 1, ease: "easeOut" }}
                         className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none"
                     >
-                        <div className="absolute top-10 left-10 text-[10px] opacity-40 uppercase tracking-[0.4em]">
-                            MatNEXT Protocol // v2.0.26 // Initializing_System
+                        <div className="absolute top-30 text-md text-center font-extrabold opacity-100 uppercase tracking-[0.4em]">
+                            MatNEXT Protocol // v1.0.0 // Initializing_System
                         </div>
 
                         <div className="relative z-10 w-full max-w-2xl px-10 mt-auto mb-32">
                             <div className="flex justify-between items-end mb-6">
                                 <span className="text-5xl font-black tracking-tighter italic leading-none">BOOTING</span>
                                 <div className="text-right">
-                                    <span className="block text-[10px] opacity-40 uppercase tracking-widest mb-1">System_Integrity</span>
-                                    <span className="text-4xl font-black tabular-nums">{Math.floor(effectiveProgress)}%</span>
+                                    <span className="text-4xl font-black italic tabular-nums">{Math.floor(effectiveProgress)}%</span>
                                 </div>
                             </div>
 
-                            <div className="w-full h-[1px] bg-white/10 overflow-hidden relative">
+                            <div className="w-full h-[1px] bg-data-navy/10 overflow-hidden relative">
                                 <motion.div
                                     initial={{ width: 0 }}
                                     animate={{ width: `${effectiveProgress}%` }}
@@ -102,16 +100,16 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                             </div>
 
                             <div className="mt-8 text-center">
-                                <p className="text-[10px] uppercase tracking-[0.5em] opacity-60 animate-pulse">
+                                <p className="text-[14px] font-black uppercase tracking-[0.2em] opacity-100 animate-pulse">
                                     Please wait while we load our next gen platform
                                 </p>
                             </div>
                         </div>
 
-                        <div className="absolute bottom-10 right-10 text-[10px] opacity-40 uppercase tracking-[0.4em] text-right">
+                        {/* <div className="absolute bottom-10 right-10 text-[10px] opacity-40 uppercase tracking-[0.4em] text-right">
                             Deep-Tier Supply Chain Traceability<br />
                             Industrial Grade Intelligence
-                        </div>
+                        </div> */}
                     </motion.div>
                 </motion.div>
             )}

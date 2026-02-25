@@ -4,7 +4,7 @@ export const HeroStats = () => {
     const stats = [
         { label: 'Created Impact', value: '1,20,000+', sub: 'TONS TRACKED', id: 'stat-1' },
         { label: 'Our Partnership', value: '25+', sub: 'STAKEHOLDERS', id: 'stat-2' },
-        { label: 'Our Coverage', value: '6', sub: 'INDUSTRIES', id: 'stat-3' }
+        { label: 'Our Coverage', value: '6+', sub: 'INDUSTRIES', id: 'stat-3' }
     ]
 
     return (
