@@ -2,13 +2,13 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Factory, Users, ScanLine, CloudRain, Recycle, FileCheck, Star } from 'lucide-react'
+import { Factory, Users, ScanLine, CloudRain, Recycle, FileCheck, Star, LucideIcon } from 'lucide-react'
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger)
 
 interface MetricCardProps {
-    icon: React.ElementType;
+    icon: LucideIcon;
     number: string;
     suffix?: string;
     targetValue: number;
