@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
-const carModelUrl = '/models/generic_sedan_car.glb'
+const carModelUrl = '/models/generic_sedan_car_optimized.glb'
 const heroModelUrl = '/models/generic_sedan_car/scene.gltf'
 
 interface DeconstructibleCarProps {
@@ -149,3 +149,5 @@ export const DeconstructibleCar = ({ progress, isLoader = false }: Deconstructib
         </Suspense>
     )
 }
+
+useGLTF.preload(carModelUrl)
