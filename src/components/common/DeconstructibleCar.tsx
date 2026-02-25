@@ -56,8 +56,10 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         const time = state.clock.getElapsedTime()
         if (!groupRef.current) return
 
-        const rotationPhase = Math.max(0, Math.min(1, progress / 0.4))
-        const explodePhase = Math.max(0, (progress - 0.4) / 0.6)
+        const loaderRotationEnd = isLoader ? 0.5 : 0.4
+        const loaderExplodeStart = isLoader ? 0.5 : 0.4
+        const rotationPhase = Math.max(0, Math.min(1, progress / loaderRotationEnd))
+        const explodePhase = Math.max(0, (progress - loaderExplodeStart) / (1 - loaderExplodeStart))
         const hover = Math.sin(time * 0.5) * 0.05
 
         const scale = 1.2
@@ -90,7 +92,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         parts.forEach((child, i) => {
             if (explodePhase > 0) {
                 // Explode further and faster in the loader
-                const explodeFactor = explodePhase * (isLoader ? 50 : 25)
+                const explodeFactor = explodePhase * (isLoader ? 12 : 25)
                 const dir = child.userData.explodeDir
                 child.position.x = child.userData.origPos.x + dir.x * explodeFactor
                 child.position.y = child.userData.origPos.y + dir.y * explodeFactor
@@ -102,7 +104,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
                 if (isWireframe || child.material instanceof THREE.MeshPhysicalMaterial) {
                     const materials = Array.isArray(child.material) ? child.material : [child.material]
                     materials.forEach(m => {
-                        m.opacity = Math.max(0, 1 - explodePhase * 1.8) // Fade out faster
+                        m.opacity = Math.max(0, 1 - explodePhase * 1.0) // Fade out gradually, fully gone at 100%
                     })
                 }
             } else {

@@ -39,7 +39,7 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                     }
                     return 100
                 }
-                return prev + 0.4 // Steady aesthetic climb
+                return prev + 0.2 // Slower climb for more explosion detail
             })
         }, 30)
 
@@ -75,8 +75,8 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
 
                     <motion.div
                         initial={{ opacity: 1 }}
-                        animate={{ opacity: effectiveProgress === 100 ? 0 : 1 }}
-                        transition={{ duration: 1, ease: "easeOut" }}
+                        animate={{ opacity: effectiveProgress >= 99 ? 0 : 1 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
                         className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none"
                     >
                         <div className="absolute top-30 text-md text-center font-extrabold opacity-100 uppercase tracking-[0.4em]">
