@@ -155,7 +155,7 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                     }}
                 >
                     {/* Header Absolute above the 220px block to match mockups */}
-                    <div className="absolute bottom-[240px] left-10 right-10 flex items-end justify-between">
+                    <div className="absolute bottom-[240px] left-10 right-10 flex flex-col items-center justify-center text-center">
                         <div>
                             <span className="text-xl text-data-navy font-mono uppercase tracking-[0.5em] opacity-100 block mb-1">
                                 Circular Economy Matrix
@@ -164,9 +164,6 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                                 Material Extraction // Live
                             </span>
                         </div>
-                        {/* <span className="text-md font-mono uppercase tracking-[0.4em] opacity-100">
-                        Recycled Content %
-                    </span> */}
                     </div>
 
                     <div className="flex gap-[2px] h-[220px] w-full bg-white">
