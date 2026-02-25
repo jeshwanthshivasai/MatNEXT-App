@@ -193,7 +193,13 @@ function App() {
         <main ref={container} className="relative w-full selection:bg-electric-sulfur selection:text-white overflow-x-hidden">
 
             {/* GLOBAL 3D CANVAS */}
-            <div className="fixed inset-0 -z-10 h-screen w-full">
+            <div
+                className="fixed inset-0 -z-10 h-screen w-full overflow-hidden"
+                style={{
+                    opacity: scrollProgress > 0.80 ? Math.max(0, 1 - ((scrollProgress - 0.80) / 0.15)) : 1,
+                    pointerEvents: scrollProgress > 0.80 ? 'none' : 'auto'
+                }}
+            >
                 <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]}>
                     <Suspense fallback={null}>
                         <PerspectiveCamera makeDefault position={[0, 0.5, 20]} fov={18} near={0.1} far={10000} />
@@ -334,7 +340,7 @@ function App() {
             </div>
 
             {/* SECTION 2: FEATURES */}
-            <section id="features" className="relative min-h-screen bg-white/80 backdrop-blur-sm section-padding">
+            <section id="features" className="relative z-20 min-h-screen bg-white/80 backdrop-blur-sm section-padding -mt-[40vh]">
                 <div className="flex flex-col lg:flex-row justify-between items-end mb-32 border-b border-data-navy/10 pb-16">
                     <div>
                         <span className="text-electric-sulfur text-mono-label block mb-6">Platform Capabilities</span>
