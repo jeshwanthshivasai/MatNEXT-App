@@ -42,6 +42,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
                 clone.userData.origPos = clone.position.clone()
                 clone.userData.origRot = clone.rotation.clone()
                 const radialDir = clone.position.clone().normalize()
+                // eslint-disable-next-line
                 const randomDir = new THREE.Vector3((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2).normalize()
                 clone.userData.explodeDir = radialDir.lerp(randomDir, 0.3).normalize()
                 clone.frustumCulled = false
@@ -55,8 +56,8 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         const time = state.clock.getElapsedTime()
         if (!groupRef.current) return
 
-        const rotationPhase = Math.max(0, Math.min(1, progress / 0.75))
-        const explodePhase = Math.max(0, (progress - 0.75) / 0.25)
+        const rotationPhase = Math.max(0, Math.min(1, progress / 0.6))
+        const explodePhase = Math.max(0, (progress - 0.6) / 0.4)
         const hover = Math.sin(time * 0.5) * 0.05
 
         // FIXED SCALE: 1.2

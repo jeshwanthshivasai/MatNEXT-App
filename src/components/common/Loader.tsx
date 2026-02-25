@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { Environment, PerspectiveCamera, useProgress } from '@react-three/drei'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DeconstructibleCar } from './DeconstructibleCar'
+import { SoundController } from '@/utils/SoundController'
 
 export const Loader = ({ onComplete }: { onComplete: () => void }) => {
     const { progress: downloadProgress } = useProgress()
@@ -14,7 +15,17 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
     const effectiveProgress = Math.min(aestheticProgress, downloadProgress || 0)
 
     useEffect(() => {
+        // Initialize SoundController on first render
+        SoundController.init()
+
+        let tickCounter = 0
         const interval = setInterval(() => {
+            tickCounter++
+            // Play a loading tick every ~15 frames (every ~450ms)
+            if (tickCounter % 15 === 0) {
+                SoundController.playLoadingTick()
+            }
+
             setAestheticProgress((prev) => {
                 if (prev >= 100) {
                     // Only finish if actual download is also done

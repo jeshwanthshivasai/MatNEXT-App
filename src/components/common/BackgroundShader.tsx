@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -30,12 +30,12 @@ const fragmentShader = `
 
 export const BackgroundShader = () => {
   const meshRef = useRef<THREE.Mesh>(null!)
-  const uniforms = useRef({
+  const uniforms = useMemo(() => ({
     uTime: { value: 0 }
-  })
+  }), [])
 
   useFrame((state) => {
-    uniforms.current.uTime.value = state.clock.getElapsedTime()
+    uniforms.uTime.value = state.clock.getElapsedTime()
   })
 
   return (
@@ -44,7 +44,7 @@ export const BackgroundShader = () => {
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        uniforms={uniforms.current}
+        uniforms={uniforms}
         transparent
       />
     </mesh>

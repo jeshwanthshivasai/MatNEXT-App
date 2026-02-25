@@ -4,9 +4,12 @@ import { Environment, PerspectiveCamera } from '@react-three/drei'
 import { BackgroundShader } from '@/components/common/BackgroundShader'
 import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
 import { HeroStats } from '@/components/common/HeroStats'
-import { FloatingMaterial } from '@/components/common/FloatingMaterial'
+import { TraceabilityMap } from './components/common/TraceabilityMap'
+// import { FloatingMaterial } from '@/components/common/FloatingMaterial'
 import { Loader } from '@/components/common/Loader'
+import { SoundController } from '@/utils/SoundController'
 import { motion } from 'framer-motion'
+import { Volume2, VolumeX } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -39,6 +42,27 @@ function App() {
     const [isLanding, setIsLanding] = useState(false)
     const [entryProgress, setEntryProgress] = useState(1) // 1 to 0 (Falling down)
     const lenisRef = useRef<Lenis | null>(null)
+    const [isMuted, setIsMuted] = useState(SoundController.getMuteState())
+
+    const handleToggleMute = () => {
+        setIsMuted(SoundController.toggleMute())
+    }
+
+    // Scroll-triggered sound events
+    useEffect(() => {
+        // Shatter/boom when car starts exploding
+        if (scrollProgress > 0.6 && scrollProgress < 0.65) {
+            SoundController.playShatter()
+        } else if (scrollProgress < 0.55) {
+            // Reset shatter so it triggers again if they scroll back down
+            SoundController.resetEvent('shatter')
+        }
+
+        // Reset whoosh event when user scrolls back to the very top
+        if (scrollProgress < 0.05) {
+            SoundController.resetEvent('whoosh')
+        }
+    }, [scrollProgress])
 
     // Lenis Smooth Scroll Initialization
     useEffect(() => {
@@ -115,6 +139,7 @@ function App() {
                 onComplete: () => {
                     // 2. Start Car Entry (Land from above to the RIGHT) AFTER text reveal
                     setIsLanding(true)
+                    SoundController.playWhoosh() // Whoosh as car enters
                     gsap.to({ val: 1 }, {
                         val: 0,
                         duration: 2,
@@ -167,12 +192,7 @@ function App() {
                         <BackgroundShader />
                         <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : scrollProgress)} isLoader={false} />
 
-                        {/* Material Crystals - Arranged in a single line beneath the car */}
-                        <FloatingMaterial type="steel" position={[-3, -2.5, 0]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="lithium" position={[-1.5, -2.5, 0]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="cobalt" position={[0, -2.5, 0]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="copper" position={[1.5, -2.5, 0]} scrollProgress={scrollProgress} />
-                        <FloatingMaterial type="aluminium" position={[3, -2.5, 0]} scrollProgress={scrollProgress} />
+                        {/* Traceability Map UI will overlay here - previously the 3D material nuggets were here */}
 
                         <Environment preset="city" />
                         <ambientLight intensity={1.5} />
@@ -182,6 +202,9 @@ function App() {
             </div>
 
             {loading && <Loader onComplete={onLoaderComplete} />}
+
+            {/* TRACEABILITY MAP OVERLAY — appears during car explosion */}
+            {!loading && <TraceabilityMap scrollProgress={scrollProgress} />}
 
             {/* Navigation */}
             <nav
@@ -197,10 +220,30 @@ function App() {
                 </div>
                 <div className="hidden gap-10 text-[10px] font-bold uppercase tracking-[0.3em] md:flex opacity-70">
                     {['Features', 'Traction', 'AI', 'Why-MatNEXT', 'Customers'].map((item) => (
-                        <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-electric-sulfur transition-all duration-300">/{item.replace('-', ' ')}</a>
+                        <a key={item} href={`#${item.toLowerCase()}`}
+                            onMouseEnter={() => SoundController.playHoverSound()}
+                            onClick={() => SoundController.playClickSound()}
+                            className="hover:text-electric-sulfur transition-all duration-300">
+                            /{item.replace('-', ' ')}
+                        </a>
                     ))}
                 </div>
-                <button className="btn-premium py-2.5 px-6 text-[10px] tracking-widest">Request Platform Demo</button>
+                <div className="flex items-center gap-6">
+                    <button
+                        onClick={handleToggleMute}
+                        onMouseEnter={() => SoundController.playHoverSound()}
+                        className="text-data-navy hover:text-electric-sulfur transition-colors"
+                    >
+                        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                    </button>
+                    <button
+                        onMouseEnter={() => SoundController.playHoverSound()}
+                        onClick={() => SoundController.playClickSound()}
+                        className="btn-premium py-2.5 px-6 text-[10px] tracking-widest"
+                    >
+                        Request Platform Demo
+                    </button>
+                </div>
             </nav>
 
             {/* SECTION 1: HERO OVERHAUL */}
@@ -227,13 +270,21 @@ function App() {
                                 >
                                     <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
                                 </p>
-                                <div
-                                    className="hero-reveal flex gap-6 opacity-0"
-                                >
-                                    <button className="btn-premium group flex items-center gap-4 pointer-events-auto">
+                                <div className="hero-reveal flex gap-6 opacity-0">
+                                    <button
+                                        onMouseEnter={() => SoundController.playHoverSound()}
+                                        onClick={() => SoundController.playClickSound()}
+                                        className="btn-premium group flex items-center gap-4 pointer-events-auto"
+                                    >
                                         Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                                     </button>
-                                    <button className="btn-premium text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto">Explore the Engine</button>
+                                    <button
+                                        onMouseEnter={() => SoundController.playHoverSound()}
+                                        onClick={() => SoundController.playClickSound()}
+                                        className="btn-premium text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto"
+                                    >
+                                        Explore the Engine
+                                    </button>
                                 </div>
                             </div>
 
