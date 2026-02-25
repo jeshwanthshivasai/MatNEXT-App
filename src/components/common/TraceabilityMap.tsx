@@ -166,7 +166,7 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                         </div>
                     </div>
 
-                    <div className="flex gap-[2px] h-[220px] w-full bg-white">
+                    <div className="flex gap-[2px] h-[220px] w-full bg-transparent">
                         {materials.map((mat) => (
                             <div key={mat.name} className="t-col flex-1 flex flex-col justify-end relative group cursor-crosshair opacity-0 border-l border-data-navy/0 hover:border-data-navy/20 transition-colors">
                                 {/* Metadata on hover */}
