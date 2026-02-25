@@ -6,6 +6,7 @@ import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
 import { HeroStats } from '@/components/common/HeroStats'
 import { TraceabilityMap } from './components/common/TraceabilityMap'
 import { TractionMetrics } from '@/components/common/TractionMetrics'
+import { FeaturesNarrative } from '@/components/common/FeaturesNarrative'
 // import { FloatingMaterial } from '@/components/common/FloatingMaterial'
 import { Loader } from '@/components/common/Loader'
 import { SoundController } from '@/utils/SoundController'
@@ -17,18 +18,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import {
     ArrowRight,
-    BarChart3,
-    RotateCcw,
-    Map,
-    ShieldAlert,
     Globe,
-    Database,
-    Network,
-    Cpu,
-    Zap,
-    Layers,
-    Users,
-    Factory
+    Zap
 } from 'lucide-react'
 import logo from './assets/MatNEXT.png'
 import { Analytics } from '@vercel/analytics/react'
@@ -110,28 +101,12 @@ function App() {
             end: '+=400%',
             pin: true,
             scrub: 1,
+            refreshPriority: 10, // Force parent pin calculation before child components
             onUpdate: (self) => {
                 setScrollProgress(self.progress)
             }
         })
 
-        // Hero fade on scroll - Handled by state in render now
-
-        const horizontalSection = document.querySelector('.horizontal-scroll-content')
-        if (horizontalSection) {
-            gsap.to(horizontalSection, {
-                x: () => -(horizontalSection.scrollWidth - window.innerWidth),
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.horizontal-wrapper',
-                    start: 'top top',
-                    end: () => `+=${horizontalSection.scrollWidth}`,
-                    pin: true,
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                }
-            })
-        }
     }, { scope: container })
 
     const onLoaderComplete = useCallback(() => {
@@ -166,20 +141,7 @@ function App() {
         )
     }, [])
 
-    const features = [
-        { title: 'Tracking & Traceability', desc: 'Real-time traceability intelligence tracks every material, batch, and transaction across your value chain.', icon: BarChart3 },
-        { title: 'Sustainability Engine', desc: 'Automate carbon accounting and ESG compliance with precision-engineered data protocols.', icon: RotateCcw },
-        { title: 'Dynamic Mapping', desc: 'Visualize your entire supply chain network from raw material extraction to final assembly.', icon: Map },
-        { title: 'Risk Intelligence', desc: 'Predictive analytics identify supply chain disruptions and compliance vulnerabilities before they occur.', icon: ShieldAlert },
-        { title: 'Material Passport', desc: 'Every product gets a digital twin containing its entire lifecycle and sustainability history.', icon: Globe },
-        { title: 'Compliance Vault', desc: 'Securely store and manage all regulatory documentation and certifications in a tamper-proof ledger.', icon: Database },
-        { title: 'Supplier Network', desc: 'Onboard and manage thousands of suppliers with automated data verification and scoring.', icon: Network },
-        { title: 'AI Automation', desc: 'Harness the power of machine learning to extract and verify data from complex supply chain documents.', icon: Cpu },
-        { title: 'Operational Efficiency', desc: 'Streamline procurement and logistics with data-driven insights and automated workflows.', icon: Zap },
-        { title: 'Stakeholder Portal', desc: 'Seamlessly share supply chain data with customers, investors, and regulatory bodies.', icon: Users },
-        { title: 'Industry Benchmarks', desc: 'Compare your sustainability performance against industry standards and global competitors.', icon: Factory },
-        { title: 'Scalable Architecture', desc: 'Built for enterprise-scale operations, handling millions of transactions with military-grade security.', icon: Layers }
-    ]
+    // Features data moved to FeaturesNarrative.tsx
 
     const whyMatNext = [
         { id: '01', title: 'Deep Tier Precision', desc: 'We don\'t just track Direct Suppliers. We track the entire value chain back to the source.' },
@@ -340,44 +302,8 @@ function App() {
                 </motion.div>
             </div>
 
-            {/* SECTION 2: FEATURES */}
-            <section id="features" className="relative z-20 min-h-screen bg-white/80 backdrop-blur-sm section-padding -mt-[40vh]">
-                <div className="flex flex-col lg:flex-row justify-between items-end mb-32 border-b border-data-navy/10 pb-16">
-                    <div>
-                        <span className="text-electric-sulfur text-mono-label block mb-6">Platform Capabilities</span>
-                        <h2 className="text-[5.18vw] text-data-navy font-black leading-[0.8] uppercase tracking-tighter">Comprehensive Sustainability Engine</h2>
-                    </div>
-                    {/* <p className="max-w-sm text-[11px] uppercase font-mono opacity-50 text-right leading-loose pt-10 lg:pt-0">
-                        A massive 12-layer tracking and traceability suite designed to automate regulatory extraction and circularity intelligence across 20+ tiers.
-                    </p> */}
-                </div>
-
-                <div className="flex flex-col">
-                    {features.map((feat, i) => (
-                        <div
-                            key={feat.title}
-                            className="group relative flex items-center justify-between py-12 border-b border-data-navy/5 hover:bg-neutral-50 transition-colors duration-700 px-4 cursor-pointer"
-                        >
-                            <div className="flex items-center gap-12 lg:gap-24">
-                                <span className="text-mono-label opacity-20 group-hover:opacity-100 group-hover:text-electric-sulfur transition-all">0{i + 1}</span>
-                                <h3 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-700">
-                                    {feat.title}
-                                </h3>
-                            </div>
-
-                            <div className="hidden lg:flex items-center gap-10 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                                <p className="text-[12px] font-mono text-right font-bold uppercase leading-relaxed text-data-navy/60">
-                                    {feat.desc}
-                                </p>
-                                <div className="p-3 bg-data-navy rounded-full">
-                                    <feat.icon className="w-5 h-5 text-electric-sulfur" />
-                                </div>
-                            </div>
-                            <div className="absolute inset-0 bg-electric-sulfur/0 group-hover:bg-electric-sulfur/5 -z-10 transition-colors duration-700" />
-                        </div>
-                    ))}
-                </div>
-            </section>
+            {/* SECTION 2: FEATURES NARRATIVE (HORIZONTAL SCROLL) */}
+            <FeaturesNarrative />
 
             {/* SECTION 3: TRACTION METRICS (BENTO GRID) */}
             <div id="traction" className="relative z-30">
