@@ -24,10 +24,10 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
     // Step 2: New stats appear as hero text fades (0.15 to 0.25)
     if (scrollProgress >= 0.15 && scrollProgress <= 0.25) {
         newStatsOpacity = (scrollProgress - 0.15) / 0.1;
-    } else if (scrollProgress > 0.25 && scrollProgress <= 0.85) {
+    } else if (scrollProgress > 0.25 && scrollProgress <= 0.80) {
         newStatsOpacity = 1;
-    } else if (scrollProgress > 0.85 && scrollProgress <= 0.95) {
-        newStatsOpacity = Math.max(0, 1 - ((scrollProgress - 0.85) / 0.1));
+    } else if (scrollProgress > 0.80 && scrollProgress <= 0.95) {
+        newStatsOpacity = Math.max(0, 1 - ((scrollProgress - 0.80) / 0.15));
     }
 
     // Step 3: Separate two stats and reveal main Traceability box (0.25 to 0.45)
@@ -35,12 +35,12 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
         const rawProgress = (scrollProgress - 0.25) / 0.20;
         separationProgress = rawProgress * (2 - rawProgress); // easeOut quadratic
         visibility = rawProgress;
-    } else if (scrollProgress > 0.45 && scrollProgress <= 0.85) {
+    } else if (scrollProgress > 0.45 && scrollProgress <= 0.80) {
         separationProgress = 1;
         visibility = 1;
-    } else if (scrollProgress > 0.85 && scrollProgress <= 0.95) {
+    } else if (scrollProgress > 0.80 && scrollProgress <= 0.95) {
         separationProgress = 1;
-        visibility = Math.max(0, 1 - ((scrollProgress - 0.85) / 0.1));
+        visibility = Math.max(0, 1 - ((scrollProgress - 0.80) / 0.15));
     }
 
     const isVisible = scrollProgress > 0.25 && scrollProgress < 0.98;
