@@ -31,7 +31,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
                 clone.scale.copy(worldScale)
                 clone.geometry = clone.geometry.clone()
                 if (isWireframe) {
-                    clone.material = new THREE.MeshBasicMaterial({ color: "#96CC39", wireframe: true })
+                    clone.material = new THREE.MeshBasicMaterial({ color: "#96CC39", wireframe: true, transparent: true })
                 } else if (clone.material) {
                     if (Array.isArray(clone.material)) {
                         clone.material = clone.material.map(m => m.clone())
@@ -60,11 +60,11 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         const explodePhase = Math.max(0, (progress - 0.6) / 0.4)
         const hover = Math.sin(time * 0.5) * 0.05
 
-        // FIXED SCALE: 1.2
         const scale = 1.2
         groupRef.current.scale.setScalar(scale)
 
-        const verticalLift = 0.25
+        // Move car down in loader to center it (was 0.25)
+        const verticalLift = isLoader ? -0.4 : 0.25
 
         let yOffset = 0
         let xOffset = 0
@@ -89,21 +89,30 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
 
         parts.forEach((child, i) => {
             if (explodePhase > 0) {
-                const explodeFactor = explodePhase * 25
+                // Explode further and faster in the loader
+                const explodeFactor = explodePhase * (isLoader ? 50 : 25)
                 const dir = child.userData.explodeDir
                 child.position.x = child.userData.origPos.x + dir.x * explodeFactor
                 child.position.y = child.userData.origPos.y + dir.y * explodeFactor
                 child.position.z = child.userData.origPos.z + dir.z * explodeFactor
                 child.rotation.x = child.userData.origRot.x + explodePhase * Math.sin(i) * 20
                 child.rotation.y = child.userData.origRot.y + explodePhase * Math.cos(i) * 20
-                if (child.material instanceof THREE.MeshPhysicalMaterial) {
-                    child.material.opacity = Math.max(0, 1 - explodePhase * 1.5)
+
+                // Fade out wireframe and physical materials
+                if (isWireframe || child.material instanceof THREE.MeshPhysicalMaterial) {
+                    const materials = Array.isArray(child.material) ? child.material : [child.material]
+                    materials.forEach(m => {
+                        m.opacity = Math.max(0, 1 - explodePhase * 1.8) // Fade out faster
+                    })
                 }
             } else {
                 child.position.copy(child.userData.origPos)
                 child.rotation.copy(child.userData.origRot)
-                if (child.material instanceof THREE.MeshPhysicalMaterial) {
-                    child.material.opacity = 1
+                if (isWireframe || child.material instanceof THREE.MeshPhysicalMaterial) {
+                    const materials = Array.isArray(child.material) ? child.material : [child.material]
+                    materials.forEach(m => {
+                        m.opacity = 1
+                    })
                 }
             }
         })
