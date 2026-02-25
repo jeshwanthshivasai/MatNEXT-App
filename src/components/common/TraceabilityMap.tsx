@@ -99,11 +99,16 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                         opacity: newStatsOpacity,
                     }}
                 >
-                    <div className="h-[220px] w-56 bg-[#F4F4F5] flex flex-col justify-end items-center pb-8 rounded-sm">
-                        <span className="text-5xl md:text-[54px] font-black tracking-tighter text-electric-sulfur leading-none" style={{ fontFamily: 'var(--font-sans)' }}>
+                    {/* Industrial Styled Box */}
+                    <div className="h-[220px] w-56 bg-electric-sulfur/10 flex flex-col justify-center items-center relative overflow-hidden group">
+
+                        {/* Centered Number */}
+                        <span className="text-5xl md:text-[54px] font-black tracking-tighter text-electric-sulfur leading-none relative z-10" style={{ fontFamily: 'var(--font-sans)' }}>
                             99.8%
                         </span>
-                        <span className="text-sm md:text-base opacity-60 mt-4 font-bold text-data-navy whitespace-nowrap font-sans uppercase tracking-widest">
+
+                        {/* Smaller, Centered Title Text */}
+                        <span className="text-[10px] md:text-[10px] opacity-60 mt-3 font-bold text-data-navy font-sans uppercase tracking-widest text-center relative z-10 leading-tight">
                             Compliance Score
                         </span>
                     </div>
@@ -119,11 +124,16 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                         opacity: newStatsOpacity,
                     }}
                 >
-                    <div className="h-[220px] w-56 bg-[#F4F4F5] flex flex-col justify-end items-center pb-8 rounded-sm">
-                        <span className="text-5xl md:text-[54px] font-black tracking-tighter text-electric-sulfur leading-none" style={{ fontFamily: 'var(--font-sans)' }}>
+                    {/* Industrial Styled Box */}
+                    <div className="h-[220px] w-56 bg-electric-sulfur/10 flex flex-col justify-center items-center relative overflow-hidden group">
+
+                        {/* Centered Number */}
+                        <span className="text-5xl md:text-[54px] font-black tracking-tighter text-electric-sulfur leading-none relative z-10" style={{ fontFamily: 'var(--font-sans)' }}>
                             2.4M
                         </span>
-                        <span className="text-sm md:text-base opacity-60 mt-4 font-bold text-data-navy whitespace-nowrap font-sans uppercase tracking-widest">
+
+                        {/* Smaller, Centered Title Text */}
+                        <span className="text-[10px] md:text-[10px] opacity-60 mt-3 font-bold text-data-navy font-sans uppercase tracking-widest text-center relative z-10 leading-tight">
                             Units Tracked
                         </span>
                     </div>
