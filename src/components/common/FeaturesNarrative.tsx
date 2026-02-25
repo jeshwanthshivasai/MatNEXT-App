@@ -20,172 +20,154 @@ import {
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Grouping the original 12 features into 4 cohesive Pillars
-const narrativeData = [
-    {
-        id: "01",
-        title: "TRACEABILITY INTELLIGENCE",
-        abstractTitle: "Tracking Node",
-        color: "bg-emerald-500",
-        features: [
-            { title: 'Tracking & Traceability', desc: 'Real-time intelligence tracks every material, batch, and transaction across your chain.', icon: BarChart3 },
-            { title: 'Dynamic Mapping', desc: 'Visualize your entire supply chain network from extraction to final assembly.', icon: Map },
-            { title: 'Material Passport', desc: 'Every product gets a digital twin containing its entire lifecycle history.', icon: Globe }
-        ]
-    },
-    {
-        id: "02",
-        title: "PLATFORM & RISK SECURITY",
-        abstractTitle: "Secured Ledger",
-        color: "bg-blue-500",
-        features: [
-            { title: 'Risk Intelligence', desc: 'Predictive analytics identify supply chain disruptions before they occur.', icon: ShieldAlert },
-            { title: 'Compliance Vault', desc: 'Securely store all regulatory documentation in a tamper-proof ledger.', icon: Database },
-            { title: 'Supplier Network', desc: 'Onboard and manage thousands of suppliers with automated data verification.', icon: Network }
-        ]
-    },
-    {
-        id: "03",
-        title: "SUSTAINABILITY ENGINE",
-        abstractTitle: "Carbon Nexus",
-        color: "bg-electric-sulfur",
-        features: [
-            { title: 'Sustainability Engine', desc: 'Automate carbon accounting and ESG compliance with precision data protocols.', icon: RotateCcw },
-            { title: 'Stakeholder Portal', desc: 'Seamlessly share supply chain data with customers and regulatory bodies.', icon: Users },
-            { title: 'Industry Benchmarks', desc: 'Compare your sustainability performance against global competitors.', icon: Factory }
-        ]
-    },
-    {
-        id: "04",
-        title: "AUTONOMOUS OPERATIONS",
-        abstractTitle: "AI Automation",
-        color: "bg-purple-500",
-        features: [
-            { title: 'AI Automation', desc: 'Harness ML to extract and verify data from complex supply chain documents.', icon: Cpu },
-            { title: 'Operational Efficiency', desc: 'Streamline procurement and logistics with data-driven workflows.', icon: Zap },
-            { title: 'Scalable Architecture', desc: 'Built for enterprise-scale operations, handling millions of transactions safely.', icon: Layers }
-        ]
-    }
+// All 12 features — flat, no groups
+const features: { title: string; desc: string; icon: LucideIcon }[] = [
+    { title: 'Tracking & Traceability', desc: 'Real-time intelligence tracks every material, batch & transaction across your supply chain.', icon: BarChart3 },
+    { title: 'Dynamic Mapping', desc: 'Visualize your entire supply chain network from raw extraction to final assembly.', icon: Map },
+    { title: 'Material Passport', desc: 'Every product gets a digital twin containing its entire lifecycle history and provenance.', icon: Globe },
+    { title: 'Risk Intelligence', desc: 'Predictive analytics identify supply chain disruptions before they cascade.', icon: ShieldAlert },
+    { title: 'Compliance Vault', desc: 'Securely store all regulatory documentation in a tamper-proof, audit-ready ledger.', icon: Database },
+    { title: 'Supplier Network', desc: 'Onboard and manage thousands of suppliers with automated data verification.', icon: Network },
+    { title: 'Sustainability Engine', desc: 'Automate carbon accounting and ESG compliance with precision data protocols.', icon: RotateCcw },
+    { title: 'Stakeholder Portal', desc: 'Seamlessly share supply chain data with customers and regulatory bodies.', icon: Users },
+    { title: 'Industry Benchmarks', desc: 'Compare your sustainability performance against global competitors in real-time.', icon: Factory },
+    { title: 'AI Automation', desc: 'Harness ML to extract and verify data from complex supply chain documents.', icon: Cpu },
+    { title: 'Operational Efficiency', desc: 'Streamline procurement and logistics with data-driven, automated workflows.', icon: Zap },
+    { title: 'Scalable Architecture', desc: 'Built for enterprise-scale operations, handling millions of transactions safely.', icon: Layers },
 ]
 
-interface FeatureCardProps {
-    title: string;
-    desc: string;
-    icon: LucideIcon;
-}
+const topFeatures = features.slice(0, 6);
+const bottomFeatures = features.slice(6, 12);
 
-const FeatureCard = ({ title, desc, icon: Icon }: FeatureCardProps) => (
-    <div className="group relative bg-white/60 backdrop-blur-md border border-data-navy/5 p-8 flex flex-col justify-start transition-all duration-500 hover:bg-white/90 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 overflow-hidden">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-electric-sulfur/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        <div className="mb-6 w-12 h-12 bg-data-navy/5 rounded-full flex items-center justify-center text-data-navy group-hover:bg-electric-sulfur group-hover:text-data-navy transition-colors duration-500">
-            <Icon className="w-5 h-5 stroke-[1.5]" />
+const FeatureNode = ({ feature, index }: { feature: typeof features[0], index: number }) => {
+    const Icon = feature.icon;
+    return (
+        <div
+            className="feature-card w-[350px] shrink-0 flex flex-col justify-between py-8 px-8 border-l border-data-navy/5 group hover:bg-neutral-50/80 transition-colors duration-500 relative"
+        >
+            {/* Hover accent */}
+            <div className="absolute left-0 top-0 w-[3px] h-full bg-electric-sulfur scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
+
+            {/* Top section */}
+            <div>
+                {/* Index number */}
+                <span className="text-[2rem] font-black text-electric-sulfur/50 hover:text-electric-sulfur leading-none block mb-2 tracking-tighter select-none pointer-events-none">
+                    {String(index).padStart(2, '0')}
+                </span>
+
+                {/* Icon */}
+                <div className="w-10 h-10 rounded-full bg-data-navy/5 flex items-center justify-center mb-5 group-hover:bg-electric-sulfur group-hover:text-data-navy transition-colors duration-500">
+                    <Icon className="w-5 h-5 stroke-[1.5]" />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-lg font-black uppercase tracking-tighter leading-tight mb-3 group-hover:translate-x-1 transition-transform duration-500">
+                    {feature.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-[10px] font-mono uppercase leading-relaxed opacity-40 group-hover:opacity-70 transition-opacity duration-500 max-w-[280px]">
+                    {feature.desc}
+                </p>
+            </div>
+
+            {/* Bottom accent line */}
+            {/* <div className="flex items-center gap-3 pt-6">
+                <div className="w-6 h-[1px] bg-data-navy/10 group-hover:w-12 group-hover:bg-electric-sulfur transition-all duration-500" />
+                <span className="text-[9px] font-mono uppercase tracking-[0.3em] opacity-20 group-hover:opacity-60 transition-opacity duration-500">
+                    {String(index).padStart(2, '0')} / 12
+                </span>
+            </div> */}
         </div>
-        <h4 className="text-xl font-black uppercase tracking-tighter mb-3 leading-tight">{title}</h4>
-        <p className="text-[11px] font-mono leading-loose opacity-60 uppercase font-bold max-w-sm">
-            {desc}
-        </p>
-    </div>
-)
+    );
+};
 
 export const FeaturesNarrative = () => {
     const sectionRef = useRef<HTMLDivElement>(null)
-    const pinContainerRef = useRef<HTMLDivElement>(null)
-    const scrollWrapperRef = useRef<HTMLDivElement>(null)
+    const contentWrapperRef = useRef<HTMLDivElement>(null)
+    const topTrackRef = useRef<HTMLDivElement>(null)
+    const bottomTrackRef = useRef<HTMLDivElement>(null)
 
     useGSAP(() => {
-        const sections = gsap.utils.toArray('.narrative-panel')
+        if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current) return
 
-        // Ensure horizontal scrolling tracks perfectly with the window
-        gsap.to(sections, {
-            xPercent: -100 * (sections.length - 1),
-            ease: "none",
+        const getTrackWidth = () => topTrackRef.current!.scrollWidth
+        const getWindowWidth = () => window.innerWidth
+
+        // Initially position tracks off-screen to the right
+        gsap.set([topTrackRef.current, bottomTrackRef.current], {
+            x: () => getWindowWidth()
+        })
+
+        const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: sectionRef.current,
                 pin: true,
                 scrub: 1,
-                refreshPriority: 1, // Let the hero 400vh pin calculate first
-                // Make the scroll area feel substantial (400vh)
-                end: () => "+=" + (scrollWrapperRef.current?.offsetWidth || window.innerWidth * 4)
+                invalidateOnRefresh: true,
+                end: () => `+=${getTrackWidth() + getWindowWidth()}`,
             }
         })
 
-        // Inner animations: Parallax the abstract title for each panel
-        sections.forEach((section: any, i) => {
-            gsap.fromTo(section.querySelector('.abstract-title'),
-                { x: 200, opacity: 0 },
-                {
-                    x: -200,
-                    opacity: 0.2, // very subtle watermark effect
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        scrub: true,
-                        start: () => `+=${i * window.innerWidth}`,
-                        end: () => `+=${(i + 1) * window.innerWidth}`
-                    }
-                }
-            )
+        // Phase 1: Cards scroll from off-screen right to their final left position 
+        tl.to([topTrackRef.current, bottomTrackRef.current], {
+            x: () => getWindowWidth() - getTrackWidth(),
+            ease: "none",
+            duration: () => getTrackWidth()
+        })
+
+        // Phase 2: Slide the whole wrapper (containing text and tracks) off to the left
+        tl.to(contentWrapperRef.current, {
+            x: () => -getWindowWidth(),
+            ease: "none",
+            duration: () => getWindowWidth()
         })
 
     }, { scope: sectionRef })
 
     return (
-        <section ref={sectionRef} id="features-narrative" className="relative h-screen w-full bg-white overflow-hidden -mt-[40vh] z-20">
-            {/* 
-              This is the sticky container. 
-              Its height is 100vh, but it's pinned by ScrollTrigger while we scrub through the 400vh parent distance 
-            */}
-            <div ref={pinContainerRef} className="h-screen w-full flex items-center pt-24 pb-10">
+        <section ref={sectionRef} id="features-narrative" className="relative w-full bg-white overflow-hidden z-20 h-screen pt-28 pb-10 flex flex-col">
 
-                {/* 
-                  The extra-wide wrapper holding our 4 panels side-by-side.
-                  w-[400vw] because there are 4 panels.
-                */}
-                <div ref={scrollWrapperRef} className="flex h-full w-[400vw]">
-                    {narrativeData.map((pillar) => (
-                        <div key={pillar.id} className="narrative-panel relative w-screen h-full flex items-center px-10 md:px-20 shrink-0 border-r border-data-navy/5 overflow-hidden">
+            {/* Fixed "12" watermark — stays in place while cards scroll over it */}
+            {/* <div style={{ fontFamily: 'Inter, sans-serif' }} className="absolute top-1/2 right-20 -translate-y-1/2 text-[18vw] font-black font-italic text-electric-sulfur leading-none pointer-events-none select-none tracking-tighter">
+                12
+            </div> */}
 
-                            {/* Animated Abstract Background Title */}
-                            <div className="abstract-title absolute top-1/2 left-0 -translate-y-1/2 text-[15vw] font-black text-data-navy/5 leading-none whitespace-nowrap z-0 pointer-events-none select-none tracking-tighter" style={{ WebkitTextStroke: '2px rgba(26,29,35,0.05)', color: 'transparent' }}>
-                                {pillar.abstractTitle}
-                            </div>
+            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1">
 
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 w-full max-w-7xl mx-auto relative z-10">
-
-                                {/* Left Side: The Story / Typography */}
-                                <div className="lg:col-span-5 flex flex-col justify-center">
-                                    <div className="flex items-center gap-4 mb-8">
-                                        <div className={`w-2 h-2 rounded-full ${pillar.color} animate-pulse`} />
-                                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-data-navy/40">
-                                            Data Pillar _{pillar.id}
-                                        </span>
-                                    </div>
-                                    <h2 className="text-[5vw] lg:text-[4.5rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 text-data-navy">
-                                        {pillar.title}
-                                    </h2>
-                                </div>
-
-                                {/* Right Side: The Bento Box of 3 Features */}
-                                <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {/* Make the first item span 2 columns for a masonry/bento effect */}
-                                    <div className="md:col-span-2">
-                                        <FeatureCard {...pillar.features[0]} />
-                                    </div>
-                                    <div className="md:col-span-1">
-                                        <FeatureCard {...pillar.features[1]} />
-                                    </div>
-                                    <div className="md:col-span-1">
-                                        <FeatureCard {...pillar.features[2]} />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                {/* Top Row Cards */}
+                <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
+                    {topFeatures.map((feature, i) => (
+                        <FeatureNode key={feature.title} feature={feature} index={i + 1} />
                     ))}
                 </div>
-            </div>
 
-            {/* Global Section Overlay/Border */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none border-t border-white/20 shadow-[inset_0_20px_50px_rgba(255,255,255,0.8)]" />
+                {/* Central Text Content */}
+                <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-0">
+                    <div className="relative pointer-events-auto">
+                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">
+                            Platform Capabilities
+                        </span>
+                        <h2 className="text-[7vw] md:text-[5vw] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
+                            Comprehensive Sustainability Engine.<br />
+                        </h2>
+                        <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
+                            Scroll to explore all 12 platform capabilities →
+                        </p>
+                        <div style={{ fontFamily: 'Inter, sans-serif' }} className="absolute top-1/2 right-0 -translate-y-1/2 text-[18vw] font-black font-italic text-electric-sulfur leading-none pointer-events-none select-none tracking-tighter">
+                            12
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Row Cards */}
+                <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
+                    {bottomFeatures.map((feature, i) => (
+                        <FeatureNode key={feature.title} feature={feature} index={i + 7} />
+                    ))}
+                </div>
+
+            </div>
         </section>
     )
 }
