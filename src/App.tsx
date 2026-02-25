@@ -5,6 +5,7 @@ import { BackgroundShader } from '@/components/common/BackgroundShader'
 import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
 import { HeroStats } from '@/components/common/HeroStats'
 import { TraceabilityMap } from './components/common/TraceabilityMap'
+import { TractionMetrics } from '@/components/common/TractionMetrics'
 // import { FloatingMaterial } from '@/components/common/FloatingMaterial'
 import { Loader } from '@/components/common/Loader'
 import { SoundController } from '@/utils/SoundController'
@@ -378,8 +379,10 @@ function App() {
                 </div>
             </section>
 
-            {/* SECTION 3: TRACTION - 3D INFOGRAPHIC ANCHOR */}
-            <section id="traction" className="relative h-[150vh] bg-transparent pointer-events-none" />
+            {/* SECTION 3: TRACTION METRICS (BENTO GRID) */}
+            <div id="traction" className="relative z-30">
+                <TractionMetrics />
+            </div>
 
             {/* SECTION 4: AI OVERHAUL */}
             <section id="ai" className="relative min-h-screen bg-data-navy section-padding text-white overflow-hidden">
