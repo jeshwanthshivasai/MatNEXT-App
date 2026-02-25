@@ -17,11 +17,10 @@
 @layer base {
   html {
     @apply antialiased selection:bg-electric-sulfur selection:text-white;
-    background-color: var(--color-background);
   }
 
   body {
-    @apply bg-white text-data-navy antialiased m-0 min-h-screen text-[16px];
+    @apply bg-transparent text-data-navy antialiased m-0 min-h-screen text-[16px];
     font-family:
       'Inter',
       system-ui,
