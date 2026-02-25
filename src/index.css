@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-electric-sulfur: #A3E635; /* Clean neon green */
+  --color-electric-sulfur: #96CC39; /* Clean neon green */
   --color-data-navy: #1A1D23;      /* Deep rich navy/black */
   --color-background: #FFFFFF;     /* Pure white background */
   
