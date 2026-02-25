@@ -48,6 +48,15 @@ function App() {
         setIsMuted(SoundController.toggleMute())
     }
 
+    const scrollToSection = (id: string) => {
+        if (lenisRef.current) {
+            lenisRef.current.scrollTo(id, {
+                duration: 2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            })
+        }
+    }
+
     // Scroll-triggered sound events
     useEffect(() => {
         // Shatter/boom when car starts exploding
@@ -214,17 +223,26 @@ function App() {
                 }}
                 className="fixed top-0 flex w-full items-center justify-between px-10 py-6 text-data-navy transition-all duration-700 bg-white border-b border-data-navy/10"
             >
-                <div className="flex items-center">
-                    <img src={logo} alt="MatNEXT Logo" className="h-5 w-auto object-contain" style={{ filter: 'none' }} />
+                <div
+                    className="flex items-center cursor-pointer group"
+                    onClick={() => {
+                        SoundController.playClickSound();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                >
+                    <img src={logo} alt="MatNEXT Logo" className="h-5 w-auto object-contain transition-transform duration-300 group-hover:scale-110" style={{ filter: 'none' }} />
                 </div>
-                <div className="hidden gap-10 text-[10px] font-bold uppercase tracking-[0.3em] md:flex opacity-100">
-                    {['Features', 'Traction', 'AI', 'Why-MatNEXT', 'Customers'].map((item) => (
-                        <a key={item} href={`#${item.toLowerCase()}`}
+                <div className="hidden gap-10 text-[10px] font-bold tracking-[0.3em] md:flex opacity-100">
+                    {['FEATURES', 'TRACTION', 'AI', 'WHY-MATNEXT', 'CUSTOMERS'].map((item) => (
+                        <button key={item}
+                            onClick={() => {
+                                SoundController.playClickSound();
+                                scrollToSection(`#${item.toLowerCase()}`);
+                            }}
                             onMouseEnter={() => SoundController.playHoverSound()}
-                            onClick={() => SoundController.playClickSound()}
-                            className="hover:text-electric-sulfur transition-all duration-300">
+                            className="hover:text-electric-sulfur transition-all duration-300 cursor-pointer text-left">
                             /{item.replace('-', ' ')}
-                        </a>
+                        </button>
                     ))}
                 </div>
                 <div className="flex items-center gap-6">
