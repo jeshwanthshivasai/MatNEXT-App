@@ -217,7 +217,7 @@ function App() {
                 <div className="flex items-center">
                     <img src={logo} alt="MatNEXT Logo" className="h-5 w-auto object-contain" style={{ filter: 'none' }} />
                 </div>
-                <div className="hidden gap-10 text-[10px] font-bold uppercase tracking-[0.3em] md:flex opacity-70">
+                <div className="hidden gap-10 text-[10px] font-bold uppercase tracking-[0.3em] md:flex opacity-100">
                     {['Features', 'Traction', 'AI', 'Why-MatNEXT', 'Customers'].map((item) => (
                         <a key={item} href={`#${item.toLowerCase()}`}
                             onMouseEnter={() => SoundController.playHoverSound()}
@@ -238,9 +238,9 @@ function App() {
                     <button
                         onMouseEnter={() => SoundController.playHoverSound()}
                         onClick={() => SoundController.playClickSound()}
-                        className="btn-premium py-2.5 px-6 text-[10px] tracking-widest"
+                        className="btn-premium py-2.5 px-6 group relative flex items-center gap-2 transition-all duration-300 hover:bg-electric-sulfur hover:text-data-navy text-[10px] tracking-widest"
                     >
-                        Request Platform Demo
+                        Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                     </button>
                 </div>
             </nav>
