@@ -60,9 +60,9 @@ function App() {
     // Scroll-triggered sound events
     useEffect(() => {
         // Shatter/boom when car starts exploding
-        if (scrollProgress > 0.6 && scrollProgress < 0.65) {
+        if (scrollProgress > 0.4 && scrollProgress < 0.45) {
             SoundController.playShatter()
-        } else if (scrollProgress < 0.55) {
+        } else if (scrollProgress < 0.35) {
             // Reset shatter so it triggers again if they scroll back down
             SoundController.resetEvent('shatter')
         }

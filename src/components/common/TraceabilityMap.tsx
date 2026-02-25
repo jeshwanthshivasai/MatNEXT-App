@@ -34,7 +34,7 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
     if (scrollProgress >= 0.25 && scrollProgress <= 0.45) {
         const rawProgress = (scrollProgress - 0.25) / 0.20;
         separationProgress = rawProgress * (2 - rawProgress); // easeOut quadratic
-        visibility = rawProgress;
+        visibility = 1; // Purely rely on clip-path for reveal
     } else if (scrollProgress > 0.45 && scrollProgress <= 0.80) {
         separationProgress = 1;
         visibility = 1;

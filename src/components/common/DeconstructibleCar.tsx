@@ -56,8 +56,8 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         const time = state.clock.getElapsedTime()
         if (!groupRef.current) return
 
-        const rotationPhase = Math.max(0, Math.min(1, progress / 0.6))
-        const explodePhase = Math.max(0, (progress - 0.6) / 0.4)
+        const rotationPhase = Math.max(0, Math.min(1, progress / 0.4))
+        const explodePhase = Math.max(0, (progress - 0.4) / 0.6)
         const hover = Math.sin(time * 0.5) * 0.05
 
         const scale = 1.2
