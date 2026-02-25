@@ -311,10 +311,10 @@ function App() {
             </div>
 
             {/* SECTION 4: AI OVERHAUL */}
-            <section id="ai" className="relative min-h-screen bg-data-navy section-padding text-white overflow-hidden">
+            <section id="ai" className="relative min-h-screen bg-white section-padding text-data-navy overflow-hidden">
                 <div className="text-center mb-32 relative z-10">
                     <span className="text-electric-sulfur text-mono-label block mb-6">Artificial Intelligence</span>
-                    <h2 className="text-[8vw] font-black uppercase tracking-tighter leading-none mb-10">AI-Powered <span className="text-outline text-transparent" style={{ WebkitTextStroke: '2px #FFFFFF' }}>Intelligence</span></h2>
+                    <h2 className="text-[8vw] font-black uppercase tracking-tighter leading-none mb-10">AI-Powered <span className="text-outline text-transparent" style={{ WebkitTextStroke: '2px #1A1D23' }}>Intelligence</span></h2>
                     <p className="max-w-4xl mx-auto text-xl opacity-60 font-mono leading-relaxed px-10">
                         MatNEXT embeds AI throughout the entire platform — not as a feature, but as the core engine driving intelligent data capture, predictive analytics, and automated compliance.
                     </p>
@@ -328,24 +328,25 @@ function App() {
                         { title: 'Material Flow Optimization', desc: 'AI recommends optimal recycled-to-virgin ratios, routing decisions, and inventory strategies.' },
                         { title: 'Emission Anomaly Detection', desc: 'Real-time AI monitoring flags irregularities in GHG data, ensuring data integrity and compliance trust.' },
                         { title: 'Carbon Intelligence', desc: 'AI models fill data gaps to calculate granular Scope 3 emissions with high accuracy.' }
-                    ].map((item, i) => (
-                        <div key={item.title} className="group relative flex gap-12 border-l border-white/10 pl-12 hover:border-electric-sulfur transition-colors duration-700">
-                            <span className="text-mono-label text-electric-sulfur/30 group-hover:text-electric-sulfur transition-colors">0{i + 1}</span>
-                            <div>
+                    ].map((item, i) =>
+                        <div key={item.title} className="bg-neutral-50 p-10 rounded-2xl border border-data-navy/10 relative overflow-hidden group hover:border-electric-sulfur/50 transition-colors duration-500">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-electric-sulfur/10 rounded-full blur-3xl group-hover:bg-electric-sulfur/20 transition-colors duration-500" />
+                            <span className="text-mono-label text-electric-sulfur/30 group-hover:text-electric-sulfur transition-colors relative z-10">0{i + 1}</span>
+                            <div className="relative z-10">
                                 <h3 className="text-3xl font-black uppercase mb-8 tracking-tighter group-hover:translate-x-2 transition-transform duration-700">{item.title}</h3>
                                 <p className="text-[13px] opacity-40 font-mono leading-loose uppercase group-hover:opacity-100 transition-opacity duration-700">{item.desc}</p>
                             </div>
                         </div>
-                    ))}
+                    )}
                 </div>
 
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none grid grid-cols-10 grid-rows-10">
-                    {Array.from({ length: 100 }).map((_, i) => <div key={i} className="border-[0.5px] border-white"></div>)}
+                    {Array.from({ length: 100 }).map((_, i) => <div key={i} className="border-[0.5px] border-data-navy"></div>)}
                 </div>
             </section>
 
             {/* SECTION 5: WHY MATNEXT? */}
-            <section id="why-matnext" className="relative min-h-screen bg-white/80 backdrop-blur-sm section-padding">
+            <section id="why-matnext" className="relative min-h-screen bg-white section-padding">
                 <div className="text-center mb-32">
                     <span className="text-electric-sulfur text-mono-label block mb-6">Why Choose Us</span>
                     <h2 className="text-[10vw] text-data-navy font-black leading-none uppercase tracking-tighter">Why <span className="text-outline text-transparent" style={{ WebkitTextStroke: '2px #0A0A0B' }}>MatNEXT?</span></h2>

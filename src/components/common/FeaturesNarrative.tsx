@@ -130,7 +130,7 @@ export const FeaturesNarrative = () => {
     }, { scope: sectionRef })
 
     return (
-        <section ref={sectionRef} id="features-narrative" className="relative h-screen w-full bg-[#FAFAFA] overflow-hidden -mt-[40vh] z-20">
+        <section ref={sectionRef} id="features-narrative" className="relative h-screen w-full bg-white overflow-hidden -mt-[40vh] z-20">
             {/* 
               This is the sticky container. 
               Its height is 100vh, but it's pinned by ScrollTrigger while we scrub through the 400vh parent distance 

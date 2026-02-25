@@ -182,7 +182,7 @@ export const TractionMetrics = () => {
     }, { scope: containerRef })
 
     return (
-        <section ref={containerRef} id="traction-metrics" className="relative min-h-screen bg-white/90 backdrop-blur-md section-padding z-30">
+        <section ref={containerRef} id="traction-metrics" className="relative min-h-screen bg-white section-padding z-30">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-24 metrics-header">
                     <span className="text-electric-sulfur text-mono-label block mb-6">LIVE TELEMETRY</span>

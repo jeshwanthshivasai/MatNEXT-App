@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #FFFFFF;
-  --color-data-navy: #1A1D23; /* Sophisticated industrial slate, not black */
-  --color-electric-sulfur: #96CC39;
+  --color-electric-sulfur: #A3E635; /* Clean neon green */
+  --color-data-navy: #1A1D23;      /* Deep rich navy/black */
+  --color-background: #FFFFFF;     /* Pure white background */
   
-  --font-sans: "Space Grotesk", "sans-serif";
-  --font-mono: "JetBrains Mono", "monospace";
+  /* Retaining the original font stack for safety */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   
   --tracking-tighter: -0.05em;
   --tracking-tight: -0.02em;
@@ -17,12 +18,14 @@
   html {
     @apply antialiased selection:bg-electric-sulfur selection:text-white;
     background-color: var(--color-background);
-    color: var(--color-data-navy);
   }
 
   body {
-    @apply m-0 min-h-screen text-[16px];
-    font-family: var(--font-sans);
+    @apply bg-white text-data-navy antialiased m-0 min-h-screen text-[16px];
+    font-family:
+      'Inter',
+      system-ui,
+      sans-serif;
     overflow-x: hidden;
   }
 
