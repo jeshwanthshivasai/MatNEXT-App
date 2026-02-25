@@ -106,7 +106,7 @@ function App() {
         ScrollTrigger.create({
             trigger: '.hero-wrapper',
             start: 'top top',
-            end: '+=500%',
+            end: '+=400%',
             pin: true,
             scrub: 1,
             onUpdate: (self) => {
