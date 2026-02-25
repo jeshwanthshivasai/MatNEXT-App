@@ -83,25 +83,25 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                 {/* Header */}
                 <div className="flex items-end justify-between mb-6">
                     <div>
-                        <span className="text-xl text-data-navy font-mono uppercase tracking-[0.5em] opacity-30 block mb-1">
+                        <span className="text-xl text-data-navy font-mono uppercase tracking-[0.5em] opacity-100 block mb-1">
                             Circular Economy Matrix
                         </span>
                         <span className="text-md font-mono uppercase tracking-[0.3em] font-bold text-electric-sulfur">
                             Material Extraction // Live
                         </span>
                     </div>
-                    <span className="text-md font-mono uppercase tracking-[0.4em] opacity-20">
+                    {/* <span className="text-md font-mono uppercase tracking-[0.4em] opacity-100">
                         Recycled Content %
-                    </span>
+                    </span> */}
                 </div>
 
                 {/* Material Columns */}
                 <div className="flex gap-[2px] h-[220px]">
                     {materials.map((mat) => (
-                        <div key={mat.name} className="t-col flex-1 flex flex-col justify-end relative group cursor-crosshair opacity-0 border-l border-data-navy/5 hover:border-data-navy/20 transition-colors">
+                        <div key={mat.name} className="t-col flex-1 flex flex-col justify-end relative group cursor-crosshair opacity-0 border-l border-data-navy/0 hover:border-data-navy/20 transition-colors">
                             {/* Metadata on hover */}
                             <div className="absolute top-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <span className="text-[8px] font-mono uppercase tracking-[0.3em] opacity-40 block">{mat.desc}</span>
+                                <span className="text-sm font-mono uppercase tracking-[0.3em] opacity-100 block">{mat.desc}</span>
                             </div>
 
                             <div className="px-4 pb-4">
