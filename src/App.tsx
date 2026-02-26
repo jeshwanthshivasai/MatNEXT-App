@@ -8,6 +8,7 @@ import { TraceabilityMap } from './components/common/TraceabilityMap'
 import { TractionNarrative } from '@/components/common/TractionNarrative'
 import { AINarrative } from '@/components/common/AINarrative'
 import { WhyMatNextNarrative } from '@/components/common/WhyMatNextNarrative'
+import { FooterNarrative } from '@/components/common/FooterNarrative'
 import { FeaturesNarrative } from '@/components/common/FeaturesNarrative'
 // import { FloatingMaterial } from '@/components/common/FloatingMaterial'
 import { Loader } from '@/components/common/Loader'
@@ -20,8 +21,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import {
     ArrowRight,
-    Globe,
-    Zap
 } from 'lucide-react'
 import logo from './assets/MatNEXT.png'
 import { Analytics } from '@vercel/analytics/react'
@@ -307,158 +306,8 @@ function App() {
             {/* SECTION 5: WHY MATNEXT NARRATIVE (HORIZONTAL SCROLL) */}
             <WhyMatNextNarrative />
 
-            {/* SECTION 6: PREMIUM CONTACT FORM - PRISTINE INDUSTRIAL */}
-            <section id="customers" className="relative min-h-screen bg-white text-data-navy section-padding border-t border-data-navy/5">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
-                        <div className="lg:col-span-5">
-                            <motion.span
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                className="text-electric-sulfur text-mono-label block mb-8"
-                            >
-                                Contact_Gateway
-                            </motion.span>
-                            <h2 className="text-[7vw] font-black uppercase tracking-tighter leading-[0.85] mb-12">
-                                Secure your <br />
-                                <span className="text-electric-sulfur outline-text">Competitive</span> <br />
-                                Advantage
-                            </h2>
-                            <p className="text-sm opacity-50 font-mono leading-loose mb-16 uppercase font-bold max-w-sm">
-                                Deploy MatNEXT traceability intelligence across your global industrial nodes.
-                            </p>
-
-                            <div className="space-y-10 border-l border-data-navy/10 pl-10">
-                                <div className="group cursor-pointer">
-                                    <span className="text-[10px] opacity-30 block mb-2 uppercase tracking-widest font-mono">Channel_01</span>
-                                    <span className="text-lg font-bold group-hover:text-electric-sulfur transition-colors italic">info-matnext@genbanext.com</span>
-                                </div>
-                                <div className="group cursor-pointer">
-                                    <span className="text-[10px] opacity-30 block mb-2 uppercase tracking-widest font-mono">Channel_02</span>
-                                    <span className="text-lg font-bold group-hover:text-electric-sulfur transition-colors italic">+81 80-8529-3858</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="lg:col-span-7 bg-slate-50 p-10 lg:p-20 border border-data-navy/5 relative overflow-hidden">
-                            {/* Subtle Grid Background */}
-                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-                                style={{ backgroundImage: 'linear-gradient(#1A1D23 1px, transparent 1px), linear-gradient(90deg, #1A1D23 1px, transparent 1px)', backgroundSize: '40px 40px' }}
-                            />
-
-                            <form className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12">
-                                <div className="md:col-span-2 space-y-4">
-                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">01_Global_Identity</label>
-                                    <input type="text" className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all placeholder:opacity-20 uppercase" placeholder="Enter Full Name" />
-                                </div>
-                                <div className="space-y-4">
-                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">02_Secure_Email</label>
-                                    <input type="email" className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all placeholder:opacity-20 uppercase" placeholder="Email@Network.com" />
-                                </div>
-                                <div className="space-y-4">
-                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">03_Industrial_Sector</label>
-                                    <select className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all appearance-none uppercase">
-                                        <option>Select Tier</option>
-                                        <option>Automotive</option>
-                                        <option>Renewables</option>
-                                        <option>Aerospace</option>
-                                    </select>
-                                </div>
-                                <div className="md:col-span-2 space-y-4">
-                                    <label className="text-[9px] text-data-navy/40 font-bold uppercase tracking-[0.3em]">04_Data_Requirements</label>
-                                    <textarea className="w-full bg-transparent border-b border-data-navy/10 py-5 focus:border-electric-sulfur outline-none font-mono text-lg transition-all min-h-[100px] resize-none placeholder:opacity-20 uppercase" placeholder="Describe Project Scope" />
-                                </div>
-                                <div className="md:col-span-2 pt-10">
-                                    <button className="btn-premium w-full !py-8 text-sm group flex items-center justify-center gap-6 bg-data-navy text-white hover:bg-electric-sulfur hover:text-data-navy">
-                                        INITIALIZE ACCESS PROTOCOL <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* FOOTER: THE MUSEUM OF INNOVATION */}
-            <footer className="relative bg-white pt-32 pb-10 border-t border-data-navy/5 overflow-hidden">
-                <div style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="absolute top-0 left-1/2 -translate-x-1/2 text-[20vw] font-black text-electric-sulfur/10 leading-none select-none pointer-events-none font-">
-                    MATNEXT
-                </div>
-
-                <div className="max-w-7xl mx-auto px-10 relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-32 border-b border-data-navy/5 pb-20">
-                        <div className="lg:col-span-4">
-                            <img src={logo} alt="MatNEXT" className="h-6 w-auto mb-10" />
-                            <p className="max-w-xs text-[11px] font-mono opacity-40 leading-loose uppercase font-bold tracking-tight">
-                                Establishing the global standard for industrial material traceability and digital product passports.
-                            </p>
-                        </div>
-
-                        <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-12">
-                            <div>
-                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Platform_Node</span>
-                                <ul className="space-y-4 text-[10px] font-mono uppercase tracking-[0.2em] font-bold opacity-30">
-                                    {['Features', 'Traction', 'Intelligence', 'Network'].map(item => (
-                                        <li key={item}><a href="#" className="hover:text-data-navy hover:opacity-100 transition-all">/{item}</a></li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div>
-                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Resource_Center</span>
-                                <ul className="space-y-4 text-[10px] font-mono uppercase tracking-[0.2em] font-bold opacity-30">
-                                    {['Documentation', 'API_Vault', 'Library', 'Status'].map(item => (
-                                        <li key={item}><a href="#" className="hover:text-data-navy hover:opacity-100 transition-all">/{item}</a></li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div>
-                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Global_Operations</span>
-                                <ul className="space-y-4 text-[10px] font-mono uppercase tracking-[0.2em] font-bold opacity-30">
-                                    {['Mumbai', 'Tokyo', 'San Francisco', 'Berlin'].map(item => (
-                                        <li key={item} className="cursor-default hover:text-data-navy hover:opacity-100 transition-all">{item}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div>
-                                <span className="text-[9px] text-electric-sulfur font-bold block mb-10 uppercase tracking-widest">Connect_System</span>
-                                <div className="flex gap-4">
-                                    <div className="w-8 h-8 border border-data-navy/10 flex items-center justify-center hover:border-electric-sulfur transition-colors cursor-pointer opacity-40 hover:opacity-100">
-                                        <Globe className="w-4 h-4" />
-                                    </div>
-                                    <div className="w-8 h-8 border border-data-navy/10 flex items-center justify-center hover:border-electric-sulfur transition-colors cursor-pointer opacity-40 hover:opacity-100">
-                                        <Zap className="w-4 h-4" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="relative w-full h-[60vh] mb-20 bg-slate-50/50 border border-data-navy/5 flex items-center justify-center overflow-hidden group">
-                        <div className="absolute top-8 left-8 text-mono-label opacity-30">Vehicle_Architecture_v4.2</div>
-                        <div className="absolute bottom-8 right-8 text-mono-label opacity-30 text-right">3D_Model_Exhibition<br />[Orbit_Enabled]</div>
-
-                        <div className="absolute inset-0 z-0">
-                            <Canvas gl={{ antialias: true, alpha: true }}>
-                                <Suspense fallback={null}>
-                                    <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
-                                    <DeconstructibleCar progress={0.35} isLoader={true} />
-                                    <Environment preset="city" />
-                                    <ambientLight intensity={0.5} />
-                                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#96CC39" />
-                                </Suspense>
-                            </Canvas>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col md:flex-row justify-between items-center py-10 border-t border-data-navy/5 gap-10">
-                        <span className="text-[9px] font-mono opacity-30 uppercase tracking-[0.4em]">© 2026 MatNext Terminal. Built for Global Industry.</span>
-                        <div className="flex gap-10 text-[9px] font-mono opacity-20 uppercase tracking-[0.4em]">
-                            <a href="#" className="hover:opacity-100 transition-opacity">Legal_Intellectual</a>
-                            <a href="#" className="hover:opacity-100 transition-opacity">System_Protocols</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            {/* FOOTER + CONTACT: Unified horizontal-scroll narrative */}
+            <FooterNarrative />
             <Analytics />
         </main>
     )
