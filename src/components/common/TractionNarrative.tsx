@@ -32,8 +32,7 @@ const MetricNode = ({ metric }: { metric: MetricDef }) => {
     const Icon = metric.icon
     return (
         <div
-            className="feature-card shrink-0 flex flex-col justify-between py-8 px-8 border-l border-data-navy/5 group hover:bg-neutral-50/80 transition-colors duration-500 relative"
-            style={{ width: 'calc(100vw / 3)' }}
+            className="feature-card w-[350px] shrink-0 flex flex-col justify-between py-8 px-8 border-l border-data-navy/5 group hover:bg-neutral-50/80 transition-colors duration-500 relative"
         >
             <div className="absolute left-0 top-0 w-[3px] h-full bg-electric-sulfur scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
             <div>
@@ -126,10 +125,10 @@ export const TractionNarrative = () => {
 
     return (
         <section ref={sectionRef} id="traction" className="relative w-full overflow-hidden z-[50] h-screen bg-white flex flex-col">
-            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-28 pb-10">
+            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-28 pb-8">
 
                 {/* Top row: 3 cards × 100vw/3 = full screen width */}
-                <div ref={topTrackRef} className="flex items-stretch w-max relative z-10 shrink-0 border-y border-data-navy/5 h-[30vh] max-h-[280px]">
+                <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5 h-[30vh] max-h-[280px]">
                     {topMetrics.map(m => <MetricNode key={m.label} metric={m} />)}
                 </div>
 
@@ -151,7 +150,7 @@ export const TractionNarrative = () => {
                 </div>
 
                 {/* Bottom row */}
-                <div ref={bottomTrackRef} className="flex items-stretch w-max relative z-10 shrink-0 border-y border-data-navy/5 h-[30vh] max-h-[280px]">
+                <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5 h-[30vh] max-h-[280px]">
                     {bottomMetrics.map(m => <MetricNode key={m.label} metric={m} />)}
                 </div>
 
