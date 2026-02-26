@@ -143,7 +143,7 @@ export const FeaturesNarrative = () => {
         <section ref={sectionRef} id="features-narrative" className="relative w-full overflow-hidden z-[50] h-screen bg-transparent pointer-events-none -mt-[100vh]">
 
             {/* Inner sliding container: starts off-screen right and slides in */}
-            <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-28 pb-10 flex flex-col pointer-events-auto">
+            <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-28 pb-8 flex flex-col pointer-events-auto">
                 <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1">
 
                     {/* Top Row Cards */}
