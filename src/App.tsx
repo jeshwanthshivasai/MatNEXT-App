@@ -5,7 +5,9 @@ import { BackgroundShader } from '@/components/common/BackgroundShader'
 import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
 import { HeroStats } from '@/components/common/HeroStats'
 import { TraceabilityMap } from './components/common/TraceabilityMap'
-import { TractionMetrics } from '@/components/common/TractionMetrics'
+import { TractionNarrative } from '@/components/common/TractionNarrative'
+import { AINarrative } from '@/components/common/AINarrative'
+import { WhyMatNextNarrative } from '@/components/common/WhyMatNextNarrative'
 import { FeaturesNarrative } from '@/components/common/FeaturesNarrative'
 // import { FloatingMaterial } from '@/components/common/FloatingMaterial'
 import { Loader } from '@/components/common/Loader'
@@ -142,15 +144,6 @@ function App() {
     }, [])
 
     // Features data moved to FeaturesNarrative.tsx
-
-    const whyMatNext = [
-        { id: '01', title: 'Deep Tier Precision', desc: 'We don\'t just track Direct Suppliers. We track the entire value chain back to the source.' },
-        { id: '02', title: 'Industrial Grade AI', desc: 'Custom ML models built specifically for complex material data and industrial documents.' },
-        { id: '03', title: 'Global Architecture', desc: 'Nodes in every major industrial hub—Mumbai to San Francisco—ensuring zero latency.' },
-        { id: '04', title: 'Compliance Ready', desc: 'Built-in frameworks for EU Battery Passport, US Clean Air Act, and more.' },
-        { id: '05', title: 'Seamless Integration', desc: 'Connects with existing ERPs like SAP, Oracle, and Dynamics in minutes, not months.' },
-        { id: '06', title: 'Audit-Proof Proof', desc: 'Tamper-proof traceability that withstands the most rigorous regulatory audits.' }
-    ]
 
     return (
         <main ref={container} className="relative w-full selection:bg-electric-sulfur selection:text-white overflow-x-hidden">
@@ -305,71 +298,14 @@ function App() {
             {/* SECTION 2: FEATURES NARRATIVE (HORIZONTAL SCROLL) */}
             <FeaturesNarrative />
 
-            {/* SECTION 3: TRACTION METRICS (BENTO GRID) */}
-            <div id="traction" className="relative z-30">
-                <TractionMetrics />
-            </div>
+            {/* SECTION 3: TRACTION NARRATIVE (HORIZONTAL SCROLL) */}
+            <TractionNarrative />
 
-            {/* SECTION 4: AI OVERHAUL */}
-            <section id="ai" className="relative min-h-screen bg-white section-padding text-data-navy overflow-hidden">
-                <div className="text-center mb-32 relative z-10">
-                    <span className="text-electric-sulfur text-mono-label block mb-6">Artificial Intelligence</span>
-                    <h2 className="text-[8vw] font-black uppercase tracking-tighter leading-none mb-10">AI-Powered <span className="text-outline text-transparent" style={{ WebkitTextStroke: '2px #1A1D23' }}>Intelligence</span></h2>
-                    <p className="max-w-4xl mx-auto text-xl opacity-60 font-mono leading-relaxed px-10">
-                        MatNEXT embeds AI throughout the entire platform — not as a feature, but as the core engine driving intelligent data capture, predictive analytics, and automated compliance.
-                    </p>
-                </div>
+            {/* SECTION 4: AI NARRATIVE (HORIZONTAL SCROLL) */}
+            <AINarrative />
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-32 max-w-7xl mx-auto relative z-10">
-                    {[
-                        { title: 'Smart Data Capture', desc: 'AI reads supplier emails and documents, eliminating the need for partners to log in. No portal, no training required.' },
-                        { title: 'Predictive Risk Scoring', desc: 'ML models continuously analyze supply chain signals to forecast disruptions before they impact operations.' },
-                        { title: 'Automated Compliance', desc: 'Regulatory-aware AI automatically generates audit-ready CBAM, EPR, and IRA reports.' },
-                        { title: 'Material Flow Optimization', desc: 'AI recommends optimal recycled-to-virgin ratios, routing decisions, and inventory strategies.' },
-                        { title: 'Emission Anomaly Detection', desc: 'Real-time AI monitoring flags irregularities in GHG data, ensuring data integrity and compliance trust.' },
-                        { title: 'Carbon Intelligence', desc: 'AI models fill data gaps to calculate granular Scope 3 emissions with high accuracy.' }
-                    ].map((item, i) =>
-                        <div key={item.title} className="bg-neutral-50 p-10 rounded-2xl border border-data-navy/10 relative overflow-hidden group hover:border-electric-sulfur/50 transition-colors duration-500">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-electric-sulfur/10 rounded-full blur-3xl group-hover:bg-electric-sulfur/20 transition-colors duration-500" />
-                            <span className="text-mono-label text-electric-sulfur/30 group-hover:text-electric-sulfur transition-colors relative z-10">0{i + 1}</span>
-                            <div className="relative z-10">
-                                <h3 className="text-3xl font-black uppercase mb-8 tracking-tighter group-hover:translate-x-2 transition-transform duration-700">{item.title}</h3>
-                                <p className="text-[13px] opacity-40 font-mono leading-loose uppercase group-hover:opacity-100 transition-opacity duration-700">{item.desc}</p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none grid grid-cols-10 grid-rows-10">
-                    {Array.from({ length: 100 }).map((_, i) => <div key={i} className="border-[0.5px] border-data-navy"></div>)}
-                </div>
-            </section>
-
-            {/* SECTION 5: WHY MATNEXT? */}
-            <section id="why-matnext" className="relative min-h-screen bg-white section-padding">
-                <div className="text-center mb-32">
-                    <span className="text-electric-sulfur text-mono-label block mb-6">Why Choose Us</span>
-                    <h2 className="text-[10vw] text-data-navy font-black leading-none uppercase tracking-tighter">Why <span className="text-outline text-transparent" style={{ WebkitTextStroke: '2px #0A0A0B' }}>MatNEXT?</span></h2>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 max-w-7xl mx-auto">
-                    {whyMatNext.map((item) => (
-                        <div key={item.id} className="relative group p-12 border border-data-navy/5 hover:bg-neutral-50 transition-all duration-700 cursor-pointer">
-                            <span className="text-[12vw] font-black absolute top-0 right-10 text-neutral-100 group-hover:text-electric-sulfur/5 transition-colors z-0 select-none">
-                                {item.id}
-                            </span>
-                            <div className="relative z-10">
-                                <h3 className="text-4xl font-black uppercase mb-8 leading-[0.85] tracking-tighter">
-                                    {item.title}
-                                </h3>
-                                <p className="max-w-md text-[13px] opacity-50 font-mono leading-loose uppercase font-bold">
-                                    {item.desc}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
+            {/* SECTION 5: WHY MATNEXT NARRATIVE (HORIZONTAL SCROLL) */}
+            <WhyMatNextNarrative />
 
             {/* SECTION 6: PREMIUM CONTACT FORM - PRISTINE INDUSTRIAL */}
             <section id="customers" className="relative min-h-screen bg-white text-data-navy section-padding border-t border-data-navy/5">
