@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Text } from '@react-three/drei'
+
 import * as THREE from 'three'
 import { Cpu, BarChart2, FileText, ArrowUpRight, AlertTriangle, Wind, LucideIcon } from 'lucide-react'
 
@@ -76,7 +76,6 @@ const CornerBracket = ({ position, flipX = false, flipY = false, size = 0.35, th
 const GenbaAIScanner = () => {
     const groupRef = useRef<THREE.Group>(null)
     const scanLineRef = useRef<THREE.Mesh>(null)
-    const pulseRefs = useRef<THREE.Mesh[]>([])
 
     // Document dimensions
     const docW = 2.6
@@ -92,14 +91,6 @@ const GenbaAIScanner = () => {
             scanLineRef.current.position.y = scanY
         }
 
-        // Pulse data nodes
-        pulseRefs.current.forEach((mesh, i) => {
-            if (mesh) {
-                const phase = t * 2 + i * 1.1
-                mesh.scale.setScalar(0.8 + 0.4 * Math.sin(phase))
-                    ; (mesh.material as THREE.MeshBasicMaterial).opacity = 0.4 + 0.4 * Math.sin(phase)
-            }
-        })
 
         // Subtle float for the whole group
         if (groupRef.current) {
@@ -107,34 +98,7 @@ const GenbaAIScanner = () => {
         }
     })
 
-    // Data flow path points (a graph/chart inside the document)
-    const dataFlowPath = [
-        [-0.55, -0.6, 0.01],
-        [-0.35, -0.3, 0.01],
-        [-0.15, -0.5, 0.01],
-        [0.05, 0.0, 0.01],
-        [0.25, -0.2, 0.01],
-        [0.45, 0.3, 0.01],
-        [0.55, 0.1, 0.01],
-    ]
 
-    // Secondary data path
-    const dataFlowPath2 = [
-        [-0.55, -0.3, 0.01],
-        [-0.3, 0.1, 0.01],
-        [-0.05, -0.1, 0.01],
-        [0.2, 0.4, 0.01],
-        [0.45, 0.2, 0.01],
-        [0.55, 0.5, 0.01],
-    ]
-
-
-
-    // Data node positions (where the chart hits key points)
-    const dataNodes: [number, number][] = [
-        [-0.35, -0.3], [0.05, 0.0], [0.45, 0.3],
-        [-0.3, 0.1], [0.2, 0.4],
-    ]
 
     return (
         <group ref={groupRef} position={[0, -0.15, 0]} scale={0.65}>
@@ -145,18 +109,55 @@ const GenbaAIScanner = () => {
             <CornerBracket position={[-(docW / 2 + bracketOffset), -(docH / 2 + bracketOffset), 0]} flipY size={0.4} />
             <CornerBracket position={[docW / 2 + bracketOffset, -(docH / 2 + bracketOffset), 0]} flipX flipY size={0.4} />
 
-            {/* ── "GenbaAI in Action" title text on the document ── */}
-            <Text
-                position={[0, docH / 2 - 0.35, 0.05]}
-                fontSize={0.22}
-                color="#96CC39"
-                anchorX="center"
-                anchorY="middle"
-                letterSpacing={0.15}
-                fillOpacity={1}
-            >
-                {'GenbaAI in Action'}
-            </Text>
+            {/* ── Sci-fi 2D Brain / Mind (center of document) ── */}
+            <group position={[0, -0.1, 0.02]}>
+                {/* Brain outline - left hemisphere */}
+                <LinePath points={[
+                    [-0.6, 0.5, 0], [-0.75, 0.3, 0], [-0.8, 0.0, 0], [-0.75, -0.3, 0],
+                    [-0.55, -0.5, 0], [-0.3, -0.55, 0], [0, -0.5, 0],
+                ]} color="#0A1628" opacity={0.5} />
+                {/* Brain outline - right hemisphere */}
+                <LinePath points={[
+                    [0.6, 0.5, 0], [0.75, 0.3, 0], [0.8, 0.0, 0], [0.75, -0.3, 0],
+                    [0.55, -0.5, 0], [0.3, -0.55, 0], [0, -0.5, 0],
+                ]} color="#0A1628" opacity={0.5} />
+                {/* Brain top curve */}
+                <LinePath points={[
+                    [-0.6, 0.5, 0], [-0.4, 0.7, 0], [-0.1, 0.75, 0],
+                    [0.1, 0.75, 0], [0.4, 0.7, 0], [0.6, 0.5, 0],
+                ]} color="#0A1628" opacity={0.5} />
+                {/* Central fissure */}
+                <LinePath points={[
+                    [0, 0.75, 0], [0, 0.4, 0], [-0.05, 0.1, 0], [0, -0.2, 0], [0, -0.5, 0],
+                ]} color="#0A1628" opacity={0.35} />
+
+                {/* Left hemisphere internal folds */}
+                <LinePath points={[[-0.55, 0.35, 0], [-0.4, 0.15, 0], [-0.55, -0.05, 0], [-0.35, -0.25, 0]]} color="#0A1628" opacity={0.3} />
+                <LinePath points={[[-0.3, 0.5, 0], [-0.2, 0.25, 0], [-0.35, 0.0, 0], [-0.2, -0.3, 0]]} color="#0A1628" opacity={0.3} />
+
+                {/* Right hemisphere internal folds */}
+                <LinePath points={[[0.55, 0.35, 0], [0.4, 0.15, 0], [0.55, -0.05, 0], [0.35, -0.25, 0]]} color="#0A1628" opacity={0.3} />
+                <LinePath points={[[0.3, 0.5, 0], [0.2, 0.25, 0], [0.35, 0.0, 0], [0.2, -0.3, 0]]} color="#0A1628" opacity={0.3} />
+
+                {/* Neural circuit nodes */}
+                {[
+                    [-0.4, 0.15], [-0.55, -0.05], [-0.2, 0.25], [-0.35, 0.0], [-0.2, -0.3],
+                    [0.4, 0.15], [0.55, -0.05], [0.2, 0.25], [0.35, 0.0], [0.2, -0.3],
+                    [0, 0.4], [0, -0.2], [-0.05, 0.1],
+                ].map(([x, y], i) => (
+                    <mesh key={`brain-node-${i}`} position={[x, y, 0]}>
+                        <circleGeometry args={[0.025, 10]} />
+                        <meshBasicMaterial color="#0A1628" opacity={0.4} transparent />
+                    </mesh>
+                ))}
+
+                {/* Cross-hemisphere connections (circuit lines) */}
+                <LinePath points={[[-0.4, 0.15, 0], [-0.1, 0.2, 0], [0.1, 0.2, 0], [0.4, 0.15, 0]]} color="#0A1628" opacity={0.2} />
+                <LinePath points={[[-0.35, -0.25, 0], [-0.1, -0.25, 0], [0.1, -0.25, 0], [0.35, -0.25, 0]]} color="#0A1628" opacity={0.2} />
+                <LinePath points={[[-0.55, -0.05, 0], [-0.2, 0.0, 0], [0.2, 0.0, 0], [0.55, -0.05, 0]]} color="#0A1628" opacity={0.2} />
+            </group>
+
+
 
             {/* ── Document outline ── */}
             <LinePath
@@ -184,31 +185,6 @@ const GenbaAIScanner = () => {
                 <meshBasicMaterial color="#96CC39" opacity={0.1} transparent side={THREE.DoubleSide} />
             </mesh>
 
-            {/* ── Data flow chart line 1 ── */}
-            <LinePath points={dataFlowPath} opacity={1} />
-
-            {/* ── Data flow chart line 2 ── */}
-            <LinePath points={dataFlowPath2} color="#96CC39" opacity={1} />
-
-            {/* ── Data nodes (pulsing circles at key inflection points) ── */}
-            {dataNodes.map(([x, y], i) => (
-                <group key={`node-${i}`}>
-                    {/* Outer ring */}
-                    <mesh position={[x, y, 0.02]}>
-                        <ringGeometry args={[0.04, 0.055, 16]} />
-                        <meshBasicMaterial color="#96CC39" opacity={0.5} transparent side={THREE.DoubleSide} />
-                    </mesh>
-                    {/* Inner dot (pulsing) */}
-                    <mesh
-                        position={[x, y, 0.02]}
-                        ref={(el: THREE.Mesh | null) => { if (el) pulseRefs.current[i] = el }}
-                    >
-                        <circleGeometry args={[0.03, 12]} />
-                        <meshBasicMaterial color="#96CC39" opacity={0.8} transparent />
-                    </mesh>
-                </group>
-            ))}
-
             {/* ── Animated scan line (horizontal beam sweeping vertically) ── */}
             <mesh ref={scanLineRef} position={[0, 0, 0.03]}>
                 <planeGeometry args={[docW + 0.4, 0.02]} />
@@ -219,29 +195,6 @@ const GenbaAIScanner = () => {
                 <planeGeometry args={[docW + 0.4, 0.18]} />
                 <meshBasicMaterial color="#96CC39" opacity={0.5} transparent side={THREE.DoubleSide} />
             </mesh>
-
-            {/* ── Small gear/cog icons (representing AI processing) ── */}
-            {[[-0.5, 0.15], [0.35, -0.55]].map(([x, y], i) => (
-                <lineLoop key={`gear-${i}`}>
-                    <bufferGeometry attach="geometry">
-                        <bufferAttribute
-                            attach="attributes-position"
-                            args={[
-                                new Float32Array(
-                                    Array.from({ length: 13 }, (_, j) => {
-                                        const angle = (j / 12) * Math.PI * 2
-                                        const r = j % 2 === 0 ? 0.07 : 0.05
-                                        return [x + Math.cos(angle) * r, y + Math.sin(angle) * r, 0.02]
-                                    }).flat()
-                                ),
-                                3
-                            ]}
-                            count={13}
-                        />
-                    </bufferGeometry>
-                    <lineBasicMaterial attach="material" color="#96CC39" opacity={0.4} transparent />
-                </lineLoop>
-            ))}
 
         </group>
     )
@@ -281,10 +234,19 @@ export const AINarrative = () => {
                     - ON TOP of cards (z-20), pointer-events-none.
                     - No overflow-hidden so no clipping.
                 */}
-                <div className="absolute right-0 w-[50vw] max-w-[900px] top-[14.2vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
+                <div className="absolute -right-25 w-[50vw] max-w-[900px] top-[14.2vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
                     <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
                         <GenbaAIScanner />
                     </Canvas>
+                    {/* HTML overlay text with Inter font */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ paddingTop: '6vh' }}>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '4.5vw', fontWeight: 800, color: '#96CC39', lineHeight: 1, letterSpacing: '0.02em', opacity: 1 }}>
+                            GenbaAI
+                        </span>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.6vw', fontWeight: 500, color: '#0A1628', lineHeight: 1, letterSpacing: '0.25em', marginTop: '1em', textTransform: 'uppercase' as const }}>
+                            in Action
+                        </span>
+                    </div>
                 </div>
 
                 <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-10 overflow-hidden">
