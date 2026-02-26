@@ -21,26 +21,36 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
     let visibility = 0;
     let separationProgress = 0;
 
-    // Step 2: New stats appear as hero text fades (0.15 to 0.25)
+    // Step 2 & 3 Combined: Fade in, Separate, Hold, Re-merge, then Fade out
     if (scrollProgress >= 0.15 && scrollProgress <= 0.25) {
+        // Entrance fade
         newStatsOpacity = (scrollProgress - 0.15) / 0.1;
-    } else if (scrollProgress > 0.25 && scrollProgress <= 0.80) {
+        visibility = 0;
+        separationProgress = 0;
+    } else if (scrollProgress > 0.25 && scrollProgress <= 0.45) {
+        // Open
         newStatsOpacity = 1;
-    } else if (scrollProgress > 0.80 && scrollProgress <= 0.95) {
-        newStatsOpacity = Math.max(0, 1 - ((scrollProgress - 0.80) / 0.15));
-    }
-
-    // Step 3: Separate two stats and reveal main Traceability box (0.25 to 0.45)
-    if (scrollProgress >= 0.25 && scrollProgress <= 0.45) {
         const rawProgress = (scrollProgress - 0.25) / 0.20;
         separationProgress = rawProgress * (2 - rawProgress); // easeOut quadratic
-        visibility = 1; // Purely rely on clip-path for reveal
+        visibility = 1;
     } else if (scrollProgress > 0.45 && scrollProgress <= 0.80) {
+        // Hold open
+        newStatsOpacity = 1;
         separationProgress = 1;
         visibility = 1;
     } else if (scrollProgress > 0.80 && scrollProgress <= 0.95) {
-        separationProgress = 1;
-        visibility = Math.max(0, 1 - ((scrollProgress - 0.80) / 0.15));
+        // Close back up
+        newStatsOpacity = 1;
+        const rawProgress = (scrollProgress - 0.80) / 0.15;
+        // Reverse quadratic easeIn to close smoothly
+        separationProgress = 1 - (rawProgress * rawProgress);
+        // Fade out the inner matrix text as it closes
+        visibility = Math.max(0, 1 - rawProgress * 2);
+    } else if (scrollProgress > 0.95 && scrollProgress <= 0.98) {
+        // Immediate fade out once closed
+        newStatsOpacity = Math.max(0, 1 - ((scrollProgress - 0.95) / 0.03));
+        separationProgress = 0;
+        visibility = 0;
     }
 
     const isVisible = scrollProgress > 0.25 && scrollProgress < 0.98;

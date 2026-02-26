@@ -139,7 +139,8 @@ export const FeaturesNarrative = () => {
 
     return (
         // Outer wrapper: stays pinned and hides the off-screen inner content
-        <section ref={sectionRef} id="features-narrative" className="relative w-full overflow-hidden z-[50] h-screen bg-transparent pointer-events-none">
+        // Uses negative margin to pull the trigger up and overlap the end of the Hero's 200vh pinned scroll
+        <section ref={sectionRef} id="features-narrative" className="relative w-full overflow-hidden z-[50] h-screen bg-transparent pointer-events-none -mt-[100vh]">
 
             {/* Inner sliding container: starts off-screen right and slides in */}
             <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-28 pb-10 flex flex-col pointer-events-auto">
