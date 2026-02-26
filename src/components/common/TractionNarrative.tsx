@@ -1,7 +1,9 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Canvas, useFrame } from '@react-three/fiber'
+import * as THREE from 'three'
 import { Factory, Users, ScanLine, CloudRain, Recycle, FileCheck, LucideIcon } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -50,35 +52,24 @@ const MetricNode = ({ metric }: { metric: MetricDef }) => {
     )
 }
 
-/* ─── Animated dot-grid canvas accent ─────────────────────── */
-const DotGridAccent = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-    useEffect(() => {
-        const canvas = canvasRef.current
-        if (!canvas) return
-        const ctx = canvas.getContext('2d')!
-        const W = canvas.offsetWidth; const H = canvas.offsetHeight
-        canvas.width = W; canvas.height = H
-        const cols = 12, rows = 6
-        const padX = W / (cols + 1), padY = H / (rows + 1)
-        let frame = 0; let raf: number
-        const animate = () => {
-            ctx.clearRect(0, 0, W, H)
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    const phase = (r * cols + c) + frame * 0.04
-                    const alpha = 0.15 + 0.4 * ((Math.sin(phase) + 1) / 2)
-                    const radius = 2 + 1.5 * ((Math.sin(phase * 0.7) + 1) / 2)
-                    ctx.beginPath(); ctx.arc((c + 1) * padX, (r + 1) * padY, radius, 0, Math.PI * 2)
-                    ctx.fillStyle = `rgba(150,204,57,${alpha})`; ctx.fill()
-                }
-            }
-            frame++; raf = requestAnimationFrame(animate)
+/* ─── Rotating Wireframe Globe ─────────────────────── */
+const RotatingGlobe = () => {
+    const meshRef = useRef<THREE.LineSegments>(null)
+
+    // Rotate counter-clockwise (positive Y axis rotation in Three.js)
+    useFrame((_state, delta) => {
+        if (meshRef.current) {
+            meshRef.current.rotation.y += delta * 0.15
+            meshRef.current.rotation.x = 0.2 // slight tilt
         }
-        animate()
-        return () => cancelAnimationFrame(raf)
-    }, [])
-    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
+    })
+
+    return (
+        <lineSegments ref={meshRef as any} position={[0, -0.3, 1]} scale={0.60}>
+            <edgesGeometry attach="geometry" args={[new THREE.SphereGeometry(2.5, 32, 16)]} />
+            <lineBasicMaterial attach="material" color="#96CC39" opacity={1} transparent={true} />
+        </lineSegments>
+    )
 }
 
 /* ─── Main component ──────────────────────────────────────── */
@@ -132,9 +123,21 @@ export const TractionNarrative = () => {
                     {topMetrics.map(m => <MetricNode key={m.label} metric={m} />)}
                 </div>
 
-                {/* Central text with dot-grid accent */}
-                <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-0 overflow-hidden">
-                    <DotGridAccent />
+                {/* 
+                    Globe Container:
+                    - ON TOP of cards (z-20) but strictly pointer-events-none so hover works.
+                    - Height increased to 75vh to prevent any vertical clipping.
+                    - overflow-hidden removed vertically to ensure poles are visible.
+                    - Right-aligned so it cuts off precisely at the section boundary.
+                */}
+                <div className="absolute right-0 w-[50vw] max-w-[900px] top-[12.5vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
+                    <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
+                        <RotatingGlobe />
+                    </Canvas>
+                </div>
+
+                {/* Central text */}
+                <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-10 overflow-hidden">
                     <div className="relative pointer-events-auto z-10">
                         <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">Live Telemetry</span>
                         <h2 className="text-[7vw] md:text-[5vw] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
@@ -143,9 +146,8 @@ export const TractionNarrative = () => {
                         <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
                             Scroll to explore all 6 live metrics →
                         </p>
-                        <div style={{ fontFamily: 'Inter, sans-serif' }} className="absolute top-1/2 right-0 -translate-y-1/2 text-[18vw] font-black text-electric-sulfur leading-none pointer-events-none select-none tracking-tighter">
-                            6
-                        </div>
+
+                        {/* The '6' text was here, but has been replaced by the globe. */}
                     </div>
                 </div>
 
