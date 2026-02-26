@@ -84,12 +84,13 @@ const FeatureNode = ({ feature, index }: { feature: typeof features[0], index: n
 
 export const FeaturesNarrative = () => {
     const sectionRef = useRef<HTMLDivElement>(null)
+    const contentContainerRef = useRef<HTMLDivElement>(null)
     const contentWrapperRef = useRef<HTMLDivElement>(null)
     const topTrackRef = useRef<HTMLDivElement>(null)
     const bottomTrackRef = useRef<HTMLDivElement>(null)
 
     useGSAP(() => {
-        if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current) return
+        if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current || !contentContainerRef.current) return
 
         const getTrackWidth = () => topTrackRef.current!.scrollWidth
         const getWindowWidth = () => window.innerWidth
@@ -99,14 +100,25 @@ export const FeaturesNarrative = () => {
             x: () => getWindowWidth()
         })
 
+        // Pre-set the inner scrolling content to start off-screen right
+        gsap.set(contentContainerRef.current, { xPercent: 100 })
+
         const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: sectionRef.current,
+                trigger: sectionRef.current, // Pin the outer wrapper
                 pin: true,
                 scrub: 1,
                 invalidateOnRefresh: true,
-                end: () => `+=${getTrackWidth() + getWindowWidth()}`,
+                start: "top top",
+                end: () => `+=${getTrackWidth() + getWindowWidth() * 1.5}`, // Added extra scroll length for entrance
             }
+        })
+
+        // Phase 0: Slide the inner container in from the right over the pinned outer wrapper
+        tl.to(contentContainerRef.current, {
+            xPercent: 0,
+            ease: "none",
+            duration: () => getWindowWidth() * 0.5
         })
 
         // Phase 1: Cards scroll from off-screen right to their final left position 
@@ -126,47 +138,46 @@ export const FeaturesNarrative = () => {
     }, { scope: sectionRef })
 
     return (
-        <section ref={sectionRef} id="features-narrative" className="relative w-full bg-white overflow-hidden z-20 h-screen pt-28 pb-10 flex flex-col">
+        // Outer wrapper: stays pinned and hides the off-screen inner content
+        <section ref={sectionRef} id="features-narrative" className="relative w-full overflow-hidden z-[50] h-screen bg-transparent pointer-events-none">
 
-            {/* Fixed "12" watermark — stays in place while cards scroll over it */}
-            {/* <div style={{ fontFamily: 'Inter, sans-serif' }} className="absolute top-1/2 right-20 -translate-y-1/2 text-[18vw] font-black font-italic text-electric-sulfur leading-none pointer-events-none select-none tracking-tighter">
-                12
-            </div> */}
+            {/* Inner sliding container: starts off-screen right and slides in */}
+            <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-28 pb-10 flex flex-col pointer-events-auto">
+                <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1">
 
-            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1">
+                    {/* Top Row Cards */}
+                    <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
+                        {topFeatures.map((feature, i) => (
+                            <FeatureNode key={feature.title} feature={feature} index={i + 1} />
+                        ))}
+                    </div>
 
-                {/* Top Row Cards */}
-                <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
-                    {topFeatures.map((feature, i) => (
-                        <FeatureNode key={feature.title} feature={feature} index={i + 1} />
-                    ))}
-                </div>
-
-                {/* Central Text Content */}
-                <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-0">
-                    <div className="relative pointer-events-auto">
-                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">
-                            Platform Capabilities
-                        </span>
-                        <h2 className="text-[7vw] md:text-[5vw] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
-                            Comprehensive Sustainability Engine.<br />
-                        </h2>
-                        <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
-                            Scroll to explore all 12 platform capabilities →
-                        </p>
-                        <div style={{ fontFamily: 'Inter, sans-serif' }} className="absolute top-1/2 right-0 -translate-y-1/2 text-[18vw] font-black font-italic text-electric-sulfur leading-none pointer-events-none select-none tracking-tighter">
-                            12
+                    {/* Central Text Content */}
+                    <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-0">
+                        <div className="relative pointer-events-auto">
+                            <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">
+                                Platform Capabilities
+                            </span>
+                            <h2 className="text-[7vw] md:text-[5vw] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
+                                Comprehensive Sustainability Engine.<br />
+                            </h2>
+                            <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
+                                Scroll to explore all 12 platform capabilities →
+                            </p>
+                            <div style={{ fontFamily: 'Inter, sans-serif' }} className="absolute top-1/2 right-0 -translate-y-1/2 text-[18vw] font-black font-italic text-electric-sulfur leading-none pointer-events-none select-none tracking-tighter">
+                                12
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Bottom Row Cards */}
-                <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
-                    {bottomFeatures.map((feature, i) => (
-                        <FeatureNode key={feature.title} feature={feature} index={i + 7} />
-                    ))}
-                </div>
+                    {/* Bottom Row Cards */}
+                    <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
+                        {bottomFeatures.map((feature, i) => (
+                            <FeatureNode key={feature.title} feature={feature} index={i + 7} />
+                        ))}
+                    </div>
 
+                </div>
             </div>
         </section>
     )
