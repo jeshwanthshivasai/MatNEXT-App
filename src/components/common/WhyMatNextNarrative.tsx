@@ -88,7 +88,7 @@ export const WhyMatNextNarrative = () => {
                     <div className="relative z-0 pointer-events-auto" style={{ width: '45%', height: '100%' }}>
                         <Canvas gl={{ antialias: true, alpha: true }}>
                             <Suspense fallback={null}>
-                                <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
+                                <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
                                 <DeconstructibleCar progress={0.35} isLoader={true} />
                                 <Environment preset="city" />
                                 <ambientLight intensity={0.5} />
