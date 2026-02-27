@@ -66,7 +66,7 @@ const RotatingGlobe = () => {
 
     return (
         <lineSegments ref={meshRef as any} position={[0, -0.24, 1]} scale={0.35}>
-            <edgesGeometry attach="geometry" args={[new THREE.SphereGeometry(2.5, 32, 16)]} />
+            <edgesGeometry attach="geometry" args={[new THREE.SphereGeometry(2.5, 16, 16)]} />
             <lineBasicMaterial attach="material" color="#96CC39" opacity={1} transparent={true} />
         </lineSegments>
     )
