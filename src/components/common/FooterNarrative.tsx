@@ -125,46 +125,45 @@ export const FooterNarrative = () => {
                 ref={contactRef}
                 style={{
                     position: 'absolute',
-                    top: 120,
-                    right: 40,
-                    width: 'clamp(380px, 35vw, 550px)',
+                    top: 100,
+                    right: 15,
+                    width: 'clamp(380px, 30vw, 550px)',
                     background: 'linear-gradient(135deg, rgba(245,245,245,0.8) 0%, rgba(230,230,230,0.6) 100%)',
-                    backdropFilter: 'blur(20px)',
-                    borderRadius: 32,
-                    padding: '40px 40px 32px',
+                    // backdropFilter: 'blur(20px)',
+                    padding: '20px 20px 20px',
                     zIndex: 25,
                     border: '0.4px solid rgba(0,0,0,0.08)',
                     boxShadow: '0 20px 60px rgba(0,0,0,0.04)',
                 }}
             >
                 <div style={{ marginBottom: 32 }}>
-                    <h3 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#0A0A0A', lineHeight: 1, marginBottom: 12, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Get in Touch</h3>
+                    <h3 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#96CC39', marginBottom: 12, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Get in Touch</h3>
                     <p style={{ color: 'rgba(0,0,0,0.4)', fontSize: 10, lineHeight: 1.5, letterSpacing: '0.01em', maxWidth: '100%' }}>
                         Reach out to discuss how MatNEXT can transform your supply chain operations.
                     </p>
                 </div>
 
-                <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px 20px' }} onSubmit={e => e.preventDefault()}>
+                <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 20px' }} onSubmit={e => e.preventDefault()}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Full Name</label>
+                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Full Name</label>
                         <input type="text" placeholder="Enter your full name"
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.1)', borderRadius: 12, padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.3)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.1)'} />
+                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
+                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
+                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Business Email</label>
+                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Business Email</label>
                         <input type="email" placeholder="name@company.com"
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.1)', borderRadius: 12, padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.3)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.1)'} />
+                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
+                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
+                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Industry Segment</label>
+                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Industry Segment</label>
                         <div style={{ position: 'relative' }}>
-                            <select style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.1)', borderRadius: 12, padding: '14px 16px', fontSize: 12, outline: 'none', color: 'rgba(0,0,0,0.7)', appearance: 'none' as const, cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 500 }}
-                                onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.3)'}
-                                onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.1)'}>
+                            <select style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: 'rgba(0,0,0,0.7)', appearance: 'none' as const, cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 500 }}
+                                onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
+                                onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}>
                                 <option>Select Industry</option>
                                 <option>Automotive</option>
                                 <option>Steel</option>
@@ -178,21 +177,21 @@ export const FooterNarrative = () => {
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Annual Volume</label>
+                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Annual Volume</label>
                         <input type="text" placeholder="e.g., 10,000 Tons/year"
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.1)', borderRadius: 12, padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.3)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.1)'} />
+                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
+                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
+                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: 'span 2' }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Message</label>
+                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Message</label>
                         <textarea placeholder="Tell us about your requirements..."
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.1)', borderRadius: 16, padding: '16px', fontSize: 12, outline: 'none', color: '#0A0A0A', minHeight: 110, resize: 'none', transition: 'all 0.2s ease', lineHeight: 1.6, fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.3)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.1)'} />
+                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '16px', fontSize: 12, outline: 'none', color: '#0A0A0A', minHeight: 90, resize: 'none', transition: 'all 0.2s ease', lineHeight: 1.6, fontWeight: 500 }}
+                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
+                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
                     </div>
                     <button type="submit"
-                        style={{ gridColumn: 'span 2', background: '#96CC39', color: '#000', fontWeight: 900, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '18px 0', borderRadius: 100, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', marginTop: 12, boxShadow: '0 10px 30px rgba(150,204,57,0.15)' }}
+                        style={{ gridColumn: 'span 2', background: '#96CC39', color: '#000', fontWeight: 900, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '12px 0', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', marginTop: 12, boxShadow: '0 10px 30px rgba(150,204,57,0.15)' }}
                         onMouseEnter={e => {
                             e.currentTarget.style.background = '#A5D64C';
                             e.currentTarget.style.transform = 'translateY(-2px)';
@@ -204,7 +203,7 @@ export const FooterNarrative = () => {
                             e.currentTarget.style.boxShadow = '0 10px 30px rgba(150,204,57,0.15)';
                         }}
                     >
-                        Send Message <Send style={{ width: 16, height: 16, strokeWidth: 3 }} />
+                        Send Message <Send style={{ width: 16, height: 16, strokeWidth: 2, rotate: '45deg' }} />
                     </button>
                 </form>
             </div>
@@ -214,12 +213,11 @@ export const FooterNarrative = () => {
                 ref={copyrightRef}
                 style={{
                     position: 'absolute',
-                    bottom: 40,
-                    left: 40,
-                    width: 'clamp(320px, 32vw, 480px)',
+                    bottom: 20,
+                    left: 20,
+                    width: 'clamp(380px, 30vw, 550px)',
                     background: 'linear-gradient(135deg, rgba(245,245,245,0.8) 0%, rgba(230,230,230,0.6) 100%)',
                     backdropFilter: 'blur(20px)',
-                    borderRadius: 32,
                     padding: '44px 40px 32px',
                     zIndex: 25,
                     border: '0.4px solid rgba(0,0,0,0.1)',
@@ -227,9 +225,9 @@ export const FooterNarrative = () => {
                 }}
             >
                 <div style={{ marginBottom: 32 }}>
-                    <h2 style={{ fontSize: '3rem', fontWeight: 950, color: '#0A0A0A', lineHeight: 0.8, marginBottom: 20, letterSpacing: '-0.06em', opacity: 0.9 }}>MatNEXT</h2>
-                    <p style={{ color: 'rgba(0,0,0,0.4)', fontSize: 13, lineHeight: 1.7, letterSpacing: '0.01em', maxWidth: '85%' }}>
-                        Building the global infrastructure for material traceability and sustainable industrial value chains.
+                    <h2 style={{ fontSize: '3rem', fontWeight: 950, color: '#96CC39', lineHeight: 0.8, marginBottom: 20, letterSpacing: '-0.06em', opacity: 0.9 }}>MatNEXT</h2>
+                    <p style={{ color: 'rgba(0,0,0,0.4)', fontSize: 10.5, lineHeight: 1.7, letterSpacing: '0.01em', maxWidth: '100%' }}>
+                        Building the global infrastructure for material traceability <br />and sustainable industrial value chains.
                     </p>
                 </div>
 
@@ -295,11 +293,12 @@ export const FooterNarrative = () => {
                 style={{
                     position: 'absolute',
                     top: '12%',
-                    left: '5%',
-                    width: 'clamp(400px, 45vw, 750px)',
+                    left: '-0.5%',
+                    rotate: '3deg',
+                    width: 'clamp(900px, 60vw, 1000px)',
                     height: 'auto',
                     pointerEvents: 'none',
-                    zIndex: 10,
+                    zIndex: 40,
                 }}
             />
 
@@ -311,11 +310,12 @@ export const FooterNarrative = () => {
                 style={{
                     position: 'absolute',
                     bottom: '2%',
-                    right: '5%',
-                    width: 'clamp(400px, 45vw, 750px)',
+                    rotate: '5deg',
+                    right: '-0.5%',
+                    width: 'clamp(900px, 60vw, 1000px)',
                     height: 'auto',
                     pointerEvents: 'none',
-                    zIndex: 10,
+                    zIndex: 40,
                 }}
             />
 
