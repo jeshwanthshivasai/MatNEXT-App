@@ -60,12 +60,12 @@ const RotatingGlobe = () => {
     useFrame((_state, delta) => {
         if (meshRef.current) {
             meshRef.current.rotation.y += delta * 0.15
-            meshRef.current.rotation.x = 0.2 // slight tilt
+            meshRef.current.rotation.x = -0.05 // slight tilt
         }
     })
 
     return (
-        <lineSegments ref={meshRef as any} position={[0, -0.24, 1]} scale={0.60}>
+        <lineSegments ref={meshRef as any} position={[0, -0.24, 1]} scale={0.35}>
             <edgesGeometry attach="geometry" args={[new THREE.SphereGeometry(2.5, 32, 16)]} />
             <lineBasicMaterial attach="material" color="#96CC39" opacity={1} transparent={true} />
         </lineSegments>
@@ -130,7 +130,7 @@ export const TractionNarrative = () => {
                     - overflow-hidden removed vertically to ensure poles are visible.
                     - Right-aligned so it cuts off precisely at the section boundary.
                 */}
-                <div className="absolute right-0 w-[50vw] max-w-[900px] top-[12.5vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
+                <div className="absolute -right-25 w-[50vw] max-w-[900px] top-[12.5vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
                     <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
                         <RotatingGlobe />
                     </Canvas>
