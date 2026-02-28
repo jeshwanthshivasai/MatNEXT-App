@@ -1,4 +1,4 @@
-import { useRef, Suspense, useMemo } from 'react'
+import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -6,8 +6,10 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { Send, MapPin, Mail, ArrowUpRight, Phone } from 'lucide-react'
+// import { DeconstructibleCar } from './DeconstructibleCar'
+// import { Environment, PerspectiveCamera } from '@react-three/drei'
 
-import logo from '../../assets/MatNEXT.png'
+// import logo from '../../assets/MatNEXT.png'
 import handLeftSvg from '../../assets/1.svg'
 import handRightSvg from '../../assets/2.svg'
 
@@ -33,23 +35,23 @@ const FooterGlobe = () => {
 }
 
 /* ─── 3D Car ─────── */
-const FooterCar = ({ direction }: { direction: 1 | -1 }) => {
-    const { scene } = useGLTF(carModelUrl)
-    const groupRef = useRef<THREE.Group>(null)
-    const cloned = useMemo(() => scene.clone(true), [scene])
+// const FooterCar = ({ direction }: { direction: 1 | -1 }) => {
+//     const { scene } = useGLTF(carModelUrl)
+//     const groupRef = useRef<THREE.Group>(null)
+//     const cloned = useMemo(() => scene.clone(true), [scene])
 
-    useFrame((_s, delta) => {
-        if (groupRef.current) {
-            groupRef.current.rotation.y += delta * 0.5 * direction
-        }
-    })
+//     useFrame((_s, delta) => {
+//         if (groupRef.current) {
+//             groupRef.current.rotation.y += delta * 0.5 * direction
+//         }
+//     })
 
-    return (
-        <group ref={groupRef} scale={0.55}>
-            <primitive object={cloned} />
-        </group>
-    )
-}
+//     return (
+//         <group ref={groupRef} scale={0.55}>
+//             <primitive object={cloned} />
+//         </group>
+//     )
+// }
 
 /* ═══════════════════════════════════════
    FooterNarrative
@@ -73,16 +75,15 @@ export const FooterNarrative = () => {
 
     useGSAP(() => {
         if (!sectionRef.current || !leftHandRef.current || !rightHandRef.current ||
-            !globeContainerRef.current || !logoRef.current || !topCarRef.current ||
-            !bottomCarRef.current || !contactRef.current || !copyrightRef.current) return
+            !globeContainerRef.current || !contactRef.current || !copyrightRef.current) return
 
         // Initial states
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
-        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0, xPercent: -50, yPercent: -50 })
-        gsap.set(logoRef.current, { scale: 0, opacity: 0, xPercent: -50, yPercent: -50 })
-        gsap.set(topCarRef.current, { scale: 0, opacity: 0, xPercent: -50 })
-        gsap.set(bottomCarRef.current, { scale: 0, opacity: 0, xPercent: -50 })
+        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
+        if (logoRef.current) gsap.set(logoRef.current, { scale: 0, opacity: 0 })
+        if (topCarRef.current) gsap.set(topCarRef.current, { scale: 0, opacity: 0 })
+        if (bottomCarRef.current) gsap.set(bottomCarRef.current, { scale: 0, opacity: 0 })
 
         const tl = gsap.timeline({
             scrollTrigger: {
@@ -95,23 +96,31 @@ export const FooterNarrative = () => {
         })
 
         // Phase 1: Hands reveal + Globe (0% → 55%)
-        tl.to(leftHandRef.current, { x: '0%', opacity: 1, duration: 0.55, ease: 'power3.out' }, 0)
-        tl.to(rightHandRef.current, { x: '0%', opacity: 1, duration: 0.55, ease: 'power3.out' }, 0)
-        tl.to(globeContainerRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: -50, duration: 0.55, ease: 'power2.out' }, 0.05)
+        tl.to(leftHandRef.current, { x: '0%', opacity: 0.8, duration: 0.55, ease: 'power3.out' }, 0)
+        tl.to(rightHandRef.current, { x: '0%', opacity: 0.8, duration: 0.55, ease: 'power3.out' }, 0)
+        tl.to(globeContainerRef.current, { scale: 1, opacity: 1, duration: 0.55, ease: 'power2.out' }, 0.05)
 
         // Phase 2: Logo + Cars (55% → 100%)
-        tl.to(logoRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: -50, duration: 0.2, ease: 'back.out(1.7)' }, 0.58)
-        tl.to(topCarRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: 0, duration: 0.18, ease: 'power2.out' }, 0.65)
-        tl.to(bottomCarRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: 0, duration: 0.18, ease: 'power2.out' }, 0.72)
+        if (logoRef.current) {
+            tl.to(logoRef.current, { scale: 1, opacity: 1, duration: 0.2, ease: 'back.out(1.7)' }, 0.58)
+        }
+        if (topCarRef.current) {
+            tl.to(topCarRef.current, { scale: 1, opacity: 1, duration: 0.18, ease: 'power2.out' }, 0.65)
+        }
+        if (bottomCarRef.current) {
+            tl.to(bottomCarRef.current, { scale: 1, opacity: 1, duration: 0.18, ease: 'power2.out' }, 0.72)
+        }
 
         // Standalone Logo Pulse (independent of scroll)
-        gsap.to(logoRef.current, {
-            scale: 1.08,
-            duration: 1.25,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut'
-        })
+        if (logoRef.current) {
+            gsap.to(logoRef.current, {
+                scale: 1.08,
+                duration: 1.25,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            })
+        }
 
     }, { scope: sectionRef })
 
@@ -374,7 +383,7 @@ export const FooterNarrative = () => {
                     height: 'auto',
                     pointerEvents: 'none',
                     zIndex: 40,
-                    opacity: 0.8,
+                    opacity: 0,
                 }}
             />
 
@@ -392,7 +401,7 @@ export const FooterNarrative = () => {
                     height: 'auto',
                     pointerEvents: 'none',
                     zIndex: 40,
-                    opacity: 0.8,
+                    opacity: 0,
                 }}
             />
 
@@ -401,14 +410,18 @@ export const FooterNarrative = () => {
                 ref={globeContainerRef}
                 style={{
                     position: 'absolute',
-                    top: '50%',
-                    left: '50%',
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    margin: 'auto',
                     width: 'clamp(550px, 50vw, 750px)',
                     height: 'clamp(550px, 50vw, 750px)',
                     zIndex: 20,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    opacity: 0,
                 }}
             >
                 {/* 2D Globe vibe: Large soft radial glow */}
@@ -427,33 +440,41 @@ export const FooterNarrative = () => {
 
 
                 {/* ── Top Car (anticlockwise) ── */}
-                <div
+                {/* <div
                     ref={topCarRef}
                     style={{
                         position: 'absolute',
                         top: '18%',
-                        left: '50%',
+                        left: 0,
+                        right: 0,
+                        margin: '0 auto',
                         width: 'clamp(80px, 7vw, 120px)',
                         height: 'clamp(50px, 4vw, 70px)',
                         zIndex: 26,
                     }}
                 >
-                    <Canvas camera={{ position: [0, 1.5, 4], fov: 40 }} style={{ pointerEvents: 'none' }}>
+                    <Canvas camera={{ position: [0, 1.5, 4], fov: 40 }} style={{ pointerEvents: 'none', }}>
                         <ambientLight intensity={1.2} />
                         <directionalLight position={[3, 5, 3]} intensity={1.5} />
                         <Suspense fallback={null}>
                             <FooterCar direction={1} />
                         </Suspense>
                     </Canvas>
-                </div>
+                </div> */}
 
                 {/* ── MatNEXT Logo (pulsing center) ── */}
-                <div
+                {/* <div
                     ref={logoRef}
                     style={{
                         position: 'absolute',
-                        top: '50%',
-                        left: '50%',
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        margin: 'auto',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         zIndex: 30,
                         textAlign: 'center',
                     }}
@@ -466,15 +487,17 @@ export const FooterNarrative = () => {
                             height: 'auto',
                         }}
                     />
-                </div>
+                </div> */}
 
                 {/* ── Bottom Car (clockwise) ── */}
-                <div
+                {/* <div
                     ref={bottomCarRef}
                     style={{
                         position: 'absolute',
                         bottom: '18%',
-                        left: '50%',
+                        left: 0,
+                        right: 0,
+                        margin: '0 auto',
                         width: 'clamp(80px, 7vw, 120px)',
                         height: 'clamp(50px, 4vw, 70px)',
                         zIndex: 26,
@@ -487,7 +510,7 @@ export const FooterNarrative = () => {
                             <FooterCar direction={-1} />
                         </Suspense>
                     </Canvas>
-                </div>
+                </div> */}
             </div>
 
         </footer>
