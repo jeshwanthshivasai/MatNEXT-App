@@ -153,7 +153,7 @@ export const FooterNarrative = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                             <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Full Name</label>
                             <input type="text" placeholder="Enter your full name"
-                                style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500}}
+                                style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
                                 onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
                                 onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
                         </div>
@@ -245,7 +245,6 @@ export const FooterNarrative = () => {
 
                 {/* HQ Locations Tile */}
                 <div style={{
-                    gridColumn: 'span 2',
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
@@ -278,7 +277,6 @@ export const FooterNarrative = () => {
 
                 {/* Direct Line Tile */}
                 <div style={{
-                    gridColumn: 'span 2',
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
@@ -287,11 +285,15 @@ export const FooterNarrative = () => {
                     <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>DIRECT LINE</span>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(0,0,0,1)', fontSize: 11 }}>
-                            <Mail size={14} color="#96CC39" strokeWidth={2} />
-                            info-matnext@genbanext.com
+                            <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Mail size={12} color="#96CC39" strokeWidth={3} />
+                            </div>
+                            INFO-MATNEXT@GENBANEXT.COM
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(0,0,0,1)', fontSize: 11 }}>
-                            <Phone size={14} color="#96CC39" strokeWidth={2} />
+                            <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Phone size={12} color="#96CC39" strokeWidth={3} />
+                            </div>
                             +81 80-8529-3858
                         </div>
                     </div>
@@ -356,7 +358,8 @@ export const FooterNarrative = () => {
                 alt=""
                 style={{
                     position: 'absolute',
-                    top: '1%',
+                    top: '-5%',
+                    rotate: '-7deg',
                     left: '-0.5%',
                     width: 'clamp(1000px, 80vw, 1100px)',
                     height: 'auto',
@@ -373,9 +376,9 @@ export const FooterNarrative = () => {
                 style={{
                     position: 'absolute',
                     bottom: '2%',
-                    rotate: '5deg',
-                    right: '-0.5%',
-                    width: 'clamp(900px, 60vw, 1000px)',
+                    rotate: '7deg',
+                    right: '-2%',
+                    width: 'clamp(1000px, 80vw, 1100px)',
                     height: 'auto',
                     pointerEvents: 'none',
                     zIndex: 40,
