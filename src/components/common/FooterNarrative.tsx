@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
-import { Send, MapPin, Mail } from 'lucide-react'
+import { Send, MapPin, Mail, ArrowUpRight, Phone } from 'lucide-react'
 
 import logo from '../../assets/MatNEXT.png'
 import handLeftSvg from '../../assets/1.svg'
@@ -120,168 +120,232 @@ export const FooterNarrative = () => {
                 overflow: 'hidden',
             }}
         >
-            {/* ═══ CONTACT FORM — top-right corner ═══ */}
+            {/* ═══ CONTACT FORM — Bento Style ═══ */}
             <div
                 ref={contactRef}
                 style={{
                     position: 'absolute',
-                    top: 100,
-                    right: 15,
+                    top: 20,
+                    right: 20,
                     width: 'clamp(380px, 30vw, 550px)',
-                    background: 'linear-gradient(135deg, rgba(245,245,245,0.8) 0%, rgba(230,230,230,0.6) 100%)',
-                    // backdropFilter: 'blur(20px)',
-                    padding: '20px 20px 20px',
                     zIndex: 25,
-                    border: '0.4px solid rgba(0,0,0,0.08)',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.04)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12
                 }}
             >
-                <div style={{ marginBottom: 32 }}>
-                    <h3 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#96CC39', marginBottom: 12, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Get in Touch</h3>
-                    <p style={{ color: 'rgba(0,0,0,0.4)', fontSize: 10, lineHeight: 1.5, letterSpacing: '0.01em', maxWidth: '100%' }}>
-                        Reach out to discuss how MatNEXT can transform your supply chain operations.
-                    </p>
-                </div>
+                <div style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    backdropFilter: 'blur(10px)',
+                    padding: '20px',
+                    border: '0.5px solid rgba(0,0,0,0.08)',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                }}>
+                    <div style={{ marginBottom: 24 }}>
+                        <h3 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#96CC39', marginBottom: 8, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Get in Touch</h3>
+                        <p style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.5, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <div style={{ width: 1, height: 12, background: '#96CC39' }} />
+                            Reach out to discuss how MatNEXT can transform your supply chain operations.
+                        </p>
+                    </div>
 
-                <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 20px' }} onSubmit={e => e.preventDefault()}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Full Name</label>
-                        <input type="text" placeholder="Enter your full name"
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Business Email</label>
-                        <input type="email" placeholder="name@company.com"
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Industry Segment</label>
-                        <div style={{ position: 'relative' }}>
-                            <select style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: 'rgba(0,0,0,0.7)', appearance: 'none' as const, cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 500 }}
-                                onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
-                                onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}>
-                                <option>Select Industry</option>
-                                <option>Automotive</option>
-                                <option>Steel</option>
-                                <option>Plastic</option>
-                                <option>Aluminium</option>
-                                <option>Battery</option>
-                                <option>HVAC</option>
-                                <option>Others</option>
-                            </select>
-                            <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'rgba(0,0,0,0.2)', fontSize: 10 }}>▼</div>
+                    <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 20px' }} onSubmit={e => e.preventDefault()}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Full Name</label>
+                            <input type="text" placeholder="Enter your full name"
+                                style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500}}
+                                onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
+                                onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
                         </div>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Annual Volume</label>
-                        <input type="text" placeholder="e.g., 10,000 Tons/year"
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '14px 16px', fontSize: 12, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: 'span 2' }}>
-                        <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Message</label>
-                        <textarea placeholder="Tell us about your requirements..."
-                            style={{ width: '100%', background: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(0,0,0,0.5)', padding: '16px', fontSize: 12, outline: 'none', color: '#0A0A0A', minHeight: 90, resize: 'none', transition: 'all 0.2s ease', lineHeight: 1.6, fontWeight: 500 }}
-                            onFocus={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'}
-                            onBlur={e => e.currentTarget.style.border = '0.5px solid rgba(0,0,0,0.5)'} />
-                    </div>
-                    <button type="submit"
-                        style={{ gridColumn: 'span 2', background: '#96CC39', color: '#000', fontWeight: 900, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '12px 0', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', marginTop: 12, boxShadow: '0 10px 30px rgba(150,204,57,0.15)' }}
-                        onMouseEnter={e => {
-                            e.currentTarget.style.background = '#A5D64C';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 15px 40px rgba(150,204,57,0.25)';
-                        }}
-                        onMouseLeave={e => {
-                            e.currentTarget.style.background = '#96CC39';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = '0 10px 30px rgba(150,204,57,0.15)';
-                        }}
-                    >
-                        Send Message <Send style={{ width: 16, height: 16, strokeWidth: 2, rotate: '45deg' }} />
-                    </button>
-                </form>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Business Email</label>
+                            <input type="email" placeholder="name@company.com"
+                                style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
+                                onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
+                                onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Industry Segment</label>
+                            <div style={{ position: 'relative' }}>
+                                <select style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: 'rgba(0,0,0,0.7)', appearance: 'none' as const, cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 500 }}
+                                    onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
+                                    onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'}>
+                                    <option>Select Industry</option>
+                                    <option>Automotive</option>
+                                    <option>Steel</option>
+                                    <option>Plastic</option>
+                                    <option>Aluminium</option>
+                                    <option>Battery</option>
+                                    <option>HVAC</option>
+                                    <option>Others</option>
+                                </select>
+                                <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'rgba(0,0,0,0.2)', fontSize: 10 }}>▼</div>
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Annual Volume</label>
+                            <input type="text" placeholder="e.g., 10,000 Tons/year"
+                                style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
+                                onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
+                                onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: 'span 2' }}>
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Message</label>
+                            <textarea placeholder="Tell us about your requirements..."
+                                style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '14px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', minHeight: 80, resize: 'none', transition: 'all 0.2s ease', lineHeight: 1.6, fontWeight: 500 }}
+                                onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
+                                onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
+                        </div>
+                        <button type="submit"
+                            style={{ gridColumn: 'span 2', background: '#96CC39', color: '#000', fontWeight: 900, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '14px 0', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', marginTop: 8, boxShadow: '0 8px 24px rgba(150,204,57,0.1)' }}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.background = '#A5D64C';
+                                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.background = '#96CC39';
+                                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                            }}
+                        >
+                            Send Message <Send style={{ width: 14, height: 14, strokeWidth: 2, rotate: '45deg' }} />
+                        </button>
+                    </form>
+                </div>
             </div>
 
-            {/* ═══ COPYRIGHT INFO — bottom-left corner ═══ */}
+            {/* ═══ INFO CARD — Bento Grid Style ═══ */}
             <div
                 ref={copyrightRef}
                 style={{
                     position: 'absolute',
                     bottom: 20,
                     left: 20,
-                    width: 'clamp(380px, 30vw, 550px)',
-                    background: 'linear-gradient(135deg, rgba(245,245,245,0.8) 0%, rgba(230,230,230,0.6) 100%)',
-                    backdropFilter: 'blur(20px)',
-                    padding: '44px 40px 32px',
+                    width: 'clamp(400px, 32vw, 580px)',
                     zIndex: 25,
-                    border: '0.4px solid rgba(0,0,0,0.1)',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.04)',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 12
                 }}
             >
-                <div style={{ marginBottom: 32 }}>
-                    <h2 style={{ fontSize: '3rem', fontWeight: 950, color: '#96CC39', lineHeight: 0.8, marginBottom: 20, letterSpacing: '-0.06em', opacity: 0.9 }}>MatNEXT</h2>
-                    <p style={{ color: 'rgba(0,0,0,0.4)', fontSize: 10.5, lineHeight: 1.7, letterSpacing: '0.01em', maxWidth: '100%' }}>
-                        Building the global infrastructure for material traceability <br />and sustainable industrial value chains.
+                {/* Intro Tile */}
+                <div style={{
+                    gridColumn: 'span 2',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    backdropFilter: 'blur(10px)',
+                    padding: '20px',
+                    border: '0.5px solid #96CC39',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                }}>
+                    <h2 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#96CC39', lineHeight: 0.8, marginBottom: 16, letterSpacing: '-0.06em' }}>MatNEXT</h2>
+                    <p style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.6, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 1, height: 30, background: '#96CC39' }} />
+                        Advanced product and material tracking, traceability & <br /> sustainability platform for the industrial value chain.
                     </p>
                 </div>
 
-                {/* Locations & Contact — Precision Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: 40, borderTop: '0.5px solid rgba(0,0,0,0.08)', paddingTop: 32 }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                        <span style={{ fontSize: 8, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Mumbai HQ</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#0A0A0A', fontSize: 12, fontWeight: 500 }}>
-                            <MapPin size={12} color="#96CC39" strokeWidth={3} />
-                            India
+                {/* HQ Locations Tile */}
+                <div style={{
+                    gridColumn: 'span 2',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    padding: '20px 20px',
+                    border: '0.5px solid #96CC39',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                }}>
+                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>HQ LOCATIONS</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                            <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <MapPin size={12} color="#96CC39" strokeWidth={3} />
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <div style={{ fontSize: 10, color: '#0A0A0A', letterSpacing: '0.1em' }}>MUMBAI</div>
+                                <div style={{ width: 1, height: 12, background: '#96CC39' }} />
+                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>INDIA 🇮🇳</div>
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                            <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <MapPin size={12} color="#96CC39" strokeWidth={3} />
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>TOKYO</div>
+                                <div style={{ width: 1, height: 12, background: '#96CC39' }} />
+                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>JAPAN 🇯🇵</div>
+                            </div>
                         </div>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                        <span style={{ fontSize: 8, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Tokyo Office</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#0A0A0A', fontSize: 12, fontWeight: 500 }}>
-                            <MapPin size={12} color="#96CC39" strokeWidth={3} />
-                            Japan
-                        </div>
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, gridColumn: 'span 2' }}>
-                        <span style={{ fontSize: 8, fontWeight: 900, color: 'rgba(0,0,0,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Inquiries</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#0A0A0A', fontSize: 12, fontWeight: 500 }}>
-                            <Mail size={12} color="#96CC39" strokeWidth={3} />
+                </div>
+
+                {/* Direct Line Tile */}
+                <div style={{
+                    gridColumn: 'span 2',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    padding: '20px 20px',
+                    border: '0.5px solid #96CC39',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                }}>
+                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>DIRECT LINE</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(0,0,0,1)', fontSize: 11 }}>
+                            <Mail size={14} color="#96CC39" strokeWidth={2} />
                             info-matnext@genbanext.com
                         </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(0,0,0,1)', fontSize: 11 }}>
+                            <Phone size={14} color="#96CC39" strokeWidth={2} />
+                            +81 80-8529-3858
+                        </div>
                     </div>
                 </div>
 
-                {/* Navigation Links — High Contrast Row */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px 32px', borderTop: '0.5px solid rgba(0,0,0,0.08)', paddingTop: 32 }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                        {['Features', 'Live Data', 'Our Partners', 'AI Integration'].map(link => (
-                            <a key={link} href="#" style={{ color: 'rgba(0,0,0,0.4)', textDecoration: 'none', fontSize: 11, fontWeight: 600, transition: 'all 0.2s ease' }}
-                                onMouseEnter={e => e.currentTarget.style.color = '#000'}
-                                onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.4)'}>
+                {/* Quick Links Tile */}
+                <div style={{
+                    gridColumn: 'span 2',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    padding: '20px 20px',
+                    border: '0.5px solid #96CC39',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                }}>
+                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 16 }}>QUICK LINKS</span>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 40 }}>
+                        {[
+                            'Features', 'Traction',
+                            'Genba AI', 'Why MatNEXT',
+                            'Our Partners', 'Contact'
+                        ].map((link) => (
+                            <a
+                                key={link}
+                                href="#"
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    color: 'rgba(0,0,0,0.5)',
+                                    textDecoration: 'none',
+                                    fontSize: 12,
+                                    fontWeight: 600,
+                                    padding: '5px 0',
+                                    borderBottom: '0.5px solid #96CC39',
+                                    transition: 'all 0.2s ease',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.color = '#000';
+                                    e.currentTarget.style.borderBottomColor = '#96CC39';
+                                    e.currentTarget.style.transform = 'translateX(4px)';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.color = 'rgba(0,0,0,0.5)';
+                                    e.currentTarget.style.borderBottomColor = '#96CC39';
+                                    e.currentTarget.style.transform = 'translateX(0)';
+                                }}
+                            >
                                 {link}
+                                <ArrowUpRight size={14} style={{ opacity: 1, color: '#96CC39' }} />
                             </a>
                         ))}
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                        {['Why Choose Us', 'Testimonials', 'Contact', 'Legal', 'Privacy'].map(link => (
-                            <a key={link} href="#" style={{ color: 'rgba(0,0,0,0.4)', textDecoration: 'none', fontSize: 11, fontWeight: 600, transition: 'all 0.2s ease' }}
-                                onMouseEnter={e => e.currentTarget.style.color = '#000'}
-                                onMouseLeave={e => e.currentTarget.style.color = 'rgba(0,0,0,0.4)'}>
-                                {link}
-                            </a>
-                        ))}
+                    <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', opacity: 0.5 }}>
+                        <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>© 2026 MatNEXT. All rights reserved.</div>
                     </div>
-                </div>
-
-                {/* Final Branding & Date */}
-                <div style={{ marginTop: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: 0.3 }}>
-                    <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>© 2026 MatNEXT CORP</div>
-                    <div style={{ fontSize: 8, fontWeight: 700 }}>VER. 4.0.2</div>
                 </div>
             </div>
 
@@ -292,10 +356,9 @@ export const FooterNarrative = () => {
                 alt=""
                 style={{
                     position: 'absolute',
-                    top: '12%',
+                    top: '1%',
                     left: '-0.5%',
-                    rotate: '3deg',
-                    width: 'clamp(900px, 60vw, 1000px)',
+                    width: 'clamp(1000px, 80vw, 1100px)',
                     height: 'auto',
                     pointerEvents: 'none',
                     zIndex: 40,

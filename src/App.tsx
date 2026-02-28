@@ -37,6 +37,7 @@ function App() {
     const lenisRef = useRef<Lenis | null>(null)
     const [isMuted, setIsMuted] = useState(SoundController.getMuteState())
 
+    const [isFooterReached, setIsFooterReached] = useState(false)
     const handleToggleMute = () => {
         setIsMuted(SoundController.toggleMute())
     }
@@ -105,6 +106,19 @@ function App() {
             refreshPriority: 10, // Force parent pin calculation before child components
             onUpdate: (self) => {
                 setScrollProgress(self.progress)
+            }
+        })
+
+        // Hide header when reaching footer
+        ScrollTrigger.create({
+            trigger: '#customers',
+            start: 'top 60%',
+            end: 'bottom bottom',
+            onEnter: () => setIsFooterReached(true),
+            onLeaveBack: () => setIsFooterReached(false),
+            onUpdate: (self) => {
+                if (self.progress > 0.01) setIsFooterReached(true)
+                else setIsFooterReached(false)
             }
         })
 
@@ -178,8 +192,8 @@ function App() {
             {/* Navigation */}
             <nav
                 style={{
-                    opacity: (!loading && scrollProgress < 0.3) ? 1 : (scrollProgress > 0.45 ? 1 : 0),
-                    pointerEvents: (!loading && (scrollProgress < 0.3 || scrollProgress > 0.45)) ? 'auto' : 'none',
+                    opacity: (!loading && scrollProgress < 0.3 && !isFooterReached) ? 1 : (scrollProgress > 0.45 && !isFooterReached ? 1 : 0),
+                    pointerEvents: (!loading && (scrollProgress < 0.3 || scrollProgress > 0.45) && !isFooterReached) ? 'auto' : 'none',
                     zIndex: 100
                 }}
                 className="fixed top-0 flex w-full items-center justify-between px-10 py-6 text-data-navy transition-all duration-700 bg-white border-b border-data-navy/10"
@@ -194,7 +208,7 @@ function App() {
                     <img src={logo} alt="MatNEXT Logo" className="h-5 w-auto object-contain transition-transform duration-300 group-hover:scale-110" style={{ filter: 'none' }} />
                 </div>
                 <div className="hidden gap-10 text-[10px] font-bold tracking-[0.3em] md:flex opacity-100">
-                    {['FEATURES', 'TRACTION', 'AI', 'WHY-MATNEXT', 'CUSTOMERS'].map((item) => (
+                    {['FEATURES', 'TRACTION', 'GENBA AI', 'WHY MATNEXT', 'CUSTOMERS'].map((item) => (
                         <button key={item}
                             onClick={() => {
                                 SoundController.playClickSound();
