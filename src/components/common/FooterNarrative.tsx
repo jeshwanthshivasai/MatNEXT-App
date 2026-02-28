@@ -25,7 +25,7 @@ const FooterGlobe = () => {
         }
     })
     return (
-        <lineSegments ref={meshRef as any} scale={0.5}>
+        <lineSegments ref={meshRef as any} scale={0.70}>
             <edgesGeometry attach="geometry" args={[new THREE.SphereGeometry(2.5, 16, 16)]} />
             <lineBasicMaterial attach="material" color="#96CC39" opacity={1} transparent />
         </lineSegments>
@@ -101,8 +101,17 @@ export const FooterNarrative = () => {
 
         // Phase 2: Logo + Cars (55% → 100%)
         tl.to(logoRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: -50, duration: 0.2, ease: 'back.out(1.7)' }, 0.58)
-        tl.to(topCarRef.current, { scale: 1, opacity: 1, xPercent: -50, duration: 0.18, ease: 'power2.out' }, 0.65)
-        tl.to(bottomCarRef.current, { scale: 1, opacity: 1, xPercent: -50, duration: 0.18, ease: 'power2.out' }, 0.72)
+        tl.to(topCarRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: 0, duration: 0.18, ease: 'power2.out' }, 0.65)
+        tl.to(bottomCarRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: 0, duration: 0.18, ease: 'power2.out' }, 0.72)
+
+        // Standalone Logo Pulse (independent of scroll)
+        gsap.to(logoRef.current, {
+            scale: 1.08,
+            duration: 1.25,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        })
 
     }, { scope: sectionRef })
 
@@ -135,10 +144,10 @@ export const FooterNarrative = () => {
                 }}
             >
                 <div style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     backdropFilter: 'blur(10px)',
                     padding: '20px',
-                    border: '0.5px solid rgba(0,0,0,0.08)',
+                    border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
                 }}>
                     <div style={{ marginBottom: 24 }}>
@@ -197,7 +206,7 @@ export const FooterNarrative = () => {
                                 onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
                         </div>
                         <button type="submit"
-                            style={{ gridColumn: 'span 2', background: '#96CC39', color: '#000', fontWeight: 900, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '14px 0', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', marginTop: 8, boxShadow: '0 8px 24px rgba(150,204,57,0.1)' }}
+                            style={{ gridColumn: 'span 2', background: '#96CC39', color: '#000', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '14px 0', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', marginTop: 8, boxShadow: '0 8px 24px rgba(150,204,57,0.1)' }}
                             onMouseEnter={e => {
                                 e.currentTarget.style.background = '#A5D64C';
                                 e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
@@ -220,7 +229,7 @@ export const FooterNarrative = () => {
                     position: 'absolute',
                     bottom: 20,
                     left: 20,
-                    width: 'clamp(400px, 32vw, 580px)',
+                    width: 'clamp(380px, 30vw, 550px)',
                     zIndex: 25,
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
@@ -230,7 +239,7 @@ export const FooterNarrative = () => {
                 {/* Intro Tile */}
                 <div style={{
                     gridColumn: 'span 2',
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     backdropFilter: 'blur(10px)',
                     padding: '20px',
                     border: '0.5px solid #96CC39',
@@ -245,7 +254,7 @@ export const FooterNarrative = () => {
 
                 {/* HQ Locations Tile */}
                 <div style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -277,7 +286,7 @@ export const FooterNarrative = () => {
 
                 {/* Direct Line Tile */}
                 <div style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -302,7 +311,7 @@ export const FooterNarrative = () => {
                 {/* Quick Links Tile */}
                 <div style={{
                     gridColumn: 'span 2',
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
+                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -365,6 +374,7 @@ export const FooterNarrative = () => {
                     height: 'auto',
                     pointerEvents: 'none',
                     zIndex: 40,
+                    opacity: 0.8,
                 }}
             />
 
@@ -382,6 +392,7 @@ export const FooterNarrative = () => {
                     height: 'auto',
                     pointerEvents: 'none',
                     zIndex: 40,
+                    opacity: 0.8,
                 }}
             />
 
@@ -392,10 +403,9 @@ export const FooterNarrative = () => {
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
-                    transform: 'translate(-50%, -50%)',
                     width: 'clamp(550px, 50vw, 750px)',
                     height: 'clamp(550px, 50vw, 750px)',
-                    zIndex: 50,
+                    zIndex: 20,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -423,10 +433,9 @@ export const FooterNarrative = () => {
                         position: 'absolute',
                         top: '18%',
                         left: '50%',
-                        transform: 'translateX(-50%)',
                         width: 'clamp(80px, 7vw, 120px)',
                         height: 'clamp(50px, 4vw, 70px)',
-                        zIndex: 6,
+                        zIndex: 26,
                     }}
                 >
                     <Canvas camera={{ position: [0, 1.5, 4], fov: 40 }} style={{ pointerEvents: 'none' }}>
@@ -445,8 +454,7 @@ export const FooterNarrative = () => {
                         position: 'absolute',
                         top: '50%',
                         left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        zIndex: 7,
+                        zIndex: 30,
                         textAlign: 'center',
                     }}
                 >
@@ -456,7 +464,6 @@ export const FooterNarrative = () => {
                         style={{
                             width: 'clamp(60px, 6vw, 100px)',
                             height: 'auto',
-                            animation: 'logoPulse 2.5s ease-in-out infinite',
                         }}
                     />
                 </div>
@@ -468,10 +475,9 @@ export const FooterNarrative = () => {
                         position: 'absolute',
                         bottom: '18%',
                         left: '50%',
-                        transform: 'translateX(-50%)',
                         width: 'clamp(80px, 7vw, 120px)',
                         height: 'clamp(50px, 4vw, 70px)',
-                        zIndex: 6,
+                        zIndex: 26,
                     }}
                 >
                     <Canvas camera={{ position: [0, 1.5, 4], fov: 40 }} style={{ pointerEvents: 'none' }}>
@@ -484,13 +490,6 @@ export const FooterNarrative = () => {
                 </div>
             </div>
 
-            {/* Pulse keyframes */}
-            <style>{`
-                @keyframes logoPulse {
-                    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-                    50% { transform: translate(-50%, -50%) scale(1.08); }
-                }
-            `}</style>
         </footer>
     )
 }
