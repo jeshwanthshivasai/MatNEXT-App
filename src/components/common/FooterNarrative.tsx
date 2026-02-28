@@ -21,13 +21,13 @@ const FooterGlobe = () => {
     useFrame((_s, delta) => {
         if (meshRef.current) {
             meshRef.current.rotation.y += delta * 0.15
-            meshRef.current.rotation.x = -0.05
+            meshRef.current.rotation.x = 0 // perfectly straight equator
         }
     })
     return (
-        <lineSegments ref={meshRef as any} scale={1.0}>
+        <lineSegments ref={meshRef as any} scale={0.5}>
             <edgesGeometry attach="geometry" args={[new THREE.SphereGeometry(2.5, 16, 16)]} />
-            <lineBasicMaterial attach="material" color="#96CC39" opacity={0.35} transparent />
+            <lineBasicMaterial attach="material" color="#96CC39" opacity={1} transparent />
         </lineSegments>
     )
 }
@@ -79,10 +79,10 @@ export const FooterNarrative = () => {
         // Initial states
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
-        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
-        gsap.set(logoRef.current, { scale: 0, opacity: 0 })
-        gsap.set(topCarRef.current, { scale: 0, opacity: 0 })
-        gsap.set(bottomCarRef.current, { scale: 0, opacity: 0 })
+        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0, xPercent: -50, yPercent: -50 })
+        gsap.set(logoRef.current, { scale: 0, opacity: 0, xPercent: -50, yPercent: -50 })
+        gsap.set(topCarRef.current, { scale: 0, opacity: 0, xPercent: -50 })
+        gsap.set(bottomCarRef.current, { scale: 0, opacity: 0, xPercent: -50 })
 
         const tl = gsap.timeline({
             scrollTrigger: {
@@ -97,12 +97,12 @@ export const FooterNarrative = () => {
         // Phase 1: Hands reveal + Globe (0% → 55%)
         tl.to(leftHandRef.current, { x: '0%', opacity: 1, duration: 0.55, ease: 'power3.out' }, 0)
         tl.to(rightHandRef.current, { x: '0%', opacity: 1, duration: 0.55, ease: 'power3.out' }, 0)
-        tl.to(globeContainerRef.current, { scale: 1, opacity: 1, duration: 0.55, ease: 'power2.out' }, 0.05)
+        tl.to(globeContainerRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: -50, duration: 0.55, ease: 'power2.out' }, 0.05)
 
         // Phase 2: Logo + Cars (55% → 100%)
-        tl.to(logoRef.current, { scale: 1, opacity: 1, duration: 0.2, ease: 'back.out(1.7)' }, 0.58)
-        tl.to(topCarRef.current, { scale: 1, opacity: 1, duration: 0.18, ease: 'power2.out' }, 0.65)
-        tl.to(bottomCarRef.current, { scale: 1, opacity: 1, duration: 0.18, ease: 'power2.out' }, 0.72)
+        tl.to(logoRef.current, { scale: 1, opacity: 1, xPercent: -50, yPercent: -50, duration: 0.2, ease: 'back.out(1.7)' }, 0.58)
+        tl.to(topCarRef.current, { scale: 1, opacity: 1, xPercent: -50, duration: 0.18, ease: 'power2.out' }, 0.65)
+        tl.to(bottomCarRef.current, { scale: 1, opacity: 1, xPercent: -50, duration: 0.18, ease: 'power2.out' }, 0.72)
 
     }, { scope: sectionRef })
 
@@ -393,9 +393,9 @@ export const FooterNarrative = () => {
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    width: 'clamp(320px, 32vw, 480px)',
-                    height: 'clamp(320px, 32vw, 480px)',
-                    zIndex: 15,
+                    width: 'clamp(550px, 50vw, 750px)',
+                    height: 'clamp(550px, 50vw, 750px)',
+                    zIndex: 50,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -411,7 +411,7 @@ export const FooterNarrative = () => {
                 }} />
 
                 {/* Rotating Globe Canvas */}
-                <Canvas camera={{ position: [0, 0, 5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
                     <FooterGlobe />
                 </Canvas>
 
