@@ -38,6 +38,14 @@ function App() {
     const [isMuted, setIsMuted] = useState(SoundController.getMuteState())
 
     const [isFooterReached, setIsFooterReached] = useState(false)
+
+    useEffect(() => {
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual'
+        }
+        window.scrollTo(0, 0)
+    }, [])
+
     const handleToggleMute = () => {
         setIsMuted(SoundController.toggleMute())
     }
@@ -208,15 +216,21 @@ function App() {
                     <img src={logo} alt="MatNEXT Logo" className="h-5 w-auto object-contain transition-transform duration-300 group-hover:scale-110" style={{ filter: 'none' }} />
                 </div>
                 <div className="hidden gap-10 text-[10px] font-bold tracking-[0.3em] md:flex opacity-100">
-                    {['FEATURES', 'TRACTION', 'GENBA AI', 'WHY MATNEXT', 'CUSTOMERS'].map((item) => (
-                        <button key={item}
+                    {[
+                        { label: 'FEATURES', id: 'features-narrative' },
+                        { label: 'TRACTION', id: 'traction' },
+                        { label: 'GENBA AI', id: 'ai' },
+                        { label: 'WHY MATNEXT', id: 'why-matnext' },
+                        { label: 'CUSTOMERS', id: 'customers' }
+                    ].map((item) => (
+                        <button key={item.label}
                             onClick={() => {
                                 SoundController.playClickSound();
-                                scrollToSection(`#${item.toLowerCase()}`);
+                                scrollToSection(`#${item.id}`);
                             }}
                             onMouseEnter={() => SoundController.playHoverSound()}
                             className="hover:text-electric-sulfur transition-all duration-300 cursor-pointer text-left">
-                            /{item.replace('-', ' ')}
+                            /{item.label}
                         </button>
                     ))}
                 </div>

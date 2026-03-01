@@ -253,7 +253,7 @@ export const AINarrative = () => {
                     {/* NeuralAccent removed, replaced by scanning radar */}
                     <div className="relative pointer-events-auto z-10">
                         <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">Artificial Intelligence</span>
-                        <h2 className="text-[7vw] md:text-[5vw] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
+                        <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
                             AI-Powered<br />Intelligence.
                         </h2>
                         <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">

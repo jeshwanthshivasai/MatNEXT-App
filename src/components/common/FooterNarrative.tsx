@@ -153,8 +153,7 @@ export const FooterNarrative = () => {
                 }}
             >
                 <div style={{
-                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
-                    backdropFilter: 'blur(10px)',
+                    background: 'rgba(255,255,255,0.95)',
                     padding: '20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -248,8 +247,7 @@ export const FooterNarrative = () => {
                 {/* Intro Tile */}
                 <div style={{
                     gridColumn: 'span 2',
-                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
-                    backdropFilter: 'blur(10px)',
+                    background: 'rgba(255,255,255,0.95)',
                     padding: '20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -367,10 +365,10 @@ export const FooterNarrative = () => {
                         <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>© 2026 MatNEXT. All rights reserved.</div>
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* ═══ LEFT HAND — from top-left, closer to center ═══ */}
-            <img
+            < img
                 ref={leftHandRef}
                 src={handLeftSvg}
                 alt=""
@@ -513,7 +511,7 @@ export const FooterNarrative = () => {
                 </div> */}
             </div>
 
-        </footer>
+        </footer >
     )
 }
 

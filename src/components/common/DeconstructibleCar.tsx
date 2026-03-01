@@ -4,7 +4,6 @@ import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
 const carModelUrl = '/models/generic_sedan_car_optimized.glb'
-const heroModelUrl = '/models/generic_sedan_car/scene.gltf'
 
 interface DeconstructibleCarProps {
     progress: number
@@ -135,7 +134,7 @@ const WireframeLayer = ({ progress, isLoader }: DeconstructibleCarProps) => {
 }
 
 const HeroLayer = ({ progress }: { progress: number }) => {
-    const { scene } = useGLTF(heroModelUrl)
+    const { scene } = useGLTF(carModelUrl)
     return <ProcessedMeshGroup scene={scene} isWireframe={false} progress={progress} isLoader={false} />
 }
 
