@@ -6,7 +6,8 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import { useTranslation } from 'react-i18next'
 import * as THREE from 'three'
-import { Send, MapPin, Mail, ArrowUpRight, Phone } from 'lucide-react'
+import { Send, MapPin, Mail, ArrowUpRight, Phone, Globe } from 'lucide-react'
+import { SoundController } from '../../utils/SoundController'
 // import { DeconstructibleCar } from './DeconstructibleCar'
 // import { Environment, PerspectiveCamera } from '@react-three/drei'
 
@@ -53,6 +54,81 @@ const FooterGlobe = () => {
 //         </group>
 //     )
 // }
+
+/* ─── Footer Language Selector ─────── */
+const LanguageSelector = () => {
+    const { i18n } = useTranslation()
+    const currentLang = i18n.language
+
+    const languages = [
+        { code: 'en', label: 'EN' },
+        { code: 'jp', label: 'JP' },
+        { code: 'th', label: 'TH' }
+    ]
+
+    const handleLanguageChange = (code: string) => {
+        SoundController.playClickSound()
+        i18n.changeLanguage(code)
+    }
+
+    return (
+        <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            background: 'rgba(150, 204, 57, 0.05)',
+            backdropFilter: 'blur(10px)',
+            padding: '4px',
+            border: '1px solid rgba(150, 204, 57, 0.2)',
+            gap: '8px',
+            pointerEvents: 'auto'
+        }}>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '0 12px',
+                color: 'rgba(0,0,0,0.4)',
+                fontSize: '11px',
+                fontWeight: 800,
+                letterSpacing: '0.1em'
+            }}>
+                <Globe size={14} strokeWidth={2.5} />
+                <span>LANG</span>
+            </div>
+
+            <div style={{
+                display: 'flex',
+                background: 'rgba(255,255,255,0.5)',
+                padding: '2px',
+                gap: '2px'
+            }}>
+                {languages.map((lang) => {
+                    const isActive = currentLang === lang.code
+                    return (
+                        <button
+                            key={lang.code}
+                            onClick={() => handleLanguageChange(lang.code)}
+                            onMouseEnter={() => SoundController.playHoverSound()}
+                            style={{
+                                border: 'none',
+                                background: isActive ? '#96CC39' : 'transparent',
+                                color: isActive ? '#000' : 'rgba(0,0,0,0.5)',
+                                cursor: 'pointer',
+                                padding: '6px 12px',
+                                fontSize: '10px',
+                                fontWeight: 800,
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                letterSpacing: '0.05em'
+                            }}
+                        >
+                            {lang.label}
+                        </button>
+                    )
+                })}
+            </div>
+        </div>
+    )
+}
 
 /* ═══════════════════════════════════════
    FooterNarrative
@@ -371,6 +447,16 @@ export const FooterNarrative = () => {
                     </div>
                 </div>
             </div >
+
+            {/* ═══ FOOTER LANGUAGE SELECTOR — Bottom Right Corner ═══ */}
+            <div style={{
+                position: 'absolute',
+                bottom: 20,
+                right: 20,
+                zIndex: 45
+            }}>
+                <LanguageSelector />
+            </div>
 
             {/* ═══ LEFT HAND — from top-left, closer to center ═══ */}
             < img
