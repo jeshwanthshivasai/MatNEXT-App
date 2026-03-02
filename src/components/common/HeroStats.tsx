@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 export const HeroStats = () => {
+    const { t } = useTranslation()
     const stats = [
-        { label: 'Created Impact', value: '1,20,000+', sub: 'TONS TRACKED', id: 'stat-1' },
-        { label: 'Our Partnership', value: '25+', sub: 'STAKEHOLDERS', id: 'stat-2' },
-        { label: 'Our Coverage', value: '6+', sub: 'INDUSTRIES', id: 'stat-3' }
+        { label: t('heroStats.impact'), value: '1,20,000+', sub: t('heroStats.tons'), id: 'stat-1' },
+        { label: t('heroStats.partnership'), value: '25+', sub: t('heroStats.stakeholders'), id: 'stat-2' },
+        { label: t('heroStats.coverage'), value: '6+', sub: t('heroStats.industries'), id: 'stat-3' }
     ]
 
     return (

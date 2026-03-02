@@ -24,6 +24,8 @@ import {
 } from 'lucide-react'
 import logo from './assets/MatNEXT.png'
 import { Analytics } from '@vercel/analytics/react'
+import { useTranslation } from 'react-i18next'
+import { Languages, ChevronDown } from 'lucide-react'
 
 
 gsap.registerPlugin(ScrollTrigger)
@@ -38,6 +40,14 @@ function App() {
     const [isMuted, setIsMuted] = useState(SoundController.getMuteState())
 
     const [isFooterReached, setIsFooterReached] = useState(false)
+    const [isLangOpen, setIsLangOpen] = useState(false)
+    const { t, i18n } = useTranslation()
+
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng)
+        setIsLangOpen(false)
+        SoundController.playClickSound()
+    }
 
     useEffect(() => {
         if ('scrollRestoration' in history) {
@@ -217,13 +227,13 @@ function App() {
                 </div>
                 <div className="hidden gap-10 text-[10px] font-bold tracking-[0.3em] md:flex opacity-100">
                     {[
-                        { label: 'FEATURES', id: 'features-narrative' },
-                        { label: 'TRACTION', id: 'traction' },
-                        { label: 'GENBA AI', id: 'ai' },
-                        { label: 'WHY MATNEXT', id: 'why-matnext' },
-                        { label: 'CUSTOMERS', id: 'customers' }
+                        { label: t('nav.features'), id: 'features-narrative' },
+                        { label: t('nav.traction'), id: 'traction' },
+                        { label: t('nav.ai'), id: 'ai' },
+                        { label: t('nav.why'), id: 'why-matnext' },
+                        { label: t('nav.customers'), id: 'customers' }
                     ].map((item) => (
-                        <button key={item.label}
+                        <button key={item.id}
                             onClick={() => {
                                 SoundController.playClickSound();
                                 scrollToSection(`#${item.id}`);
@@ -235,6 +245,41 @@ function App() {
                     ))}
                 </div>
                 <div className="flex items-center gap-6">
+                    {/* Language Selector Dropdown */}
+                    <div className="relative">
+                        <button
+                            onClick={() => {
+                                setIsLangOpen(!isLangOpen);
+                                SoundController.playClickSound();
+                            }}
+                            onMouseEnter={() => SoundController.playHoverSound()}
+                            className="flex items-center gap-2 text-data-navy hover:text-electric-sulfur transition-colors text-[10px] font-bold tracking-widest uppercase"
+                        >
+                            <Languages className="w-4 h-4" />
+                            <span className="hidden sm:inline">{i18n.language.toUpperCase()}</span>
+                            <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {isLangOpen && (
+                            <div className="absolute top-full right-0 mt-4 w-32 bg-white border border-data-navy/10 shadow-xl py-2 z-[110] animate-in fade-in slide-in-from-top-2 duration-300">
+                                {[
+                                    { code: 'en', label: 'English' },
+                                    { code: 'ja', label: '日本語' },
+                                    { code: 'th', label: 'ไทย' }
+                                ].map((lang) => (
+                                    <button
+                                        key={lang.code}
+                                        onClick={() => changeLanguage(lang.code)}
+                                        onMouseEnter={() => SoundController.playHoverSound()}
+                                        className={`w-full text-left px-4 py-2 text-[10px] font-bold tracking-wider hover:bg-neutral-50 hover:text-electric-sulfur transition-colors ${i18n.language === lang.code ? 'text-electric-sulfur bg-neutral-50/50' : 'text-data-navy'}`}
+                                    >
+                                        {lang.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
                     <button
                         onClick={handleToggleMute}
                         onMouseEnter={() => SoundController.playHoverSound()}
@@ -247,7 +292,7 @@ function App() {
                         onClick={() => SoundController.playClickSound()}
                         className="btn-premium py-2.5 px-6 group relative flex items-center gap-2 transition-all duration-300 hover:bg-electric-sulfur hover:text-data-navy text-[10px] tracking-widest"
                     >
-                        Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                        {t('nav.demo')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                     </button>
                 </div>
             </nav>
@@ -266,7 +311,7 @@ function App() {
                         <h1
                             className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl relative top-12 opacity-0"
                         >
-                            Product and Material Tracking, Traceability <br /> and Sustainability Platform
+                            {t('hero.title')}
                         </h1>
 
                         <div className="flex flex-col md:flex-row items-end justify-between w-full">
@@ -274,7 +319,7 @@ function App() {
                                 <p
                                     className="hero-reveal text-[14px] text-justify opacity-0 mb-6 leading-relaxed"
                                 >
-                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.
+                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> {t('hero.description')}
                                 </p>
                                 <div className="hero-reveal flex gap-10 opacity-0">
                                     <button
@@ -282,14 +327,14 @@ function App() {
                                         onClick={() => SoundController.playClickSound()}
                                         className="btn-premium group flex items-center gap-4 pointer-events-auto"
                                     >
-                                        Request Platform Demo <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                        {t('nav.demo')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                                     </button>
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
                                         className="btn-premium group flex items-center gap-4 text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto"
                                     >
-                                        Explore the Engine <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                        {t('hero.explore')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                                     </button>
                                 </div>
                             </div>
@@ -318,7 +363,7 @@ function App() {
                             />
                         </div>
                     </div>
-                    <span className="text-[10px] uppercase tracking-[0.6em] font-bold">Scroll to Explore</span>
+                    <span className="text-[10px] uppercase tracking-[0.6em] font-bold">{t('hero.scroll')}</span>
                 </motion.div>
             </div>
 

@@ -1,21 +1,26 @@
 import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
+import { useTranslation } from 'react-i18next'
 
 interface TraceabilityMapProps {
     scrollProgress: number
 }
 
-const materials = [
-    { name: 'STEEL', value: 85, color: '#8E9196', desc: 'Body Frame' },
-    { name: 'LITHIUM', value: 45, color: '#D4D4D8', desc: 'Battery Cells' },
-    { name: 'COBALT', value: 25, color: '#3B82F6', desc: 'Cathode' },
-    { name: 'COPPER', value: 70, color: '#F97316', desc: 'Wiring Harness' },
-    { name: 'ALUMINIUM', value: 60, color: '#94A3B8', desc: 'Chassis' }
+// Materials helper
+const getMaterials = (t: any) => [
+    { name: 'STEEL', value: 85, color: '#8E9196', desc: t('traceability.materials.steel') },
+    { name: 'LITHIUM', value: 45, color: '#D4D4D8', desc: t('traceability.materials.lithium') },
+    { name: 'COBALT', value: 25, color: '#3B82F6', desc: t('traceability.materials.cobalt') },
+    { name: 'COPPER', value: 70, color: '#F97316', desc: t('traceability.materials.copper') },
+    { name: 'ALUMINIUM', value: 60, color: '#94A3B8', desc: t('traceability.materials.aluminium') }
 ]
 
 export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
+    const { t } = useTranslation()
     const container = useRef<HTMLDivElement>(null)
     const hasAnimated = useRef(false)
+
+    const materials = getMaterials(t)
 
     let newStatsOpacity = 0;
     let visibility = 0;
@@ -119,7 +124,7 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
 
                         {/* Smaller, Centered Title Text */}
                         <span className="text-[10px] md:text-[10px] opacity-60 mt-3 font-bold text-data-navy font-sans uppercase tracking-widest text-center relative z-10 leading-tight">
-                            Compliance Score
+                            {t('traceability.compliance')}
                         </span>
                     </div>
                 </div>
@@ -144,7 +149,7 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
 
                         {/* Smaller, Centered Title Text */}
                         <span className="text-[10px] md:text-[10px] opacity-60 mt-3 font-bold text-data-navy font-sans uppercase tracking-widest text-center relative z-10 leading-tight">
-                            Units Tracked
+                            {t('traceability.tracked')}
                         </span>
                     </div>
                 </div>
@@ -168,10 +173,10 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                     <div className="absolute bottom-[240px] left-10 right-10 flex flex-col items-center justify-center text-center">
                         <div>
                             <span className="text-xl text-data-navy font-mono uppercase tracking-[0.5em] opacity-100 block mb-1">
-                                Circular Economy Matrix
+                                {t('traceability.matrix')}
                             </span>
                             <span className="text-md font-mono uppercase tracking-[0.3em] font-bold text-electric-sulfur">
-                                Material Extraction // Live
+                                {t('traceability.extraction')}
                             </span>
                         </div>
                     </div>

@@ -17,29 +17,28 @@ import {
     Layers,
     LucideIcon
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 gsap.registerPlugin(ScrollTrigger)
 
 // All 12 features — flat, no groups
-const features: { title: string; desc: string; icon: LucideIcon }[] = [
-    { title: 'Tracking & Traceability', desc: 'Real-time intelligence tracks every material, batch & transaction across your supply chain.', icon: BarChart3 },
-    { title: 'Dynamic Mapping', desc: 'Visualize your entire supply chain network from raw extraction to final assembly.', icon: Map },
-    { title: 'Material Passport', desc: 'Every product gets a digital twin containing its entire lifecycle history and provenance.', icon: Globe },
-    { title: 'Risk Intelligence', desc: 'Predictive analytics identify supply chain disruptions before they cascade.', icon: ShieldAlert },
-    { title: 'Compliance Vault', desc: 'Securely store all regulatory documentation in a tamper-proof, audit-ready ledger.', icon: Database },
-    { title: 'Supplier Network', desc: 'Onboard and manage thousands of suppliers with automated data verification.', icon: Network },
-    { title: 'Sustainability Engine', desc: 'Automate carbon accounting and ESG compliance with precision data protocols.', icon: RotateCcw },
-    { title: 'Stakeholder Portal', desc: 'Seamlessly share supply chain data with customers and regulatory bodies.', icon: Users },
-    { title: 'Industry Benchmarks', desc: 'Compare your sustainability performance against global competitors in real-time.', icon: Factory },
-    { title: 'AI Automation', desc: 'Harness ML to extract and verify data from complex supply chain documents.', icon: Cpu },
-    { title: 'Operational Efficiency', desc: 'Streamline procurement and logistics with data-driven, automated workflows.', icon: Zap },
-    { title: 'Scalable Architecture', desc: 'Built for enterprise-scale operations, handling millions of transactions safely.', icon: Layers },
+// All 12 features definition helper
+const getFeatures = (t: any): { title: string; desc: string; icon: LucideIcon }[] => [
+    { title: t('features.items.tracking.title'), desc: t('features.items.tracking.desc'), icon: BarChart3 },
+    { title: t('features.items.mapping.title'), desc: t('features.items.mapping.desc'), icon: Map },
+    { title: t('features.items.passport.title'), desc: t('features.items.passport.desc'), icon: Globe },
+    { title: t('features.items.risk.title'), desc: t('features.items.risk.desc'), icon: ShieldAlert },
+    { title: t('features.items.vault.title'), desc: t('features.items.vault.desc'), icon: Database },
+    { title: t('features.items.network.title'), desc: t('features.items.network.desc'), icon: Network },
+    { title: t('features.items.sustainability.title'), desc: t('features.items.sustainability.desc'), icon: RotateCcw },
+    { title: t('features.items.portal.title'), desc: t('features.items.portal.desc'), icon: Users },
+    { title: t('features.items.benchmarks.title'), desc: t('features.items.benchmarks.desc'), icon: Factory },
+    { title: t('features.items.ai.title'), desc: t('features.items.ai.desc'), icon: Cpu },
+    { title: t('features.items.efficiency.title'), desc: t('features.items.efficiency.desc'), icon: Zap },
+    { title: t('features.items.architecture.title'), desc: t('features.items.architecture.desc'), icon: Layers },
 ]
 
-const topFeatures = features.slice(0, 6);
-const bottomFeatures = features.slice(6, 12);
-
-const FeatureNode = ({ feature, index }: { feature: typeof features[0], index: number }) => {
+const FeatureNode = ({ feature, index }: { feature: { title: string; desc: string; icon: LucideIcon }, index: number }) => {
     const Icon = feature.icon;
     return (
         <div
@@ -83,11 +82,16 @@ const FeatureNode = ({ feature, index }: { feature: typeof features[0], index: n
 };
 
 export const FeaturesNarrative = () => {
+    const { t } = useTranslation()
     const sectionRef = useRef<HTMLDivElement>(null)
     const contentContainerRef = useRef<HTMLDivElement>(null)
     const contentWrapperRef = useRef<HTMLDivElement>(null)
     const topTrackRef = useRef<HTMLDivElement>(null)
     const bottomTrackRef = useRef<HTMLDivElement>(null)
+
+    const features = getFeatures(t)
+    const topFeatures = features.slice(0, 6);
+    const bottomFeatures = features.slice(6, 12);
 
     useGSAP(() => {
         if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current || !contentContainerRef.current) return
@@ -157,13 +161,13 @@ export const FeaturesNarrative = () => {
                     <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-0">
                         <div className="relative pointer-events-auto">
                             <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">
-                                Platform Capabilities
+                                {t('features.title')}
                             </span>
                             <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
-                                Comprehensive Sustainability Engine.<br />
+                                {t('features.subtitle')}
                             </h2>
                             <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
-                                Scroll to explore all 12 platform capabilities →
+                                {t('features.scroll')}
                             </p>
                             <div style={{ fontFamily: 'Inter, sans-serif' }} className="absolute top-1/2 right-0 -translate-y-1/2 text-[clamp(10rem,18vw,20rem)] font-black font-italic text-electric-sulfur leading-none pointer-events-none select-none tracking-tighter">
                                 12

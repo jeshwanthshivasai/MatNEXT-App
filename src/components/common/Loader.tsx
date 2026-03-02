@@ -1,11 +1,13 @@
 import { useState, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, PerspectiveCamera, useProgress } from '@react-three/drei'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DeconstructibleCar } from './DeconstructibleCar'
 import { SoundController } from '@/utils/SoundController'
 
 export const Loader = ({ onComplete }: { onComplete: () => void }) => {
+    const { t } = useTranslation()
     const { progress: downloadProgress } = useProgress()
     const [aestheticProgress, setAestheticProgress] = useState(0)
     const [showWebsite, setShowWebsite] = useState(false)
@@ -80,12 +82,12 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                         className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none"
                     >
                         <div className="absolute top-30 text-md text-center font-extrabold opacity-100 uppercase tracking-[0.4em]">
-                            MatNEXT Protocol // v1.0.0 // Initializing_System
+                            {t('loader.protocol')}
                         </div>
 
                         <div className="relative z-10 w-full max-w-2xl px-10 mt-auto mb-32">
                             <div className="flex justify-between items-end mb-6">
-                                <span className="text-5xl font-black tracking-tighter italic leading-none">BOOTING</span>
+                                <span className="text-5xl font-black tracking-tighter italic leading-none">{t('loader.booting')}</span>
                                 <div className="text-right">
                                     <span className="text-4xl font-black italic tabular-nums">{Math.floor(effectiveProgress)}%</span>
                                 </div>
@@ -101,7 +103,7 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
 
                             <div className="mt-8 text-center">
                                 <p className="text-[14px] font-black uppercase tracking-[0.2em] opacity-100 animate-pulse">
-                                    Please wait while we load our next gen platform
+                                    {t('loader.wait')}
                                 </p>
                             </div>
                         </div>

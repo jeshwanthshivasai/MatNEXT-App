@@ -1,0 +1,224 @@
+{
+    "nav": {
+        "features": "FEATURES",
+        "traction": "TRACTION",
+        "ai": "GENBA AI",
+        "why": "WHY MATNEXT",
+        "customers": "CUSTOMERS",
+        "demo": "Request Platform Demo"
+    },
+    "hero": {
+        "title": "Product and Material Tracking, Traceability and Sustainability Platform",
+        "description": "MatNEXT is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.",
+        "explore": "Explore the Engine",
+        "scroll": "Scroll to Explore"
+    },
+    "heroStats": {
+        "impact": "Created Impact",
+        "tons": "TONS TRACKED",
+        "partnership": "Our Partnership",
+        "stakeholders": "STAKEHOLDERS",
+        "coverage": "Our Coverage",
+        "industries": "INDUSTRIES"
+    },
+    "loader": {
+        "protocol": "MatNEXT Protocol // v1.0.0 // Initializing_System",
+        "booting": "BOOTING",
+        "wait": "Please wait while we load our next gen platform"
+    },
+    "features": {
+        "title": "Platform Capabilities",
+        "subtitle": "Comprehensive Sustainability Engine.",
+        "scroll": "Scroll to explore all 12 platform capabilities →",
+        "items": {
+            "tracking": {
+                "title": "Tracking & Traceability",
+                "desc": "Real-time intelligence tracks every material, batch & transaction across your supply chain."
+            },
+            "mapping": {
+                "title": "Dynamic Mapping",
+                "desc": "Visualize your entire supply chain network from raw extraction to final assembly."
+            },
+            "passport": {
+                "title": "Material Passport",
+                "desc": "Every product gets a digital twin containing its entire lifecycle history and provenance."
+            },
+            "risk": {
+                "title": "Risk Intelligence",
+                "desc": "Predictive analytics identify supply chain disruptions before they cascade."
+            },
+            "vault": {
+                "title": "Compliance Vault",
+                "desc": "Securely store all regulatory documentation in a tamper-proof, audit-ready ledger."
+            },
+            "network": {
+                "title": "Supplier Network",
+                "desc": "Onboard and manage thousands of suppliers with automated data verification."
+            },
+            "sustainability": {
+                "title": "Sustainability Engine",
+                "desc": "Automate carbon accounting and ESG compliance with precision data protocols."
+            },
+            "portal": {
+                "title": "Stakeholder Portal",
+                "desc": "Seamlessly share supply chain data with customers and regulatory bodies."
+            },
+            "benchmarks": {
+                "title": "Industry Benchmarks",
+                "desc": "Compare your sustainability performance against global competitors in real-time."
+            },
+            "ai": {
+                "title": "AI Automation",
+                "desc": "Harness ML to extract and verify data from complex supply chain documents."
+            },
+            "efficiency": {
+                "title": "Operational Efficiency",
+                "desc": "Streamline procurement and logistics with data-driven, automated workflows."
+            },
+            "architecture": {
+                "title": "Scalable Architecture",
+                "desc": "Built for enterprise-scale operations, handling millions of transactions safely."
+            }
+        }
+    },
+    "traction": {
+        "title": "Live Telemetry",
+        "subtitle": "Real Time Numbers.",
+        "scroll": "Scroll to explore all 6 live metrics →",
+        "items": {
+            "industries": {
+                "label": "Industries Covered",
+                "desc": "Automotive, HVAC, Steel, Plastic, Aluminium & Battery — all within one unified platform."
+            },
+            "stakeholders": {
+                "label": "Stakeholders Onboarded",
+                "desc": "Active organizations operating across the global value chain, all connected in real time."
+            },
+            "tracking": {
+                "label": "Tracking & Traceability",
+                "desc": "Tonnes of material tracked end-to-end with full provenance and timestamped audit trails."
+            },
+            "emissions": {
+                "label": "Verified Emissions",
+                "desc": "Tonnes of GHG measured, validated, and verified by our precision carbon intelligence layer."
+            },
+            "circularity": {
+                "label": "Circularity Index",
+                "desc": "Average circularity score across tracked material flows, above industry median by 2.3×."
+            },
+            "compliance": {
+                "label": "Automated Compliance",
+                "desc": "Regulatory reports auto-generated by AI for CBAM, EPR, IRA and global ESG frameworks."
+            }
+        }
+    },
+    "ai": {
+        "title": "Artificial Intelligence",
+        "subtitle": "AI-Powered Intelligence.",
+        "scroll": "Scroll to explore all 6 AI capabilities →",
+        "action": "in Action",
+        "items": {
+            "capture": {
+                "title": "Smart Data Capture",
+                "desc": "AI reads supplier emails and documents, eliminating the need for partners to log in. No portal, no training required."
+            },
+            "risk": {
+                "title": "Predictive Risk Scoring",
+                "desc": "ML models continuously analyze supply chain signals to forecast disruptions before they impact operations."
+            },
+            "compliance": {
+                "title": "Automated Compliance",
+                "desc": "Regulatory-aware AI automatically generates audit-ready CBAM, EPR, and IRA reports without manual effort."
+            },
+            "flow": {
+                "title": "Material Flow Optimization",
+                "desc": "AI recommends optimal recycled-to-virgin ratios, routing decisions, and inventory strategies at scale."
+            },
+            "anomaly": {
+                "title": "Emission Anomaly Detection",
+                "desc": "Real-time AI monitoring flags irregularities in GHG data, ensuring data integrity and compliance trust."
+            },
+            "carbon": {
+                "title": "Carbon Intelligence",
+                "desc": "AI models fill data gaps to calculate granular Scope 3 emissions with high accuracy across all tiers."
+            }
+        }
+    },
+    "why": {
+        "title": "Why Choose Us",
+        "subtitle": "Why MatNEXT?",
+        "scroll": "Scroll to explore all 6 reasons →",
+        "items": {
+            "precision": {
+                "title": "Deep Tier Precision",
+                "desc": "We don't just track Direct Suppliers. We trace the entire value chain all the way back to source extraction."
+            },
+            "ai": {
+                "title": "Industrial Grade AI",
+                "desc": "Custom ML models built specifically for complex material data and industrial OEM supplier documents."
+            },
+            "architecture": {
+                "title": "Global Architecture",
+                "desc": "Nodes in every major industrial hub—Mumbai to San Francisco—ensuring zero latency at enterprise scale."
+            },
+            "compliance": {
+                "title": "Compliance Ready",
+                "desc": "Built-in frameworks for EU Battery Passport, CBAM, US Clean Air Act, and expanding global mandates."
+            },
+            "integration": {
+                "title": "Seamless Integration",
+                "desc": "Connects with existing ERPs like SAP, Oracle, and Dynamics in minutes, not months. Zero rip-and-replace."
+            },
+            "audit": {
+                "title": "Audit-Proof Proof",
+                "desc": "Tamper-proof traceability records that withstand the most rigorous regulatory and third-party audits."
+            }
+        }
+    },
+    "traceability": {
+        "matrix": "Circular Economy Matrix",
+        "extraction": "Material Extraction // Live",
+        "compliance": "Compliance Score",
+        "tracked": "Units Tracked",
+        "materials": {
+            "steel": "Body Frame",
+            "lithium": "Battery Cells",
+            "cobalt": "Cathode",
+            "copper": "Wiring Harness",
+            "aluminium": "Chassis"
+        }
+    },
+    "footer": {
+        "getInTouch": "Get in Touch",
+        "contactDesc": "Reach out to discuss how MatNEXT can transform your supply chain operations.",
+        "fullName": "Full Name",
+        "fullNamePlaceholder": "Enter your full name",
+        "email": "Business Email",
+        "emailPlaceholder": "name@company.com",
+        "industry": "Industry Segment",
+        "selectIndustry": "Select Industry",
+        "industries": {
+            "automotive": "Automotive",
+            "steel": "Steel",
+            "plastic": "Plastic",
+            "aluminium": "Aluminium",
+            "battery": "Battery",
+            "hvac": "HVAC",
+            "others": "Others"
+        },
+        "volume": "Annual Volume",
+        "volumePlaceholder": "e.g., 10,000 Tons/year",
+        "message": "Message",
+        "messagePlaceholder": "Tell us about your requirements...",
+        "send": "Send Message",
+        "matnextDesc": "Advanced product and material tracking, traceability & sustainability platform for the industrial value chain.",
+        "hq": "HQ LOCATIONS",
+        "mumbai": "MUMBAI",
+        "india": "INDIA",
+        "tokyo": "TOKYO",
+        "japan": "JAPAN",
+        "directLine": "DIRECT LINE",
+        "quickLinks": "QUICK LINKS",
+        "rights": "© 2026 MatNEXT. All rights reserved."
+    }
+}

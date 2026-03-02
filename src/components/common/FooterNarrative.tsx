@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
+import { useTranslation } from 'react-i18next'
 import * as THREE from 'three'
 import { Send, MapPin, Mail, ArrowUpRight, Phone } from 'lucide-react'
 // import { DeconstructibleCar } from './DeconstructibleCar'
@@ -63,6 +64,7 @@ const FooterGlobe = () => {
      - Copyright card bottom-left
    ═══════════════════════════════════════ */
 export const FooterNarrative = () => {
+    const { t } = useTranslation()
     const sectionRef = useRef<HTMLDivElement>(null)
     const leftHandRef = useRef<HTMLImageElement>(null)
     const rightHandRef = useRef<HTMLImageElement>(null)
@@ -159,56 +161,56 @@ export const FooterNarrative = () => {
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
                 }}>
                     <div style={{ marginBottom: 24 }}>
-                        <h3 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#96CC39', marginBottom: 8, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Get in Touch</h3>
+                        <h3 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#96CC39', marginBottom: 8, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>{t('footer.getInTouch')}</h3>
                         <p style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.5, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
                             <div style={{ width: 1, height: 12, background: '#96CC39' }} />
-                            Reach out to discuss how MatNEXT can transform your supply chain operations.
+                            {t('footer.contactDesc')}
                         </p>
                     </div>
 
                     <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 20px' }} onSubmit={e => e.preventDefault()}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Full Name</label>
-                            <input type="text" placeholder="Enter your full name"
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.fullName')}</label>
+                            <input type="text" placeholder={t('footer.fullNamePlaceholder')}
                                 style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
                                 onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
                                 onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Business Email</label>
-                            <input type="email" placeholder="name@company.com"
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.email')}</label>
+                            <input type="email" placeholder={t('footer.emailPlaceholder')}
                                 style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
                                 onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
                                 onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Industry Segment</label>
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.industry')}</label>
                             <div style={{ position: 'relative' }}>
                                 <select style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: 'rgba(0,0,0,0.7)', appearance: 'none' as const, cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 500 }}
                                     onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
                                     onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'}>
-                                    <option>Select Industry</option>
-                                    <option>Automotive</option>
-                                    <option>Steel</option>
-                                    <option>Plastic</option>
-                                    <option>Aluminium</option>
-                                    <option>Battery</option>
-                                    <option>HVAC</option>
-                                    <option>Others</option>
+                                    <option>{t('footer.selectIndustry')}</option>
+                                    <option>{t('footer.industries.automotive')}</option>
+                                    <option>{t('footer.industries.steel')}</option>
+                                    <option>{t('footer.industries.plastic')}</option>
+                                    <option>{t('footer.industries.aluminium')}</option>
+                                    <option>{t('footer.industries.battery')}</option>
+                                    <option>{t('footer.industries.hvac')}</option>
+                                    <option>{t('footer.industries.others')}</option>
                                 </select>
                                 <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'rgba(0,0,0,0.2)', fontSize: 10 }}>▼</div>
                             </div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Annual Volume</label>
-                            <input type="text" placeholder="e.g., 10,000 Tons/year"
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.volume')}</label>
+                            <input type="text" placeholder={t('footer.volumePlaceholder')}
                                 style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', transition: 'all 0.2s ease', fontWeight: 500 }}
                                 onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
                                 onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: 'span 2' }}>
-                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Message</label>
-                            <textarea placeholder="Tell us about your requirements..."
+                            <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.message')}</label>
+                            <textarea placeholder={t('footer.messagePlaceholder')}
                                 style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '14px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', minHeight: 80, resize: 'none', transition: 'all 0.2s ease', lineHeight: 1.6, fontWeight: 500 }}
                                 onFocus={e => e.currentTarget.style.borderColor = '#96CC39'}
                                 onBlur={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'} />
@@ -224,7 +226,7 @@ export const FooterNarrative = () => {
                                 e.currentTarget.style.transform = 'translateY(0) scale(1)';
                             }}
                         >
-                            Send Message <Send style={{ width: 14, height: 14, strokeWidth: 2, rotate: '45deg' }} />
+                            {t('footer.send')} <Send style={{ width: 14, height: 14, strokeWidth: 2, rotate: '45deg' }} />
                         </button>
                     </form>
                 </div>
@@ -255,7 +257,7 @@ export const FooterNarrative = () => {
                     <h2 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#96CC39', lineHeight: 0.8, marginBottom: 16, letterSpacing: '-0.06em' }}>MatNEXT</h2>
                     <p style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.6, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
                         <div style={{ width: 1, height: 30, background: '#96CC39' }} />
-                        Advanced product and material tracking, traceability & <br /> sustainability platform for the industrial value chain.
+                        {t('footer.matnextDesc')}
                     </p>
                 </div>
 
@@ -266,16 +268,16 @@ export const FooterNarrative = () => {
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
                 }}>
-                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>HQ LOCATIONS</span>
+                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>{t('footer.hq')}</span>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                             <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <MapPin size={12} color="#96CC39" strokeWidth={3} />
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <div style={{ fontSize: 10, color: '#0A0A0A', letterSpacing: '0.1em' }}>MUMBAI</div>
+                                <div style={{ fontSize: 10, color: '#0A0A0A', letterSpacing: '0.1em' }}>{t('footer.mumbai')}</div>
                                 <div style={{ width: 1, height: 12, background: '#96CC39' }} />
-                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>INDIA 🇮🇳</div>
+                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>{t('footer.india')} 🇮🇳</div>
                             </div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -283,9 +285,9 @@ export const FooterNarrative = () => {
                                 <MapPin size={12} color="#96CC39" strokeWidth={3} />
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>TOKYO</div>
+                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>{t('footer.tokyo')}</div>
                                 <div style={{ width: 1, height: 12, background: '#96CC39' }} />
-                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>JAPAN 🇯🇵</div>
+                                <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>{t('footer.japan')} 🇯🇵</div>
                             </div>
                         </div>
                     </div>
@@ -298,7 +300,7 @@ export const FooterNarrative = () => {
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
                 }}>
-                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>DIRECT LINE</span>
+                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>{t('footer.directLine')}</span>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(0,0,0,1)', fontSize: 11 }}>
                             <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -323,16 +325,19 @@ export const FooterNarrative = () => {
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
                 }}>
-                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 16 }}>QUICK LINKS</span>
+                    <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 16 }}>{t('footer.quickLinks')}</span>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 40 }}>
                         {[
-                            'Features', 'Traction',
-                            'Genba AI', 'Why MatNEXT',
-                            'Our Partners', 'Contact'
+                            { label: t('nav.features'), id: 'features-narrative' },
+                            { label: t('nav.traction'), id: 'traction' },
+                            { label: t('nav.ai'), id: 'ai' },
+                            { label: t('nav.why'), id: 'why-matnext' },
+                            { label: t('nav.customers'), id: 'customers' },
+                            { label: 'Contact', id: 'customers' }
                         ].map((link) => (
                             <a
-                                key={link}
-                                href="#"
+                                key={link.label}
+                                href={`#${link.id}`}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -356,13 +361,13 @@ export const FooterNarrative = () => {
                                     e.currentTarget.style.transform = 'translateX(0)';
                                 }}
                             >
-                                {link}
+                                {link.label}
                                 <ArrowUpRight size={14} style={{ opacity: 1, color: '#96CC39' }} />
                             </a>
                         ))}
                     </div>
                     <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', opacity: 0.5 }}>
-                        <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>© 2026 MatNEXT. All rights reserved.</div>
+                        <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>{t('footer.rights')}</div>
                     </div>
                 </div>
             </div >

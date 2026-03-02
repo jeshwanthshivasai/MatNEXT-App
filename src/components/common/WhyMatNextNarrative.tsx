@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas } from '@react-three/fiber'
+import { useTranslation } from 'react-i18next'
 import { Environment, PerspectiveCamera } from '@react-three/drei'
 import { DeconstructibleCar } from './DeconstructibleCar'
 import { Target, Brain, Globe, ShieldCheck, Plug, Lock, LucideIcon } from 'lucide-react'
@@ -11,17 +12,15 @@ gsap.registerPlugin(ScrollTrigger)
 
 interface WhyCard { icon: LucideIcon; index: string; title: string; desc: string }
 
-const whyCards: WhyCard[] = [
-    { icon: Target, index: '01', title: 'Deep Tier Precision', desc: 'We don\'t just track Direct Suppliers. We trace the entire value chain all the way back to source extraction.' },
-    { icon: Brain, index: '02', title: 'Industrial Grade AI', desc: 'Custom ML models built specifically for complex material data and industrial OEM supplier documents.' },
-    { icon: Globe, index: '03', title: 'Global Architecture', desc: 'Nodes in every major industrial hub—Mumbai to San Francisco—ensuring zero latency at enterprise scale.' },
-    { icon: ShieldCheck, index: '04', title: 'Compliance Ready', desc: 'Built-in frameworks for EU Battery Passport, CBAM, US Clean Air Act, and expanding global mandates.' },
-    { icon: Plug, index: '05', title: 'Seamless Integration', desc: 'Connects with existing ERPs like SAP, Oracle, and Dynamics in minutes, not months. Zero rip-and-replace.' },
-    { icon: Lock, index: '06', title: 'Audit-Proof Proof', desc: 'Tamper-proof traceability records that withstand the most rigorous regulatory and third-party audits.' },
+// Cards helper function
+const getWhyCards = (t: any): WhyCard[] => [
+    { icon: Target, index: '01', title: t('why.items.precision.title'), desc: t('why.items.precision.desc') },
+    { icon: Brain, index: '02', title: t('why.items.ai.title'), desc: t('why.items.ai.desc') },
+    { icon: Globe, index: '03', title: t('why.items.architecture.title'), desc: t('why.items.architecture.desc') },
+    { icon: ShieldCheck, index: '04', title: t('why.items.compliance.title'), desc: t('why.items.compliance.desc') },
+    { icon: Plug, index: '05', title: t('why.items.integration.title'), desc: t('why.items.integration.desc') },
+    { icon: Lock, index: '06', title: t('why.items.audit.title'), desc: t('why.items.audit.desc') },
 ]
-
-const topCards = whyCards.slice(0, 3)
-const bottomCards = whyCards.slice(3, 6)
 
 const WhyNode = ({ card }: { card: WhyCard }) => {
     const Icon = card.icon
@@ -43,10 +42,15 @@ const WhyNode = ({ card }: { card: WhyCard }) => {
 }
 
 export const WhyMatNextNarrative = () => {
+    const { t } = useTranslation()
     const sectionRef = useRef<HTMLDivElement>(null)
     const contentWrapperRef = useRef<HTMLDivElement>(null)
     const topTrackRef = useRef<HTMLDivElement>(null)
     const bottomTrackRef = useRef<HTMLDivElement>(null)
+
+    const whyCards = getWhyCards(t)
+    const topCards = whyCards.slice(0, 3)
+    const bottomCards = whyCards.slice(3, 6)
 
     useGSAP(() => {
         if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current) return
@@ -75,12 +79,12 @@ export const WhyMatNextNarrative = () => {
 
                     {/* Left: text content */}
                     <div className="relative pointer-events-auto z-10 flex-1">
-                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">Why Choose Us</span>
+                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">{t('why.title')}</span>
                         <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
-                            Why<br />MatNEXT?
+                            {t('why.subtitle')}
                         </h2>
                         <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
-                            Scroll to explore all 6 reasons →
+                            {t('why.scroll')}
                         </p>
                     </div>
 

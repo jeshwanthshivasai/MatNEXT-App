@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas, useFrame } from '@react-three/fiber'
+import { useTranslation } from 'react-i18next'
 
 import * as THREE from 'three'
 import { Cpu, BarChart2, FileText, ArrowUpRight, AlertTriangle, Wind, LucideIcon } from 'lucide-react'
@@ -10,18 +11,6 @@ import { Cpu, BarChart2, FileText, ArrowUpRight, AlertTriangle, Wind, LucideIcon
 gsap.registerPlugin(ScrollTrigger)
 
 interface AICard { icon: LucideIcon; index: string; title: string; desc: string }
-
-const aiCards: AICard[] = [
-    { icon: Cpu, index: '01', title: 'Smart Data Capture', desc: 'AI reads supplier emails and documents, eliminating the need for partners to log in. No portal, no training required.' },
-    { icon: BarChart2, index: '02', title: 'Predictive Risk Scoring', desc: 'ML models continuously analyze supply chain signals to forecast disruptions before they impact operations.' },
-    { icon: FileText, index: '03', title: 'Automated Compliance', desc: 'Regulatory-aware AI automatically generates audit-ready CBAM, EPR, and IRA reports without manual effort.' },
-    { icon: ArrowUpRight, index: '04', title: 'Material Flow Optimization', desc: 'AI recommends optimal recycled-to-virgin ratios, routing decisions, and inventory strategies at scale.' },
-    { icon: AlertTriangle, index: '05', title: 'Emission Anomaly Detection', desc: 'Real-time AI monitoring flags irregularities in GHG data, ensuring data integrity and compliance trust.' },
-    { icon: Wind, index: '06', title: 'Carbon Intelligence', desc: 'AI models fill data gaps to calculate granular Scope 3 emissions with high accuracy across all tiers.' },
-]
-
-const topCards = aiCards.slice(0, 3)
-const bottomCards = aiCards.slice(3, 6)
 
 const AINode = ({ card }: { card: AICard }) => {
     const Icon = card.icon
@@ -201,10 +190,23 @@ const GenbaAIScanner = () => {
 }
 
 export const AINarrative = () => {
+    const { t } = useTranslation()
     const sectionRef = useRef<HTMLDivElement>(null)
     const contentWrapperRef = useRef<HTMLDivElement>(null)
     const topTrackRef = useRef<HTMLDivElement>(null)
     const bottomTrackRef = useRef<HTMLDivElement>(null)
+
+    const cards: AICard[] = [
+        { icon: Cpu, index: '01', title: t('ai.items.capture.title'), desc: t('ai.items.capture.desc') },
+        { icon: BarChart2, index: '02', title: t('ai.items.risk.title'), desc: t('ai.items.risk.desc') },
+        { icon: FileText, index: '03', title: t('ai.items.compliance.title'), desc: t('ai.items.compliance.desc') },
+        { icon: ArrowUpRight, index: '04', title: t('ai.items.flow.title'), desc: t('ai.items.flow.desc') },
+        { icon: AlertTriangle, index: '05', title: t('ai.items.anomaly.title'), desc: t('ai.items.anomaly.desc') },
+        { icon: Wind, index: '06', title: t('ai.items.carbon.title'), desc: t('ai.items.carbon.desc') },
+    ]
+
+    const topCards = cards.slice(0, 3)
+    const bottomCards = cards.slice(3, 6)
 
     useGSAP(() => {
         if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current) return
@@ -244,7 +246,7 @@ export const AINarrative = () => {
                             GenbaAI
                         </span>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.6vw', fontWeight: 500, color: '#0A1628', lineHeight: 1, letterSpacing: '0.25em', marginTop: '1em', textTransform: 'uppercase' as const }}>
-                            in Action
+                            {t('ai.action')}
                         </span>
                     </div>
                 </div>
@@ -252,12 +254,12 @@ export const AINarrative = () => {
                 <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-10 overflow-hidden">
                     {/* NeuralAccent removed, replaced by scanning radar */}
                     <div className="relative pointer-events-auto z-10">
-                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">Artificial Intelligence</span>
+                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">{t('ai.title')}</span>
                         <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
-                            AI-Powered<br />Intelligence.
+                            {t('ai.subtitle')}
                         </h2>
                         <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
-                            Scroll to explore all 6 AI capabilities →
+                            {t('ai.scroll')}
                         </p>
                     </div>
                 </div>
