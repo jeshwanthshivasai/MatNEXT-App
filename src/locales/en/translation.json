@@ -8,8 +8,8 @@
         "demo": "Request Platform Demo"
     },
     "hero": {
-        "title": "Product and Material Tracking, Traceability and Sustainability Platform",
-        "description": "MatNEXT is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.",
+        "title": "Product and <br /> Material Tracking, <br /> Traceability and <br /> Sustainability <br /> Platform",
+        "description": "is an end-to-end materials traceability and management platform that enables OEMs and value chain partners to track recycled content, carbon footprint, and regulatory compliance across every stage of production.",
         "explore": "Explore the Engine",
         "scroll": "Scroll to Explore"
     },

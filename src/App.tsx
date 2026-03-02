@@ -24,7 +24,7 @@ import {
 } from 'lucide-react'
 import logo from './assets/MatNEXT.png'
 import { Analytics } from '@vercel/analytics/react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
 import { Languages, ChevronDown } from 'lucide-react'
 
 
@@ -311,7 +311,7 @@ function App() {
                         <h1
                             className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl relative top-12 opacity-0"
                         >
-                            {t('hero.title')}
+                            <Trans i18nKey="hero.title" components={{ br: <br /> }} />
                         </h1>
 
                         <div className="flex flex-col md:flex-row items-end justify-between w-full">
@@ -325,14 +325,14 @@ function App() {
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
-                                        className="btn-premium group flex items-center gap-4 pointer-events-auto"
+                                        className="btn-premium group flex items-center gap-4 pointer-events-auto whitespace-nowrap"
                                     >
                                         {t('nav.demo')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                                     </button>
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
-                                        className="btn-premium group flex items-center gap-4 text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto"
+                                        className="btn-premium group flex items-center gap-4 text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto whitespace-nowrap"
                                     >
                                         {t('hero.explore')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                                     </button>

@@ -30,7 +30,7 @@ export const HeroStats = () => {
                         <span className="text-5xl font-bold text-electric-sulfur tracking-tighter" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
                             {stat.value}
                         </span>
-                        <span className="text-[10px] font-mono font-black text-data-navy tracking-widest uppercase pb-1">
+                        <span className="text-[10px] font-mono font-black text-data-navy tracking-widest uppercase pb-1 whitespace-nowrap">
                             {stat.sub}
                         </span>
                     </div>
