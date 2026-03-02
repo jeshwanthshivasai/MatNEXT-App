@@ -264,7 +264,7 @@ function App() {
                             <div className="absolute top-full right-0 mt-4 w-32 bg-white border border-data-navy/10 shadow-xl py-2 z-[110] animate-in fade-in slide-in-from-top-2 duration-300">
                                 {[
                                     { code: 'en', label: 'English' },
-                                    { code: 'ja', label: '日本語' },
+                                    { code: 'jp', label: '日本語' },
                                     { code: 'th', label: 'ไทย' }
                                 ].map((lang) => (
                                     <button

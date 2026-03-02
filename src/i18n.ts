@@ -3,15 +3,15 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import enTranslation from './locales/en/translation.json';
-import jaTranslation from './locales/ja/translation.json';
+import jpTranslation from './locales/jp/translation.json';
 import thTranslation from './locales/th/translation.json';
 
 const resources = {
     en: {
         translation: enTranslation,
     },
-    ja: {
-        translation: jaTranslation,
+    jp: {
+        translation: jpTranslation,
     },
     th: {
         translation: thTranslation,
