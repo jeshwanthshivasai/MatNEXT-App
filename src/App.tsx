@@ -227,7 +227,7 @@ function App() {
                 </div>
                 <div className="hidden gap-10 text-[10px] font-bold tracking-[0.3em] md:flex opacity-100">
                     {[
-                        { label: t('nav.features'), id: 'features-narrative' },
+                        { label: t('nav.features'), id: 'features' },
                         { label: t('nav.traction'), id: 'traction' },
                         { label: t('nav.ai'), id: 'ai' },
                         { label: t('nav.why'), id: 'why-matnext' },

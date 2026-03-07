@@ -404,7 +404,7 @@ export const FooterNarrative = () => {
                     <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 16 }}>{t('footer.quickLinks')}</span>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 40 }}>
                         {[
-                            { label: t('nav.features'), id: 'features-narrative' },
+                            { label: t('nav.features'), id: 'features' },
                             { label: t('nav.traction'), id: 'traction' },
                             { label: t('nav.ai'), id: 'ai' },
                             { label: t('nav.why'), id: 'why-matnext' },
