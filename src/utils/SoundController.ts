@@ -20,15 +20,15 @@ class SoundManager {
             this.masterGain.gain.value = this.isMuted ? 0 : 0.7;
             this.masterGain.connect(this.ctx.destination);
 
-            // Unlock audio context on user interaction
+            // Unlock audio context on user interaction (including passive ones like mouse movement)
+            const events = ['click', 'touchstart', 'keydown', 'wheel', 'mousemove', 'pointermove', 'scroll'];
             const unlock = () => {
                 if (this.ctx && this.ctx.state === 'suspended') {
-                    this.ctx.resume();
+                    this.ctx.resume().catch(() => { });
                 }
-                const events = ['click', 'touchstart', 'keydown', 'wheel'];
                 events.forEach(evt => window.removeEventListener(evt, unlock));
             };
-            ['click', 'touchstart', 'keydown', 'wheel'].forEach(evt => {
+            events.forEach(evt => {
                 window.addEventListener(evt, unlock, { once: true, passive: true });
             });
 
