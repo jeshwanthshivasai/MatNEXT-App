@@ -138,28 +138,14 @@ html.lenis, html.lenis body {
 }
 
 /* Large Display / TV Scaling — prevents layout collapse on 4K/Bravia screens */
-@media (min-width: 1920px) {
-  body {
-    font-size: 18px;
-  }
-
-  /* Feature cards grow proportionally on wide screens */
+@media (min-width: 2500px) {
+  /* Feature cards grow proportionally on massive edge-to-edge screens */
   .feature-card {
-    width: clamp(350px, 30vw, 550px);
+    width: clamp(400px, 20vw, 700px);
   }
 
   /* Nav items get a bit more heft */
   nav {
-    font-size: clamp(10px, 0.7vw, 13px);
-  }
-}
-
-@media (min-width: 2560px) {
-  body {
-    font-size: 20px;
-  }
-
-  .feature-card {
-    width: clamp(400px, 25vw, 600px);
+    font-size: clamp(12px, 0.7vw, 16px);
   }
 }

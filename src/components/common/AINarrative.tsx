@@ -236,7 +236,7 @@ export const AINarrative = () => {
                     - ON TOP of cards (z-20), pointer-events-none.
                     - No overflow-hidden so no clipping.
                 */}
-                <div className="absolute -right-25 w-[50vw] max-w-[700px] top-[12.5vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
+                <div className="absolute -right-25 w-[50vw] max-w-[900px] top-[14.2vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
                     <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
                         <GenbaAIScanner />
                     </Canvas>
