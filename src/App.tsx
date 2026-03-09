@@ -339,8 +339,7 @@ function App() {
                                 </div>
                             </div>
 
-                            {/* HERO STATS - REPOSITIONED UNDER CAR */}
-                            <div className="hero-reveal opacity-0 md:mr-24 lg:mr-48">
+                            <div className="hero-reveal opacity-0 md:mr-[min(12vw,200px)]">
                                 <HeroStats />
                             </div>
                         </div>

@@ -134,7 +134,7 @@ export const TractionNarrative = () => {
                     - overflow-hidden removed vertically to ensure poles are visible.
                     - Right-aligned so it cuts off precisely at the section boundary.
                 */}
-                <div className="absolute -right-25 w-[50vw] max-w-[900px] top-[12.5vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
+                <div className="absolute -right-25 w-[50vw] max-w-[700px] top-[12.5vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
                     <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
                         <RotatingGlobe />
                     </Canvas>

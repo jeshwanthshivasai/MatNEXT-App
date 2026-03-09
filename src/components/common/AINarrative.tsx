@@ -236,16 +236,16 @@ export const AINarrative = () => {
                     - ON TOP of cards (z-20), pointer-events-none.
                     - No overflow-hidden so no clipping.
                 */}
-                <div className="absolute -right-25 w-[50vw] max-w-[900px] top-[14.2vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
+                <div className="absolute -right-25 w-[50vw] max-w-[700px] top-[12.5vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
                     <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
                         <GenbaAIScanner />
                     </Canvas>
                     {/* HTML overlay text with Inter font */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ paddingTop: '6vh' }}>
-                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '4.5vw', fontWeight: 800, color: '#96CC39', lineHeight: 1, letterSpacing: '0.02em', opacity: 1 }}>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 'clamp(2rem, 4.5vw, 6rem)', fontWeight: 800, color: '#96CC39', lineHeight: 1, letterSpacing: '0.02em', opacity: 1 }}>
                             GenbaAI
                         </span>
-                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.6vw', fontWeight: 500, color: '#0A1628', lineHeight: 1, letterSpacing: '0.25em', marginTop: '1em', textTransform: 'uppercase' as const }}>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 'clamp(8px, 0.6vw, 12px)', fontWeight: 500, color: '#0A1628', lineHeight: 1, letterSpacing: '0.25em', marginTop: '1em', textTransform: 'uppercase' as const }}>
                             {t('ai.action')}
                         </span>
                     </div>

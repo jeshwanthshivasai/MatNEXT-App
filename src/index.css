@@ -54,7 +54,15 @@
   }
 
   .section-padding {
-    @apply px-10 md:px-20 py-24 md:py-32;
+    @apply px-10 md:px-20 xl:px-32 py-24 md:py-32;
+  }
+
+  /* TV-safe container: prevents content from stretching beyond 2560px on 4K+ displays */
+  .tv-safe-wrapper {
+    width: 100%;
+    max-width: 2560px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -84,7 +92,7 @@
 }
 
 .text-mono-label {
-  font-size: 11px;
+  font-size: clamp(10px, 0.75vw, 14px);
   letter-spacing: 0.3em;
   font-weight: 700;
   text-transform: uppercase;
@@ -127,4 +135,31 @@ html.lenis, html.lenis body {
 
 .scrolly-section {
   @apply sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden;
+}
+
+/* Large Display / TV Scaling — prevents layout collapse on 4K/Bravia screens */
+@media (min-width: 1920px) {
+  body {
+    font-size: 18px;
+  }
+
+  /* Feature cards grow proportionally on wide screens */
+  .feature-card {
+    width: clamp(350px, 30vw, 550px);
+  }
+
+  /* Nav items get a bit more heft */
+  nav {
+    font-size: clamp(10px, 0.7vw, 13px);
+  }
+}
+
+@media (min-width: 2560px) {
+  body {
+    font-size: 20px;
+  }
+
+  .feature-card {
+    width: clamp(400px, 25vw, 600px);
+  }
 }
