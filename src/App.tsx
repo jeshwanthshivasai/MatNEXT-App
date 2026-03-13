@@ -10,7 +10,7 @@ import { AINarrative } from '@/components/common/AINarrative'
 import { WhyMatNextNarrative } from '@/components/common/WhyMatNextNarrative'
 import { FooterNarrative } from '@/components/common/FooterNarrative'
 import { FeaturesNarrative } from '@/components/common/FeaturesNarrative'
-// import { FloatingMaterial } from '@/components/common/FloatingMaterial'
+import { IntroScreen } from '@/components/common/IntroScreen'
 import { Loader } from '@/components/common/Loader'
 import { SoundController } from '@/utils/SoundController'
 import { motion } from 'framer-motion'
@@ -33,6 +33,7 @@ gsap.registerPlugin(ScrollTrigger)
 function App() {
     const container = useRef<HTMLDivElement>(null)
     const [scrollProgress, setScrollProgress] = useState(0)
+    const [showIntro, setShowIntro] = useState(true)
     const [loading, setLoading] = useState(true)
     const [isLanding, setIsLanding] = useState(false)
     const [entryProgress, setEntryProgress] = useState(1) // 1 to 0 (Falling down)
@@ -202,9 +203,12 @@ function App() {
                 </Canvas>
             </div>
 
-            {loading && <Loader onComplete={onLoaderComplete} />}
+            {showIntro && (
+                <IntroScreen onExplore={() => setShowIntro(false)} />
+            )}
 
-            {/* TRACEABILITY MAP OVERLAY — appears during car explosion */}
+            {loading && !showIntro && <Loader onComplete={onLoaderComplete} />}
+
             {!loading && <TraceabilityMap scrollProgress={scrollProgress} />}
 
             {/* Navigation */}

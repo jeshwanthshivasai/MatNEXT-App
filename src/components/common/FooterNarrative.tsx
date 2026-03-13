@@ -238,10 +238,10 @@ export const FooterNarrative = () => {
                 }}>
                     <div style={{ marginBottom: 24 }}>
                         <h3 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#96CC39', marginBottom: 8, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>{t('footer.getInTouch')}</h3>
-                        <p style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.5, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.5, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
                             <div style={{ width: 1, height: 12, background: '#96CC39' }} />
                             {t('footer.contactDesc')}
-                        </p>
+                        </div>
                     </div>
 
                     <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 20px' }} onSubmit={e => e.preventDefault()}>
@@ -331,10 +331,10 @@ export const FooterNarrative = () => {
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
                 }}>
                     <h2 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#96CC39', lineHeight: 0.8, marginBottom: 16, letterSpacing: '-0.06em' }}>MatNEXT</h2>
-                    <p style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.6, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.6, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
                         <div style={{ width: 1, height: 30, background: '#96CC39' }} />
                         {t('footer.matnextDesc')}
-                    </p>
+                    </div>
                 </div>
 
                 {/* HQ Locations Tile */}
