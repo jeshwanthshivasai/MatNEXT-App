@@ -17,16 +17,16 @@ const COLOR_TOKENS = {
 const interpolate = (value: number, inputRange: [number, number], outputRange: [number, number]) => {
     const [inputMin, inputMax] = inputRange;
     const [outputMin, outputMax] = outputRange;
-    
+
     if (value <= inputMin) return outputMin;
     if (value >= inputMax) return outputMax;
-    
+
     return outputMin + (outputMax - outputMin) * (value - inputMin) / (inputMax - inputMin);
 }
 
 const PulsatingGrid: React.FC = () => {
     const [frame, setFrame] = useState(0);
-    
+
     useEffect(() => {
         let frameId: number;
         const loop = () => {
@@ -39,7 +39,7 @@ const PulsatingGrid: React.FC = () => {
 
     const ROWS = 30;
     const COLS = 50;
-    
+
     // We use innerWidth/Height for spacing calculation
     const SPACING_X = typeof window !== 'undefined' ? window.innerWidth / COLS : 40;
     const SPACING_Y = typeof window !== 'undefined' ? window.innerHeight / ROWS : 40;
@@ -120,22 +120,22 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                 {/* SUBTITLE WITH SIMPLE LINES */}
                 <div className="flex items-center gap-4 mt-2">
                     {/* Left Line */}
-                    <div className="w-[120px] h-[2px] bg-gradient-to-r from-transparent to-[#96CC39]" />
-                    
-                    <span 
-                        className="text-[#96CC39] font-normal uppercase tracking-wider whitespace-nowrap"
-                        style={{ fontSize: '10px', fontFamily: 'Inter, sans-serif' }}
+                    <div className="w-[120px] h-[1.5px] bg-gradient-to-r from-transparent to-[#96CC39]" />
+
+                    <span
+                        className="text-data-navy font-light uppercase tracking-wider whitespace-nowrap"
+                        style={{ fontSize: '12px', fontFamily: 'Inter, sans-serif' }}
                     >
                         Stands for MaterialNEXT
                     </span>
 
                     {/* Right Line */}
-                    <div className="w-[120px] h-[2px] bg-gradient-to-l from-transparent to-[#96CC39]" />
+                    <div className="w-[120px] h-[1.5px] bg-gradient-to-l from-transparent to-[#96CC39]" />
                 </div>
 
                 {/* SLOGAN */}
                 <div className="mt-8">
-                    <p 
+                    <p
                         className="text-[#0A1628]/60 font-bold tracking-[0.2em] uppercase"
                         style={{ fontSize: '13px', fontFamily: 'Inter, sans-serif' }}
                     >
@@ -144,33 +144,33 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                 </div>
 
                 {/* EXPLORE BUTTON */}
-                    <motion.button
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ 
-                            opacity: 1, 
-                            y: 0,
+                <motion.button
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
                         boxShadow: [
                             "0 0 0px rgba(150, 204, 57, 0)",
                             "0 0 25px rgba(150, 204, 57, 0.3)",
                             "0 0 0px rgba(150, 204, 57, 0)"
                         ]
                     }}
-                        transition={{ 
-                            duration: 0.8, 
-                            delay: 0.5,
+                    transition={{
+                        duration: 0.8,
+                        delay: 0.5,
                         boxShadow: {
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                            }
-                        }}
-                        onClick={handleExplore}
-                        onMouseEnter={() => SoundController.playHoverSound()}
-                    className="mt-24 px-14 py-5 bg-[#96CC39] text-white rounded-none flex items-center gap-5 group hover:bg-[#86b833] transition-all duration-500 shadow-xl"
-                    >
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }
+                    }}
+                    onClick={handleExplore}
+                    onMouseEnter={() => SoundController.playHoverSound()}
+                    className="mt-24 px-14 py-5 bg-[#96CC39] text-white rounded-none flex items-center gap-5 group hover:bg-data-navy transition-all duration-500 shadow-xl"
+                >
                     <span className="text-[13px] font-bold tracking-[0.5em] uppercase">Explore</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500 text-white" />
-                    </motion.button>
+                </motion.button>
             </div>
         </motion.div>
     )
