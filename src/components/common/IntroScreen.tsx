@@ -136,8 +136,8 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                 {/* SLOGAN */}
                 <div className="mt-8">
                     <p 
-                        className="text-[#0A1628]/60 font-medium tracking-tight"
-                        style={{ fontSize: '24px', letterSpacing: '-1px', fontFamily: 'Inter, sans-serif' }}
+                        className="text-[#0A1628]/60 font-bold tracking-[0.2em] uppercase"
+                        style={{ fontSize: '13px', fontFamily: 'Inter, sans-serif' }}
                     >
                         Intelligent Material Traceability System
                     </p>
