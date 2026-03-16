@@ -41,7 +41,7 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                     }
                     return 100
                 }
-                return prev + 0.2 // Slower climb for more explosion detail
+                return prev + 0.2 // Reverted to 0.2 to make the 270-degree rotation much smoother and more premium
             })
         }, 30)
 

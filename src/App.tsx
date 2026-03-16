@@ -192,7 +192,7 @@ function App() {
                     <Suspense fallback={null}>
                         <PerspectiveCamera makeDefault position={[0, 0.5, 20]} fov={18} near={0.1} far={10000} />
                         <BackgroundShader />
-                        <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : scrollProgress)} isLoader={false} />
+                        <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : (entryProgress === 0 ? scrollProgress : -1))} isLoader={false} />
 
                         {/* Traceability Map UI will overlay here - previously the 3D material nuggets were here */}
 

@@ -55,9 +55,13 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         const time = state.clock.getElapsedTime()
         if (!groupRef.current) return
 
-        const loaderRotationEnd = isLoader ? 0.5 : 0.4
-        const loaderExplodeStart = isLoader ? 0.5 : 0.4
-        const rotationPhase = Math.max(0, Math.min(1, progress / loaderRotationEnd))
+        const loaderRotationEnd = isLoader ? 0.8 : 0.4
+        const loaderExplodeStart = isLoader ? 0.8 : 0.4
+        
+        // Apply smooth easing to the rotation phase for a premium feel
+        const rawRotationPhase = Math.max(0, Math.min(1, progress / loaderRotationEnd))
+        const rotationPhase = rawRotationPhase * rawRotationPhase * (3 - 2 * rawRotationPhase); // Smoothstep easing
+        
         const explodePhase = Math.max(0, (progress - loaderExplodeStart) / (1 - loaderExplodeStart))
         const hover = Math.sin(time * 0.5) * 0.05
 
@@ -85,10 +89,24 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         groupRef.current.position.x = xOffset
 
         // ORBITING MODE: After centering (0.2+), add auto-rotate
-        const baseAutoRotate = progress > 0.2 ? time * 0.2 : 0
-        groupRef.current.rotation.y = baseAutoRotate + rotationPhase * Math.PI * 1.5
+        // FIX: Remove baseAutoRotate jump for loader to prevent glitch. 
+        // For Loader: Purely driven by rotationPhase to a clear side target (Math.PI / 2).
+        // For Hero: Maintain baseAutoRotate + scroll-based offset.
+        if (isLoader) {
+            // Updated: Rotate to 270 degrees (Math.PI * 1.5) to reach the opposite side profile
+            groupRef.current.rotation.y = rotationPhase * Math.PI * 1.5; 
+        } else {
+            const baseAutoRotate = progress > 0.2 ? time * 0.2 : 0
+            groupRef.current.rotation.y = baseAutoRotate + rotationPhase * Math.PI * 1.5
+        }
 
         parts.forEach((child, i) => {
+            const materials = Array.isArray(child.material) ? child.material : [child.material]
+            
+            // FIX: Completely hide the background car while the loader is active (progress < -0.9 in isLanding state)
+            // This prevents the "front-facing" ghost car from appearing when the Loader unmounts.
+            const isBackgroundHidden = !isLoader && progress < -0.9;
+
             if (explodePhase > 0) {
                 // Explode further and faster in the loader
                 const explodeFactor = explodePhase * (isLoader ? 12 : 25)
@@ -101,18 +119,18 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
 
                 // Fade out wireframe and physical materials
                 if (isWireframe || child.material instanceof THREE.MeshPhysicalMaterial) {
-                    const materials = Array.isArray(child.material) ? child.material : [child.material]
                     materials.forEach(m => {
-                        m.opacity = Math.max(0, 1 - explodePhase * 1.0) // Fade out gradually, fully gone at 100%
+                        m.opacity = isBackgroundHidden ? 0 : Math.max(0, 1 - explodePhase * 1.0)
+                        m.transparent = true
                     })
                 }
             } else {
                 child.position.copy(child.userData.origPos)
                 child.rotation.copy(child.userData.origRot)
                 if (isWireframe || child.material instanceof THREE.MeshPhysicalMaterial) {
-                    const materials = Array.isArray(child.material) ? child.material : [child.material]
                     materials.forEach(m => {
-                        m.opacity = 1
+                        m.opacity = isBackgroundHidden ? 0 : 1
+                        m.transparent = true
                     })
                 }
             }
@@ -139,7 +157,7 @@ const HeroLayer = ({ progress }: { progress: number }) => {
 }
 
 export const DeconstructibleCar = ({ progress, isLoader = false }: DeconstructibleCarProps) => {
-    const showHero = !isLoader && progress >= 0
+    const showHero = !isLoader
     return (
         <Suspense fallback={null}>
             {showHero ? (
