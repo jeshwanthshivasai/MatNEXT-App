@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
 import { SoundController } from '@/utils/SoundController'
 import logo from '../../assets/MatNEXT.png'
 
@@ -93,7 +92,88 @@ const PulsatingGrid: React.FC = () => {
     );
 };
 
+const MaterialViewfinder = ({ isHovered }: { isHovered: boolean }) => {
+    return (
+        <motion.svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="text-white"
+        >
+            {/* Top Left Corner */}
+            <motion.path
+                d="M4 8V4H8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="square"
+                animate={{
+                    x: isHovered ? 2 : 0,
+                    y: isHovered ? 2 : 0,
+                }}
+                transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+            />
+            {/* Top Right Corner */}
+            <motion.path
+                d="M16 4H20V8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="square"
+                animate={{
+                    x: isHovered ? -2 : 0,
+                    y: isHovered ? 2 : 0,
+                }}
+                transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+            />
+            {/* Bottom Left Corner */}
+            <motion.path
+                d="M4 16V20H8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="square"
+                animate={{
+                    x: isHovered ? 2 : 0,
+                    y: isHovered ? -2 : 0,
+                }}
+                transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+            />
+            {/* Bottom Right Corner */}
+            <motion.path
+                d="M16 20H20V16"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="square"
+                animate={{
+                    x: isHovered ? -2 : 0,
+                    y: isHovered ? -2 : 0,
+                }}
+                transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+            />
+            {/* Center Dot */}
+            <motion.circle
+                cx="12"
+                cy="12"
+                r="1.5"
+                fill="currentColor"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{
+                    opacity: isHovered ? [0.4, 1, 0.4] : 0,
+                    scale: isHovered ? [0.8, 1.2, 0.8] : 0,
+                }}
+                transition={{
+                    opacity: { repeat: Infinity, duration: 2, ease: "easeInOut" },
+                    scale: { repeat: Infinity, duration: 2, ease: "easeInOut" },
+                    default: { duration: 0.3 }
+                }}
+            />
+        </motion.svg>
+    );
+};
+
 export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
+    const [isHovered, setIsHovered] = useState(false)
+
     const handleExplore = () => {
         SoundController.init()
         SoundController.playClickSound()
@@ -113,12 +193,12 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
             {/* CENTRAL BRANDING - STATIC LAYOUT */}
             <div className="relative z-10 flex flex-col items-center text-center">
                 {/* LOGO IMAGE */}
-                <div className="mb-4">
+                <div className="mb-2">
                     <img src={logo} alt="MatNEXT Logo" className="h-20 w-auto object-contain select-none pointer-events-none" />
                 </div>
 
                 {/* SUBTITLE WITH SIMPLE LINES */}
-                <div className="flex items-center gap-4 mt-2">
+                <div className="flex items-center gap-4 mt-5">
                     {/* Left Line */}
                     <div className="w-[120px] h-[1.5px] bg-gradient-to-r from-transparent to-[#96CC39]" />
 
@@ -133,44 +213,72 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                     <div className="w-[120px] h-[1.5px] bg-gradient-to-l from-transparent to-[#96CC39]" />
                 </div>
 
-                {/* SLOGAN */}
-                <div className="mt-8">
-                    <p
-                        className="text-[#0A1628]/60 font-bold tracking-[0.2em] uppercase"
-                        style={{ fontSize: '13px', fontFamily: 'Inter, sans-serif' }}
-                    >
-                        Intelligent Material Traceability System
-                    </p>
-                </div>
-
-                {/* EXPLORE BUTTON */}
-                <motion.button
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                        boxShadow: [
-                            "0 0 0px rgba(150, 204, 57, 0)",
-                            "0 0 25px rgba(150, 204, 57, 0.3)",
-                            "0 0 0px rgba(150, 204, 57, 0)"
-                        ]
+                {/* MORPHING EXPLORE BUTTON container */}
+                <div 
+                    className="mt-12 w-[480px] h-[64px] flex items-center justify-center cursor-pointer"
+                    onMouseEnter={() => {
+                        setIsHovered(true)
+                        SoundController.playHoverSound()
                     }}
-                    transition={{
-                        duration: 0.8,
-                        delay: 0.5,
-                        boxShadow: {
-                            duration: 3,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }
-                    }}
-                    onClick={handleExplore}
-                    onMouseEnter={() => SoundController.playHoverSound()}
-                    className="mt-24 px-14 py-5 bg-[#96CC39] text-white rounded-none flex items-center gap-5 group hover:bg-data-navy transition-all duration-500 shadow-xl"
+                    onMouseLeave={() => setIsHovered(false)}
                 >
-                    <span className="text-[13px] font-bold tracking-[0.5em] uppercase">Explore</span>
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500 text-white" />
-                </motion.button>
+                    <motion.button
+                        layout
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            width: isHovered ? 180 : 480,
+                        }}
+                        transition={{
+                            duration: 0.8,
+                            delay: 0.5,
+                            width: { duration: 0.4, ease: [0.76, 0, 0.24, 1] },
+                            layout: { duration: 0.4, ease: [0.76, 0, 0.24, 1] }
+                        }}
+                        onClick={handleExplore}
+                        className="relative h-[64px] bg-[#96CC39] text-white rounded-none flex items-center justify-center overflow-hidden cursor-pointer"
+                    >
+                        <div className="relative h-8 w-full flex items-center justify-center pointer-events-none">
+                            {/* State 1: Slogan (Default) */}
+                            <motion.div 
+                                initial={{ y: 0, opacity: 1 }}
+                                animate={{ 
+                                    y: isHovered ? -40 : 0,
+                                    opacity: isHovered ? 0 : 1
+                                }}
+                                transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+                                className="absolute flex items-center justify-center whitespace-nowrap px-10"
+                            >
+                                <span 
+                                    className="text-[13px] font-bold tracking-[0.2em] uppercase leading-none"
+                                    style={{ fontFamily: 'Inter, sans-serif' }}
+                                >
+                                    Intelligent Material Traceability System
+                                </span>
+                            </motion.div>
+                            
+                            {/* State 2: Explore (Hovered) */}
+                            <motion.div 
+                                initial={{ y: 40, opacity: 0 }}
+                                animate={{ 
+                                    y: isHovered ? 0 : 40,
+                                    opacity: isHovered ? 1 : 0
+                                }}
+                                transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+                                className="absolute flex items-center justify-center whitespace-nowrap gap-3"
+                            >
+                                <span 
+                                    className="text-[13px] font-bold tracking-[0.2em] uppercase leading-none"
+                                    style={{ fontFamily: 'JetBrains Mono, monospace' }}
+                                >
+                                    Explore
+                                </span>
+                                <MaterialViewfinder isHovered={isHovered} />
+                            </motion.div>
+                        </div>
+                    </motion.button>
+                </div>
             </div>
         </motion.div>
     )
