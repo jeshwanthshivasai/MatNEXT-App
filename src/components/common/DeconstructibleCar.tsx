@@ -69,7 +69,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         groupRef.current.scale.setScalar(scale)
 
         // Move car down in loader to center it (was 0.25)
-        const verticalLift = isLoader ? -0.4 : 0.25
+        const verticalLift = isLoader ? -0.75 : 0.25
 
         let yOffset = 0
         let xOffset = 0

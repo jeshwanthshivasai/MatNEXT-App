@@ -68,7 +68,7 @@ export const WhyMatNextNarrative = () => {
 
     return (
         <section ref={sectionRef} id="why-matnext" className="relative w-full overflow-hidden z-[50] h-screen bg-white flex flex-col">
-            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-28 pb-8">
+            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 py-16">
 
                 <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
                     {topCards.map(c => <WhyNode key={c.title} card={c} />)}
