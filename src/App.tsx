@@ -11,7 +11,7 @@ import { WhyMatNextNarrative } from '@/components/common/WhyMatNextNarrative'
 import { FooterNarrative } from '@/components/common/FooterNarrative'
 import { FeaturesNarrative } from '@/components/common/FeaturesNarrative'
 import { IntroScreen } from '@/components/common/IntroScreen'
-import { Loader } from '@/components/common/Loader'
+// import { Loader } from '@/components/common/Loader'
 import { SoundController } from '@/utils/SoundController'
 import { motion } from 'framer-motion'
 import { Volume2, VolumeX } from 'lucide-react'
@@ -204,10 +204,13 @@ function App() {
             </div>
 
             {showIntro && (
-                <IntroScreen onExplore={() => setShowIntro(false)} />
+                <IntroScreen onExplore={() => {
+                    setShowIntro(false)
+                    onLoaderComplete()
+                }} />
             )}
 
-            {loading && !showIntro && <Loader onComplete={onLoaderComplete} />}
+            {/* {loading && !showIntro && <Loader onComplete={onLoaderComplete} />} */}
 
             {!loading && <TraceabilityMap scrollProgress={scrollProgress} />}
 
