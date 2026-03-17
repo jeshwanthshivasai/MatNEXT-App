@@ -51,7 +51,9 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         return meshes
     }, [scene, isWireframe])
 
-    useFrame((state) => {
+    const autoRotateY = useRef(0)
+    
+    useFrame((state, delta) => {
         const time = state.clock.getElapsedTime()
         if (!groupRef.current) return
 
@@ -88,16 +90,26 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         groupRef.current.position.y = -yOffset + hover + verticalLift
         groupRef.current.position.x = xOffset
 
-        // ORBITING MODE: After centering (0.2+), add auto-rotate
-        // FIX: Remove baseAutoRotate jump for loader to prevent glitch. 
-        // For Loader: Purely driven by rotationPhase to a clear side target (Math.PI / 2).
-        // For Hero: Maintain baseAutoRotate + scroll-based offset.
+        // ORBITING MODE: Seamless auto-rotation with "Hero Homing"
+        if (!isLoader) {
+            if (progress > 0.3) {
+                // Normal orbiting in features section
+                autoRotateY.current += delta * 0.2
+            } else if (progress < 0.2) {
+                // "Homing": Smoothly pull the rotation back to 0 for consistency in the Hero section
+                // We use delta-based lerp to ensure it's smooth regardless of frame rate
+                const lerpFactor = 1 - Math.pow(0.001, delta)
+                autoRotateY.current = THREE.MathUtils.lerp(autoRotateY.current, 0, lerpFactor)
+                if (Math.abs(autoRotateY.current) < 0.001) autoRotateY.current = 0
+            }
+        }
+
         if (isLoader) {
             // Updated: Rotate to 270 degrees (Math.PI * 1.5) to reach the opposite side profile
             groupRef.current.rotation.y = rotationPhase * Math.PI * 1.5; 
         } else {
-            const baseAutoRotate = progress > 0.2 ? time * 0.2 : 0
-            groupRef.current.rotation.y = baseAutoRotate + rotationPhase * Math.PI * 1.5
+            // Combine scroll-driven rotation and continuous auto-rotation
+            groupRef.current.rotation.y = autoRotateY.current + rotationPhase * Math.PI * 1.5
         }
 
         parts.forEach((child, i) => {
