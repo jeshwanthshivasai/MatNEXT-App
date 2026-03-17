@@ -52,18 +52,18 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
     }, [scene, isWireframe])
 
     const autoRotateY = useRef(0)
-    
+
     useFrame((state, delta) => {
         const time = state.clock.getElapsedTime()
         if (!groupRef.current) return
 
         const loaderRotationEnd = isLoader ? 0.8 : 0.4
         const loaderExplodeStart = isLoader ? 0.8 : 0.4
-        
+
         // Apply smooth easing to the rotation phase for a premium feel
         const rawRotationPhase = Math.max(0, Math.min(1, progress / loaderRotationEnd))
         const rotationPhase = rawRotationPhase * rawRotationPhase * (3 - 2 * rawRotationPhase); // Smoothstep easing
-        
+
         const explodePhase = Math.max(0, (progress - loaderExplodeStart) / (1 - loaderExplodeStart))
         const hover = Math.sin(time * 0.5) * 0.05
 
@@ -71,7 +71,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         groupRef.current.scale.setScalar(scale)
 
         // Move car down in loader to center it (was 0.25)
-        const verticalLift = isLoader ? -0.75 : 0.25
+        const verticalLift = isLoader ? -1.0 : 0.25
 
         let yOffset = 0
         let xOffset = 0
@@ -91,30 +91,25 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         groupRef.current.position.x = xOffset
 
         // ORBITING MODE: Seamless auto-rotation with "Hero Homing"
-        if (!isLoader) {
-            if (progress > 0.3) {
-                // Normal orbiting in features section
-                autoRotateY.current += delta * 0.2
-            } else if (progress < 0.2) {
-                // "Homing": Smoothly pull the rotation back to 0 for consistency in the Hero section
-                // We use delta-based lerp to ensure it's smooth regardless of frame rate
-                const lerpFactor = 1 - Math.pow(0.001, delta)
-                autoRotateY.current = THREE.MathUtils.lerp(autoRotateY.current, 0, lerpFactor)
-                if (Math.abs(autoRotateY.current) < 0.001) autoRotateY.current = 0
-            }
+        const shouldRotate = isLoader || progress > 0.3
+        const shouldHome = !isLoader && progress < 0.2
+
+        if (shouldRotate) {
+            // Normal orbiting for Loader, Why MatNEXT, and Features sections
+            autoRotateY.current += delta * 0.2
+        } else if (shouldHome) {
+            // "Homing": Smoothly pull the rotation back to 0 for consistency in the Hero section
+            const lerpFactor = 1 - Math.pow(0.001, delta)
+            autoRotateY.current = THREE.MathUtils.lerp(autoRotateY.current, 0, lerpFactor)
+            if (Math.abs(autoRotateY.current) < 0.001) autoRotateY.current = 0
         }
 
-        if (isLoader) {
-            // Updated: Rotate to 270 degrees (Math.PI * 1.5) to reach the opposite side profile
-            groupRef.current.rotation.y = rotationPhase * Math.PI * 1.5; 
-        } else {
-            // Combine scroll-driven rotation and continuous auto-rotation
-            groupRef.current.rotation.y = autoRotateY.current + rotationPhase * Math.PI * 1.5
-        }
+        // Combine scroll-driven rotation and continuous auto-rotation for ALL states
+        groupRef.current.rotation.y = autoRotateY.current + rotationPhase * Math.PI * 1.5
 
         parts.forEach((child, i) => {
             const materials = Array.isArray(child.material) ? child.material : [child.material]
-            
+
             // FIX: Completely hide the background car while the loader is active (progress < -0.9 in isLanding state)
             // This prevents the "front-facing" ghost car from appearing when the Loader unmounts.
             const isBackgroundHidden = !isLoader && progress < -0.9;
