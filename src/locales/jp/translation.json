@@ -146,7 +146,7 @@
     },
     "why": {
         "title": "MatNEXTが選ばれる理由",
-        "subtitle": "なぜ MatNEXT なのか？",
+        "subtitle": "なぜ <br /> MatNEXT なのか？",
         "scroll": "スクロールして6つの理由をすべて表示 →",
         "items": {
             "precision": {

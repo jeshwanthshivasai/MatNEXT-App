@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas } from '@react-three/fiber'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
 import { Environment, PerspectiveCamera } from '@react-three/drei'
 import { DeconstructibleCar } from './DeconstructibleCar'
 import { Target, Brain, Globe, ShieldCheck, Plug, Lock, LucideIcon } from 'lucide-react'
@@ -81,7 +81,7 @@ export const WhyMatNextNarrative = () => {
                     <div className="relative pointer-events-auto z-10 flex-1">
                         <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">{t('why.title')}</span>
                         <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
-                            {t('why.subtitle')}
+                            <Trans i18nKey="why.subtitle" components={{ br: <br /> }} />
                         </h2>
                         <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
                             {t('why.scroll')}
