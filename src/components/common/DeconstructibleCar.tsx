@@ -126,8 +126,11 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
 
                 // Fade out wireframe and physical materials
                 if (isWireframe || child.material instanceof THREE.MeshPhysicalMaterial) {
+                    const dpr = window.devicePixelRatio || 1;
+                    const baseWireframeOpacity = isWireframe ? (dpr < 1.5 ? 0.4 : 1.0) : 1.0;
+                    
                     materials.forEach(m => {
-                        m.opacity = isBackgroundHidden ? 0 : Math.max(0, 1 - explodePhase * 1.0)
+                        m.opacity = isBackgroundHidden ? 0 : Math.max(0, (1 - explodePhase * 1.0) * baseWireframeOpacity)
                         m.transparent = true
                     })
                 }
@@ -135,8 +138,11 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
                 child.position.copy(child.userData.origPos)
                 child.rotation.copy(child.userData.origRot)
                 if (isWireframe || child.material instanceof THREE.MeshPhysicalMaterial) {
+                    const dpr = window.devicePixelRatio || 1;
+                    const baseWireframeOpacity = isWireframe ? (dpr < 1.5 ? 0.4 : 1.0) : 1.0;
+                    
                     materials.forEach(m => {
-                        m.opacity = isBackgroundHidden ? 0 : 1
+                        m.opacity = isBackgroundHidden ? 0 : baseWireframeOpacity
                         m.transparent = true
                     })
                 }
