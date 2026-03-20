@@ -90,7 +90,7 @@ export const WhyMatNextNarrative = () => {
 
                     {/* Right: 3D car — same height as text content area, no watermark text */}
                     <div className="relative z-0 pointer-events-auto" style={{ width: '35%', height: '100%' }}>
-                        <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]}>
+                        <Canvas gl={{ antialias: true, alpha: true }}>
                             <Suspense fallback={null}>
                                 <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
                                 <DeconstructibleCar progress={0.25} isLoader={true} />
