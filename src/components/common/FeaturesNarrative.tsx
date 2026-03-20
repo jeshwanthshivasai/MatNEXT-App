@@ -42,7 +42,7 @@ const FeatureNode = ({ feature, index }: { feature: { title: string; desc: strin
     const Icon = feature.icon;
     return (
         <div
-            className="feature-card w-[350px] shrink-0 flex flex-col justify-between py-8 px-8 border-l border-data-navy/5 group hover:bg-neutral-50/80 transition-colors duration-500 relative"
+            className="feature-card w-[21.875rem] shrink-0 flex flex-col justify-between py-[2rem] px-[2rem] border-l border-data-navy/5 group hover:bg-neutral-50/80 transition-colors duration-500 relative"
         >
             {/* Hover accent */}
             <div className="absolute left-0 top-0 w-[3px] h-full bg-electric-sulfur scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
@@ -50,7 +50,7 @@ const FeatureNode = ({ feature, index }: { feature: { title: string; desc: strin
             {/* Top section */}
             <div>
                 {/* Index number */}
-                <span className="text-[2rem] font-black text-electric-sulfur/50 hover:text-electric-sulfur leading-none block mb-2 tracking-tighter select-none pointer-events-none">
+                <span className="text-[2.2rem] font-black text-electric-sulfur/50 hover:text-electric-sulfur leading-none block mb-[0.5rem] tracking-tighter select-none pointer-events-none">
                     {String(index).padStart(2, '0')}
                 </span>
 
@@ -147,7 +147,7 @@ export const FeaturesNarrative = () => {
         <section ref={sectionRef} id="features" className="relative w-full overflow-hidden z-[50] h-screen bg-transparent -mt-[100vh]">
 
             {/* Inner sliding container: starts off-screen right and slides in */}
-            <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-28 pb-8 flex flex-col pointer-events-auto">
+            <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-[7rem] pb-[2rem] flex flex-col pointer-events-auto">
                 <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1">
 
                     {/* Top Row Cards */}

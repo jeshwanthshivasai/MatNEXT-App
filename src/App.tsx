@@ -316,7 +316,7 @@ function App() {
                         className="hero-content z-10 w-full"
                     >
                         <h1
-                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl relative top-12 opacity-0"
+                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl relative top-[3rem] opacity-0"
                         >
                             <Trans i18nKey="hero.title" components={{ br: <br /> }} />
                         </h1>
@@ -324,11 +324,11 @@ function App() {
                         <div className="flex flex-col md:flex-row items-end justify-between w-full">
                             <div className="max-w-xl">
                                 <p
-                                    className="hero-reveal text-[14px] text-justify opacity-0 mb-6 leading-relaxed"
+                                    className="hero-reveal text-[0.875rem] text-justify opacity-0 mb-[1.5rem] leading-relaxed"
                                 >
                                     <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> {t('hero.description')}
                                 </p>
-                                <div className="hero-reveal flex gap-10 opacity-0">
+                                <div className="hero-reveal flex gap-[2.5rem] opacity-0">
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}

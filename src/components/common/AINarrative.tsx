@@ -16,11 +16,11 @@ const AINode = ({ card }: { card: AICard }) => {
     const Icon = card.icon
     return (
         <div
-            className="feature-card w-[350px] shrink-0 flex flex-col justify-between py-8 px-8 border-l border-data-navy/5 group hover:bg-neutral-50/80 transition-colors duration-500 relative"
+            className="feature-card w-[21.875rem] shrink-0 flex flex-col justify-between py-[2rem] px-[2rem] border-l border-data-navy/5 group hover:bg-neutral-50/80 transition-colors duration-500 relative"
         >
             <div className="absolute left-0 top-0 w-[3px] h-full bg-electric-sulfur scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
             <div>
-                <span className="text-[2rem] font-black text-electric-sulfur/50 leading-none block mb-2 tracking-tighter select-none pointer-events-none">{card.index}</span>
+                <span className="text-[2.2rem] font-black text-electric-sulfur/50 leading-none block mb-[0.5rem] tracking-tighter select-none pointer-events-none">{card.index}</span>
                 <div className="w-10 h-10 rounded-full bg-data-navy/5 flex items-center justify-center mb-5 group-hover:bg-electric-sulfur group-hover:text-data-navy transition-colors duration-500">
                     <Icon className="w-5 h-5 stroke-[1.5]" />
                 </div>
@@ -224,7 +224,7 @@ export const AINarrative = () => {
 
     return (
         <section ref={sectionRef} id="ai" className="relative w-full overflow-hidden z-[50] h-screen bg-white flex flex-col">
-            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-28 pb-8">
+            <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-[7rem] pb-[2rem]">
 
                 <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
                     {topCards.map(c => <AINode key={c.title} card={c} />)}

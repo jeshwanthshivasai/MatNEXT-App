@@ -221,8 +221,8 @@ export const FooterNarrative = () => {
                 ref={contactRef}
                 style={{
                     position: 'absolute',
-                    top: 20,
-                    right: 20,
+                    top: '1.25rem',
+                    right: '1.25rem',
                     width: 'clamp(380px, 30vw, 550px)',
                     zIndex: 25,
                     display: 'flex',
@@ -313,8 +313,8 @@ export const FooterNarrative = () => {
                 ref={copyrightRef}
                 style={{
                     position: 'absolute',
-                    bottom: 20,
-                    left: 20,
+                    bottom: '1.25rem',
+                    left: '1.25rem',
                     width: 'clamp(380px, 30vw, 550px)',
                     zIndex: 25,
                     display: 'grid',
@@ -451,8 +451,8 @@ export const FooterNarrative = () => {
             {/* ═══ FOOTER LANGUAGE SELECTOR — Bottom Right Corner ═══ */}
             <div style={{
                 position: 'absolute',
-                bottom: 20,
-                right: 20,
+                bottom: '1.25rem',
+                right: '1.25rem',
                 zIndex: 45
             }}>
                 <LanguageSelector />

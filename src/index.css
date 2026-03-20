@@ -17,6 +17,9 @@
 @layer base {
   html {
     @apply antialiased selection:bg-electric-sulfur selection:text-white;
+    /* High-Fidelity Master Scale: 1rem = 16px @ 982px height (MBP 14"). 
+       Shrinks proportionally on shorter laptop screens (e.g. 15.6" 864px height). */
+    font-size: clamp(13px, 1.63vh, 20px);
   }
 
   body {
@@ -54,7 +57,7 @@
   }
 
   .section-padding {
-    @apply px-10 md:px-20 xl:px-32 py-24 md:py-32;
+    @apply px-10 md:px-20 xl:px-32 py-[8rem];
   }
 
   /* TV-safe container: prevents content from stretching beyond 2560px on 4K+ displays */
