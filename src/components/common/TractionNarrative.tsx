@@ -123,7 +123,7 @@ export const TractionNarrative = () => {
             <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-[7rem] pb-[2rem]">
 
                 {/* Top row: 3 cards × 100vw/3 = full screen width */}
-                <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5 h-[30vh] max-h-[280px]">
+                <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
                     {topMetrics.map(m => <MetricNode key={m.label} metric={m} />)}
                 </div>
 
@@ -156,7 +156,7 @@ export const TractionNarrative = () => {
                 </div>
 
                 {/* Bottom row */}
-                <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5 h-[30vh] max-h-[280px]">
+                <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
                     {bottomMetrics.map(m => <MetricNode key={m.label} metric={m} />)}
                 </div>
 
