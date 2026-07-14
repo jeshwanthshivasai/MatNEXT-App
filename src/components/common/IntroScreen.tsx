@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { SoundController } from '@/utils/SoundController'
 import { useWindowSize } from '@/hooks/useWindowSize'
@@ -14,81 +14,86 @@ const COLOR_TOKENS = {
     textSecondary: '#0A1628'
 };
 
-const interpolate = (value: number, inputRange: [number, number], outputRange: [number, number]) => {
-    const [inputMin, inputMax] = inputRange;
-    const [outputMin, outputMax] = outputRange;
-
-    if (value <= inputMin) return outputMin;
-    if (value >= inputMax) return outputMax;
-
-    return outputMin + (outputMax - outputMin) * (value - inputMin) / (inputMax - inputMin);
-}
-
-const PulsatingGrid: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
-    const [frame, setFrame] = useState(0);
+const PulsatingGrid: React.FC = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        let frameId: number;
-        const loop = () => {
-            setFrame(f => f + 1);
-            frameId = requestAnimationFrame(loop);
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let animationFrameId: number;
+        let startTime = performance.now();
+
+        const handleResize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         };
-        frameId = requestAnimationFrame(loop);
-        return () => cancelAnimationFrame(frameId);
-    }, []);
+        window.addEventListener('resize', handleResize);
+        handleResize();
 
-    const ROWS = isMobile ? 12 : 30;
-    const COLS = isMobile ? 20 : 50;
+        // 100% Match with original desktop grid layout dimensions
+        const ROWS = 30;
+        const COLS = 50;
 
-    // We use innerWidth/Height for spacing calculation
-    const SPACING_X = typeof window !== 'undefined' ? window.innerWidth / COLS : 40;
-    const SPACING_Y = typeof window !== 'undefined' ? window.innerHeight / ROWS : 40;
+        const render = (now: number) => {
+            const time = (now - startTime) / 1000;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ backgroundColor: COLOR_TOKENS.background }}>
-            {Array.from({ length: ROWS }).map((_, i) => (
-                Array.from({ length: COLS }).map((_, j) => {
-                    const baseUrlX = j * SPACING_X;
-                    const baseUrlY = i * SPACING_Y;
+            const SPACING_X = canvas.width / COLS;
+            const SPACING_Y = canvas.height / ROWS;
 
-                    // Organic "Turbulent" motion
-                    const noiseX = Math.sin(frame / 20 + i * 0.5) * 10 + Math.cos(frame / 30 + j * 0.3) * 5;
-                    const noiseY = Math.cos(frame / 25 + j * 0.4) * 10 + Math.sin(frame / 35 + i * 0.2) * 5;
+            for (let i = 0; i < ROWS; i++) {
+                for (let j = 0; j < COLS; j++) {
+                    const baseUrlX = j * SPACING_X + SPACING_X / 2;
+                    const baseUrlY = i * SPACING_Y + SPACING_Y / 2;
+
+                    // Organic "Turbulent" motion scaled to time in seconds
+                    const noiseX = Math.sin(time * 3.0 + i * 0.5) * 10 + Math.cos(time * 2.0 + j * 0.3) * 5;
+                    const noiseY = Math.cos(time * 2.4 + j * 0.4) * 10 + Math.sin(time * 1.7 + i * 0.2) * 5;
 
                     // Wave pulse based on distance from center
                     const centerX = COLS / 2;
                     const centerY = ROWS / 2;
                     const distance = Math.sqrt(Math.pow(j - centerX, 2) + Math.pow(i - centerY, 2));
 
-                    // The "Wave" pulse
-                    const wave = Math.sin(frame / 15 - distance / 3) * 0.5 + 0.5;
+                    // The "Wave" pulse (scaled to time in seconds to fix 120Hz screen double-speed)
+                    const wave = Math.sin(time * 4.0 - distance / 3) * 0.5 + 0.5;
 
                     // Appearance properties
-                    const size = interpolate(wave, [0, 1], [2, 5]);
-                    const opacity = interpolate(wave, [0, 1], [0.1, 0.4]);
+                    const size = 2 + wave * 3; // 2px to 5px
+                    const opacity = 0.1 + wave * 0.3; // 0.1 to 0.4
 
                     // Color variation (Subtle mix of grey and primary)
                     const color = wave > 0.8 ? COLOR_TOKENS.primary : '#D1D5DB';
 
-                    return (
-                        <div
-                            key={`${i}-${j}`}
-                            style={{
-                                position: 'absolute',
-                                left: baseUrlX + noiseX,
-                                top: baseUrlY + noiseY,
-                                width: size,
-                                height: size,
-                                borderRadius: '50%',
-                                backgroundColor: color,
-                                opacity,
-                                transform: 'translate(-50%, -50%)',
-                            }}
-                        />
-                    );
-                })
-            ))}
-        </div>
+                    // Draw the dot
+                    ctx.beginPath();
+                    ctx.arc(baseUrlX + noiseX, baseUrlY + noiseY, size / 2, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.globalAlpha = opacity;
+                    ctx.fill();
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(render);
+        };
+
+        animationFrameId = requestAnimationFrame(render);
+
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            style={{ backgroundColor: COLOR_TOKENS.background }}
+        />
     );
 };
 
@@ -193,7 +198,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
             className="fixed inset-0 z-[300] flex flex-col items-center justify-center bg-white overflow-hidden select-none"
         >
             {/* TURBULENT PULSATING GRID BACKGROUND */}
-            <PulsatingGrid isMobile={isMobile} />
+            <PulsatingGrid />
 
             {/* CENTRAL BRANDING - STATIC LAYOUT */}
             <div className="relative z-10 flex flex-col items-center text-center px-4 w-full">
