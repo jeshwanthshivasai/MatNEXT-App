@@ -11,6 +11,8 @@ import { WhyMatNextNarrative } from '@/components/common/WhyMatNextNarrative'
 import { FooterNarrative } from '@/components/common/FooterNarrative'
 import { FeaturesNarrative } from '@/components/common/FeaturesNarrative'
 import { IntroScreen } from '@/components/common/IntroScreen'
+import { MobileNav } from '@/components/common/MobileNav'
+import { useWindowSize } from '@/hooks/useWindowSize'
 // import { Loader } from '@/components/common/Loader'
 import { SoundController } from '@/utils/SoundController'
 import { motion } from 'framer-motion'
@@ -43,6 +45,8 @@ function App() {
     const [isFooterReached, setIsFooterReached] = useState(false)
     const [isLangOpen, setIsLangOpen] = useState(false)
     const { t, i18n } = useTranslation()
+    const { width } = useWindowSize()
+    const isMobile = width < 768
 
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng)
@@ -214,6 +218,16 @@ function App() {
 
             {!loading && <TraceabilityMap scrollProgress={scrollProgress} />}
 
+            {/* Mobile Navigation */}
+            {!loading && (
+                <MobileNav
+                    scrollToSection={scrollToSection}
+                    loading={loading}
+                    isFooterReached={isFooterReached}
+                    scrollProgress={scrollProgress}
+                />
+            )}
+
             {/* Navigation */}
             <nav
                 style={{
@@ -221,7 +235,7 @@ function App() {
                     pointerEvents: (!loading && (scrollProgress < 0.3 || scrollProgress > 0.45) && !isFooterReached) ? 'auto' : 'none',
                     zIndex: 100
                 }}
-                className="fixed top-0 flex w-full items-center justify-between px-10 py-6 text-data-navy transition-all duration-700 bg-white border-b border-data-navy/10"
+                className="hidden md:flex fixed top-0 flex w-full items-center justify-between px-10 py-6 text-data-navy transition-all duration-700 bg-white border-b border-data-navy/10"
             >
                 <div
                     className="flex items-center cursor-pointer group"
@@ -306,70 +320,114 @@ function App() {
 
             {/* SECTION 1: HERO OVERHAUL */}
             <div className="hero-wrapper relative w-full overflow-hidden bg-transparent">
-                <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-20 bg-transparent">
-                    <div
-                        style={{
-                            opacity: Math.max(0, 1 - scrollProgress * 5),
-                            transform: `translateY(${scrollProgress * -100}px)`,
-                            pointerEvents: scrollProgress > 0.15 ? 'none' : 'auto'
-                        }}
-                        className="hero-content z-10 w-full"
-                    >
-                        <h1
-                            className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl relative top-[3rem] opacity-0"
+                {isMobile ? (
+                    // MOBILE HERO LAYOUT (Centered car at top, text stacked below)
+                    <section className="h-screen w-full flex flex-col justify-end p-6 pb-24 bg-transparent">
+                        <div
+                            style={{
+                                opacity: Math.max(0, 1 - scrollProgress * 5),
+                                transform: `translateY(${scrollProgress * -100}px)`,
+                                pointerEvents: scrollProgress > 0.15 ? 'none' : 'auto'
+                            }}
+                            className="hero-content z-10 w-full"
                         >
-                            <Trans i18nKey="hero.title" components={{ br: <br /> }} />
-                        </h1>
+                            <h1 className="hero-reveal text-[2.2rem] uppercase text-electric-sulfur max-w-5xl opacity-0 leading-none mb-3">
+                                <Trans i18nKey="hero.title" components={{ br: <br /> }} />
+                            </h1>
 
-                        <div className="flex flex-col md:flex-row items-end justify-between w-full">
-                            <div className="max-w-xl">
-                                <p
-                                    className="hero-reveal text-[0.875rem] text-justify opacity-0 mb-[1.5rem] leading-relaxed"
-                                >
-                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> {t('hero.description')}
+                            <div className="flex flex-col items-start w-full">
+                                <p className="hero-reveal text-[11px] text-justify opacity-0 mb-4 leading-relaxed">
+                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-xl font-bold">MatNEXT</span> {t('hero.description')}
                                 </p>
-                                <div className="hero-reveal flex gap-[2.5rem] opacity-0">
+                                <div className="hero-reveal flex gap-3 opacity-0">
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
-                                        className="btn-premium group flex items-center gap-4 pointer-events-auto whitespace-nowrap"
+                                        className="btn-premium py-2 px-4 group flex items-center gap-2 pointer-events-auto whitespace-nowrap text-[9px] font-bold"
                                     >
-                                        {t('nav.demo')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                        {t('nav.demo')} <ArrowRight className="w-3 h-3 group-hover:translate-x-2 transition-transform" />
                                     </button>
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
-                                        className="btn-premium group flex items-center gap-4 text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto whitespace-nowrap"
+                                        className="btn-premium py-2 px-4 group flex items-center gap-2 text-data-navy tracking-widest font-bold bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all pointer-events-auto whitespace-nowrap text-[9px]"
                                     >
-                                        {t('hero.explore')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                        {t('hero.explore')} <ArrowRight className="w-3 h-3 group-hover:translate-x-2 transition-transform" />
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    </section>
+                ) : (
+                    // ORIGINAL DESKTOP/TABLET HERO LAYOUT (100% UNTOUCHED)
+                    <section className="h-screen w-full flex flex-col justify-center p-10 md:p-20 pt-20 bg-transparent">
+                        <div
+                            style={{
+                                opacity: Math.max(0, 1 - scrollProgress * 5),
+                                transform: `translateY(${scrollProgress * -100}px)`,
+                                pointerEvents: scrollProgress > 0.15 ? 'none' : 'auto'
+                            }}
+                            className="hero-content z-10 w-full"
+                        >
+                            <h1
+                                className="hero-reveal text-editorial-h1 uppercase text-electric-sulfur max-w-5xl relative top-[3rem] opacity-0"
+                            >
+                                <Trans i18nKey="hero.title" components={{ br: <br /> }} />
+                            </h1>
 
-                            <div className="hero-reveal opacity-0 md:mr-[min(12vw,200px)]">
-                                <HeroStats />
+                            <div className="flex flex-col md:flex-row items-end justify-between w-full">
+                                <div className="max-w-xl">
+                                    <p
+                                        className="hero-reveal text-[0.875rem] text-justify opacity-0 mb-[1.5rem] leading-relaxed"
+                                    >
+                                        <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-2xl font-bold">MatNEXT</span> {t('hero.description')}
+                                    </p>
+                                    <div className="hero-reveal flex gap-[2.5rem] opacity-0">
+                                        <button
+                                            onMouseEnter={() => SoundController.playHoverSound()}
+                                            onClick={() => SoundController.playClickSound()}
+                                            className="btn-premium group flex items-center gap-4 pointer-events-auto whitespace-nowrap"
+                                        >
+                                            {t('nav.demo')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                        </button>
+                                        <button
+                                            onMouseEnter={() => SoundController.playHoverSound()}
+                                            onClick={() => SoundController.playClickSound()}
+                                            className="btn-premium group flex items-center gap-4 text-data-navy tracking-widest py-2.5 px-10 font-bold text-[10px] bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all duration-500 pointer-events-auto whitespace-nowrap"
+                                        >
+                                            {t('hero.explore')} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="hero-reveal opacity-0 md:mr-[min(12vw,200px)]">
+                                    <HeroStats />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
                 {/* SCROLL TOOLTIP */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: (!loading && !isLanding && scrollProgress < 0.1) ? 1 : 0 }}
                     transition={{ delay: 1 }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40 z-20 pointer-events-none"
+                    className={isMobile 
+                        ? "absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 z-20 pointer-events-none"
+                        : "absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40 z-20 pointer-events-none"
+                    }
                 >
                     <div className="flex flex-col gap-1 items-center">
-                        <div className="w-[2px] h-12 bg-data-navy/20 relative overflow-hidden">
+                        <div className={isMobile ? "w-[2px] h-8 bg-data-navy/20 relative overflow-hidden" : "w-[2px] h-12 bg-data-navy/20 relative overflow-hidden"}>
                             <motion.div
-                                animate={{ y: [0, 48] }}
+                                animate={{ y: isMobile ? [0, 32] : [0, 48] }}
                                 transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                                 className="w-full h-1/2 bg-electric-sulfur"
                             />
                         </div>
                     </div>
-                    <span className="text-[10px] uppercase tracking-[0.6em] font-bold">{t('hero.scroll')}</span>
+                    <span className={isMobile ? "text-[8px] uppercase tracking-[0.6em] font-bold" : "text-[10px] uppercase tracking-[0.6em] font-bold"}>{t('hero.scroll')}</span>
                 </motion.div>
             </div>
 

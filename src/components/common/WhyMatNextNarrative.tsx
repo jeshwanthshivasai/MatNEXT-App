@@ -7,6 +7,7 @@ import { useTranslation, Trans } from 'react-i18next'
 import { Environment, PerspectiveCamera } from '@react-three/drei'
 import { DeconstructibleCar } from './DeconstructibleCar'
 import { Target, Brain, Globe, ShieldCheck, Plug, Lock, LucideIcon } from 'lucide-react'
+import { useWindowSize } from '@/hooks/useWindowSize'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -44,16 +45,70 @@ const WhyNode = ({ card }: { card: WhyCard }) => {
 export const WhyMatNextNarrative = () => {
     const { t } = useTranslation()
     const sectionRef = useRef<HTMLDivElement>(null)
+    const contentContainerRef = useRef<HTMLDivElement>(null)
     const contentWrapperRef = useRef<HTMLDivElement>(null)
     const topTrackRef = useRef<HTMLDivElement>(null)
     const bottomTrackRef = useRef<HTMLDivElement>(null)
+    const mobileTrackRef = useRef<HTMLDivElement>(null)
+
+    const { width } = useWindowSize()
+    const isMobile = width < 768
 
     const whyCards = getWhyCards(t)
     const topCards = whyCards.slice(0, 3)
     const bottomCards = whyCards.slice(3, 6)
 
     useGSAP(() => {
-        if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current) return
+        if (!sectionRef.current) return
+
+        if (isMobile) {
+            if (!contentContainerRef.current || !contentWrapperRef.current || !mobileTrackRef.current) return
+            const getMobileTrackHeight = () => mobileTrackRef.current!.scrollHeight
+            const getWindowHeight = () => window.innerHeight
+            const getWindowWidth = () => window.innerWidth
+            const getMobileScrollDist = () => Math.max(0, getMobileTrackHeight() - getWindowHeight() + 350)
+
+            // Start offscreen to the right
+            gsap.set(contentContainerRef.current, { xPercent: 100 })
+            gsap.set(mobileTrackRef.current, { y: 0 })
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    pin: true,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                    start: "top top",
+                    end: () => `+=${getMobileScrollDist() + getWindowWidth() * 1.5}`,
+                }
+            })
+
+            // Phase 0: Slide in from right
+            tl.to(contentContainerRef.current, {
+                xPercent: 0,
+                ease: "none",
+                duration: () => getWindowWidth() * 0.5
+            })
+
+            // Phase 1: Scroll vertically stacked cards
+            tl.to(mobileTrackRef.current, {
+                y: () => -getMobileScrollDist(),
+                ease: "none",
+                duration: getMobileScrollDist
+            })
+
+            // Phase 2: Slide out left
+            tl.to(contentWrapperRef.current, {
+                x: () => -getWindowWidth(),
+                ease: "none",
+                duration: () => getWindowWidth()
+            })
+
+            return
+        }
+
+        // DESKTOP GSAP TIMELINE (100% UNTOUCHED ORIGINAL)
+        if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current) return
         const getTrackWidth = () => topTrackRef.current!.scrollWidth
         const getWindowWidth = () => window.innerWidth
 
@@ -64,8 +119,67 @@ export const WhyMatNextNarrative = () => {
         })
         tl.to([topTrackRef.current, bottomTrackRef.current], { x: () => getWindowWidth() - getTrackWidth(), ease: 'none', duration: () => getTrackWidth() })
         tl.to(contentWrapperRef.current, { x: () => -getWindowWidth(), ease: 'none', duration: () => getWindowWidth() })
-    }, { scope: sectionRef })
+    }, { scope: sectionRef, dependencies: [isMobile] })
 
+    if (isMobile) {
+        return (
+            <section ref={sectionRef} id="why-matnext" className="relative w-full overflow-hidden z-[50] h-screen bg-transparent mt-0">
+                <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-24 pb-8 flex flex-col pointer-events-auto">
+                    <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1">
+                        
+                        {/* Header side-by-side: stats title left, 3D car right */}
+                        <div className="flex items-center justify-between px-6 mb-4">
+                            <div>
+                                <span className="text-electric-sulfur text-[10px] font-mono uppercase tracking-[0.4em] font-bold block mb-1">
+                                    {t('why.title')}
+                                </span>
+                                <h2 className="text-[1.5rem] font-black uppercase tracking-tighter leading-tight text-data-navy max-w-[60vw]">
+                                    {t('why.subtitle')}
+                                </h2>
+                            </div>
+                            <div className="w-20 h-20 relative select-none pointer-events-none pr-2">
+                                <Canvas camera={{ position: [0, 0, 10], fov: 22 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
+                                    <Suspense fallback={null}>
+                                        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={22} />
+                                        <DeconstructibleCar progress={0.25} isLoader={true} />
+                                        <ambientLight intensity={0.5} />
+                                        <Environment preset="city" />
+                                    </Suspense>
+                                </Canvas>
+                            </div>
+                        </div>
+
+                        {/* Scrolling container */}
+                        <div className="flex-1 overflow-hidden relative px-6">
+                            <div ref={mobileTrackRef} className="flex flex-col gap-4 pb-20">
+                                {whyCards.map((c) => {
+                                    const Icon = c.icon
+                                    return (
+                                        <div key={c.title} className="w-full border-l-[3px] border-electric-sulfur/20 hover:border-electric-sulfur bg-neutral-50/50 p-4 transition-colors relative group">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <div className="w-8 h-8 rounded-full bg-data-navy/5 flex items-center justify-center group-hover:bg-electric-sulfur group-hover:text-data-navy transition-colors duration-500">
+                                                    <Icon className="w-4 h-4 stroke-[1.5]" />
+                                                </div>
+                                                <h3 className="text-sm font-black uppercase tracking-tighter leading-none text-data-navy">
+                                                    {c.title}
+                                                </h3>
+                                            </div>
+                                            <p className="text-[10px] font-mono uppercase leading-normal opacity-50">
+                                                {c.desc}
+                                            </p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    // ORIGINAL DESKTOP/TABLET LAYOUT (100% UNTOUCHED)
     return (
         <section ref={sectionRef} id="why-matnext" className="relative w-full overflow-hidden z-[50] h-screen bg-white flex flex-col">
             <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-[7rem] pb-[2rem]">

@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { useTranslation } from 'react-i18next'
+import { useWindowSize } from '@/hooks/useWindowSize'
 
 interface TraceabilityMapProps {
     scrollProgress: number
@@ -19,6 +20,8 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
     const { t } = useTranslation()
     const container = useRef<HTMLDivElement>(null)
     const hasAnimated = useRef(false)
+    const { width } = useWindowSize()
+    const isMobile = width < 768
 
     const materials = getMaterials(t)
 
@@ -66,14 +69,15 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
 
             // Stagger reveal each material column is removed for the Wipe effect.
             // But we ensure they are fully visible.
-            gsap.set(container.current.querySelectorAll('.t-col'), { y: 0, opacity: 1 })
-
-            // Animate the fill bars
-            gsap.fromTo(
-                container.current.querySelectorAll('.t-fill'),
-                { scaleX: 0 },
-                { scaleX: 1, stagger: 0.1, duration: 1.2, ease: 'expo.out', delay: 0.3 }
-            )
+            if (!isMobile) {
+                gsap.set(container.current.querySelectorAll('.t-col'), { y: 0, opacity: 1 })
+                // Animate the fill bars
+                gsap.fromTo(
+                    container.current.querySelectorAll('.t-fill'),
+                    { scaleX: 0 },
+                    { scaleX: 1, stagger: 0.1, duration: 1.2, ease: 'expo.out', delay: 0.3 }
+                )
+            }
 
             // Counter animation
             const counters = container.current.querySelectorAll('.t-counter')
@@ -95,7 +99,108 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
         if (!isVisible && hasAnimated.current) {
             hasAnimated.current = false
         }
-    }, [isVisible])
+    }, [isVisible, isMobile])
+
+    if (isMobile) {
+        return (
+            <div
+                ref={container}
+                className="fixed inset-0 z-20 flex items-center justify-center pointer-events-none"
+                style={{
+                    opacity: newStatsOpacity,
+                    pointerEvents: newStatsOpacity > 0.1 ? 'auto' : 'none',
+                }}
+            >
+                {/* Mobile stacked layout matching transition phase 4 mockup */}
+                <div className="w-full max-w-xs px-4 flex flex-col items-center gap-4 mt-28">
+                    
+                    {/* Title */}
+                    <div className="text-center">
+                        <span className="text-xs text-data-navy font-mono uppercase tracking-[0.4em] block mb-1">
+                            {t('traceability.matrix')}
+                        </span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] font-bold text-electric-sulfur">
+                            {t('traceability.extraction')}
+                        </span>
+                    </div>
+
+                    {/* 1st Stat: 99.8% Compliance */}
+                    <div className="h-16 w-full bg-electric-sulfur/10 flex flex-col justify-center items-center relative overflow-hidden">
+                        <span className="text-2xl font-black tracking-tighter text-electric-sulfur leading-none" style={{ fontFamily: 'var(--font-sans)' }}>
+                            99.8%
+                        </span>
+                        <span className="text-[8px] opacity-60 mt-1 font-bold text-data-navy font-sans uppercase tracking-widest leading-none">
+                            {t('traceability.compliance')}
+                        </span>
+                    </div>
+
+                    {/* Alternating Checkerboard Grid for 5 Materials */}
+                    <div className="grid grid-cols-3 gap-y-3 gap-x-2 w-full text-center">
+                        {/* Row 1: STEEL (left) and LITHIUM (right) */}
+                        <div className="col-span-1 border-l border-data-navy/10 pl-2 text-left">
+                            <span className="text-[12px] font-black text-data-navy font-sans leading-none block">
+                                <span className="t-counter">0</span>%
+                            </span>
+                            <span className="text-[8px] font-mono tracking-wider font-bold uppercase block text-zinc-500">
+                                {materials[0].name}
+                            </span>
+                        </div>
+                        <div className="col-span-1"></div>
+                        <div className="col-span-1 border-l border-data-navy/10 pl-2 text-left">
+                            <span className="text-[12px] font-black text-data-navy font-sans leading-none block">
+                                <span className="t-counter">0</span>%
+                            </span>
+                            <span className="text-[8px] font-mono tracking-wider font-bold uppercase block text-zinc-400">
+                                {materials[1].name}
+                            </span>
+                        </div>
+
+                        {/* Row 2: COBALT centered */}
+                        <div className="col-span-1"></div>
+                        <div className="col-span-1 border-l border-data-navy/10 pl-2 text-left">
+                            <span className="text-[12px] font-black text-data-navy font-sans leading-none block">
+                                <span className="t-counter">0</span>%
+                            </span>
+                            <span className="text-[8px] font-mono tracking-wider font-bold uppercase block text-blue-500">
+                                {materials[2].name}
+                            </span>
+                        </div>
+                        <div className="col-span-1"></div>
+
+                        {/* Row 3: COPPER (left) and ALUMINIUM (right) */}
+                        <div className="col-span-1 border-l border-data-navy/10 pl-2 text-left">
+                            <span className="text-[12px] font-black text-data-navy font-sans leading-none block">
+                                <span className="t-counter">0</span>%
+                            </span>
+                            <span className="text-[8px] font-mono tracking-wider font-bold uppercase block text-orange-500">
+                                {materials[3].name}
+                            </span>
+                        </div>
+                        <div className="col-span-1"></div>
+                        <div className="col-span-1 border-l border-data-navy/10 pl-2 text-left">
+                            <span className="text-[12px] font-black text-data-navy font-sans leading-none block">
+                                <span className="t-counter">0</span>%
+                            </span>
+                            <span className="text-[8px] font-mono tracking-wider font-bold uppercase block text-slate-400">
+                                {materials[4].name}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* 2nd Stat: 2.4M Tracked */}
+                    <div className="h-16 w-full bg-electric-sulfur/10 flex flex-col justify-center items-center relative overflow-hidden">
+                        <span className="text-2xl font-black tracking-tighter text-electric-sulfur leading-none" style={{ fontFamily: 'var(--font-sans)' }}>
+                            2.4M
+                        </span>
+                        <span className="text-[8px] opacity-60 mt-1 font-bold text-data-navy font-sans uppercase tracking-widest leading-none">
+                            {t('traceability.tracked')}
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div
@@ -110,7 +215,7 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                     style={{
                         bottom: '0',
                         left: '50%',
-                        transform: `translate(calc(-50% - 132px - min(48vw, 556px) * ${separationProgress}), 0)`,
+                        transform: `translate(calc(-50% - 8.25rem - min(30.88vw, 34.75rem) * ${separationProgress}), 0)`,
                         opacity: newStatsOpacity,
                     }}
                 >
@@ -135,7 +240,7 @@ export const TraceabilityMap = ({ scrollProgress }: TraceabilityMapProps) => {
                     style={{
                         bottom: '0',
                         left: '50%',
-                        transform: `translate(calc(-50% + 132px + min(48vw, 556px) * ${separationProgress}), 0)`,
+                        transform: `translate(calc(-50% + 8.25rem + min(30.88vw, 34.75rem) * ${separationProgress}), 0)`,
                         opacity: newStatsOpacity,
                     }}
                 >

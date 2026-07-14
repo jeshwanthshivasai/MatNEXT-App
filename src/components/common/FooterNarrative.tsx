@@ -1,23 +1,21 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { useWindowSize } from '@/hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
+import { Canvas, useFrame } from '@react-three/fiber'
+// import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { Send, MapPin, Mail, ArrowUpRight, Phone, Globe } from 'lucide-react'
 import { SoundController } from '../../utils/SoundController'
-// import { DeconstructibleCar } from './DeconstructibleCar'
-// import { Environment, PerspectiveCamera } from '@react-three/drei'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// import logo from '../../assets/MatNEXT.png'
 import handLeftSvg from '../../assets/1.svg'
 import handRightSvg from '../../assets/2.svg'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const carModelUrl = '/models/generic_sedan_car_optimized.glb'
+// const carModelUrl = '/models/generic_sedan_car_optimized.glb'
 
 /* ─── Wireframe Globe ─────── */
 const FooterGlobe = () => {
@@ -35,25 +33,6 @@ const FooterGlobe = () => {
         </lineSegments>
     )
 }
-
-/* ─── 3D Car ─────── */
-// const FooterCar = ({ direction }: { direction: 1 | -1 }) => {
-//     const { scene } = useGLTF(carModelUrl)
-//     const groupRef = useRef<THREE.Group>(null)
-//     const cloned = useMemo(() => scene.clone(true), [scene])
-
-//     useFrame((_s, delta) => {
-//         if (groupRef.current) {
-//             groupRef.current.rotation.y += delta * 0.5 * direction
-//         }
-//     })
-
-//     return (
-//         <group ref={groupRef} scale={0.55}>
-//             <primitive object={cloned} />
-//         </group>
-//     )
-// }
 
 /* ─── Footer Language Selector ─────── */
 const LanguageSelector = () => {
@@ -130,15 +109,6 @@ const LanguageSelector = () => {
     )
 }
 
-/* ═══════════════════════════════════════
-   FooterNarrative
-   Sistine-chapel diagonal layout:
-     - Left hand from top-left
-     - Right hand from bottom-right
-     - Globe + cars + logo at center
-     - Contact form card top-right
-     - Copyright card bottom-left
-   ═══════════════════════════════════════ */
 export const FooterNarrative = () => {
     const { t } = useTranslation()
     const sectionRef = useRef<HTMLDivElement>(null)
@@ -151,11 +121,37 @@ export const FooterNarrative = () => {
     const contactRef = useRef<HTMLDivElement>(null)
     const copyrightRef = useRef<HTMLDivElement>(null)
 
+    const { width } = useWindowSize()
+    const isMobile = width < 768
+
     useGSAP(() => {
         if (!sectionRef.current || !leftHandRef.current || !rightHandRef.current ||
-            !globeContainerRef.current || !contactRef.current || !copyrightRef.current) return
+            !globeContainerRef.current) return
 
-        // Initial states
+        if (isMobile) {
+            // Initial states for mobile
+            gsap.set(leftHandRef.current, { x: '-60%', opacity: 0 })
+            gsap.set(rightHandRef.current, { x: '60%', opacity: 0 })
+            gsap.set(globeContainerRef.current, { scale: 0.5, opacity: 0 })
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: globeContainerRef.current,
+                    start: 'top 85%',
+                    end: 'bottom 45%',
+                    scrub: true,
+                }
+            })
+
+            tl.to(leftHandRef.current, { x: '0%', opacity: 0.8, ease: 'power2.out' }, 0)
+            tl.to(rightHandRef.current, { x: '0%', opacity: 0.8, ease: 'power2.out' }, 0)
+            tl.to(globeContainerRef.current, { scale: 1, opacity: 1, ease: 'power2.out' }, 0.05)
+
+            return
+        }
+
+        // Desktop initial states
+        if (!contactRef.current || !copyrightRef.current) return
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
         gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
@@ -200,8 +196,199 @@ export const FooterNarrative = () => {
             })
         }
 
-    }, { scope: sectionRef })
+    }, { scope: sectionRef, dependencies: [isMobile] })
 
+    if (isMobile) {
+        return (
+            <footer
+                ref={sectionRef}
+                id="customers"
+                className="relative w-full bg-white flex flex-col gap-6 py-12 px-6"
+            >
+                {/* ═══ CONTACT FORM ═══ */}
+                <div
+                    ref={contactRef}
+                    className="w-full flex flex-col gap-3"
+                >
+                    <div className="bg-white p-6 border-[0.5px] border-[#96CC39] shadow-sm">
+                        <div className="mb-6">
+                            <h3 className="text-[1.8rem] font-black text-[#96CC39] uppercase tracking-tighter leading-none mb-2">
+                                {t('footer.getInTouch')}
+                            </h3>
+                            <div className="text-[10px] text-justify leading-relaxed opacity-85 pl-2 border-l border-[#96CC39]">
+                                {t('footer.contactDesc')}
+                            </div>
+                        </div>
+
+                        <form className="grid grid-cols-1 gap-4" onSubmit={e => e.preventDefault()}>
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[8px] font-black text-black/50 tracking-widest uppercase">
+                                    {t('footer.fullName')}
+                                </label>
+                                <input type="text" placeholder={t('footer.fullNamePlaceholder')}
+                                    className="w-full bg-white border-[0.5px] border-black/20 focus:border-[#96CC39] p-3 text-xs outline-none font-bold" />
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[8px] font-black text-black/50 tracking-widest uppercase">
+                                    {t('footer.email')}
+                                </label>
+                                <input type="email" placeholder={t('footer.emailPlaceholder')}
+                                    className="w-full bg-white border-[0.5px] border-black/20 focus:border-[#96CC39] p-3 text-xs outline-none font-bold" />
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[8px] font-black text-black/50 tracking-widest uppercase">
+                                    {t('footer.industry')}
+                                </label>
+                                <select className="w-full bg-white border-[0.5px] border-black/20 focus:border-[#96CC39] p-3 text-xs outline-none font-bold cursor-pointer">
+                                    <option>{t('footer.selectIndustry')}</option>
+                                    <option>{t('footer.industries.automotive')}</option>
+                                    <option>{t('footer.industries.steel')}</option>
+                                    <option>{t('footer.industries.plastic')}</option>
+                                    <option>{t('footer.industries.aluminium')}</option>
+                                    <option>{t('footer.industries.battery')}</option>
+                                    <option>{t('footer.industries.hvac')}</option>
+                                    <option>{t('footer.industries.others')}</option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[8px] font-black text-black/50 tracking-widest uppercase">
+                                    {t('footer.volume')}
+                                </label>
+                                <input type="text" placeholder={t('footer.volumePlaceholder')}
+                                    className="w-full bg-white border-[0.5px] border-black/20 focus:border-[#96CC39] p-3 text-xs outline-none font-bold" />
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[8px] font-black text-black/50 tracking-widest uppercase">
+                                    {t('footer.message')}
+                                </label>
+                                <textarea placeholder={t('footer.messagePlaceholder')}
+                                    className="w-full bg-white border-[0.5px] border-black/20 focus:border-[#96CC39] p-3 text-xs outline-none font-bold min-h-[80px] resize-none" />
+                            </div>
+                            <button type="submit"
+                                className="w-full bg-[#96CC39] hover:bg-data-navy hover:text-white text-black font-black text-xs uppercase tracking-widest py-3 flex items-center justify-center gap-2 transition-all mt-2">
+                                {t('footer.send')} <Send className="w-3.5 h-3.5 rotate-45" />
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {/* ═══ MIDDLE CONTAINER: Hands & Globe ═══ */}
+                <div className="relative w-full h-[220px] overflow-hidden my-4 flex items-center justify-center bg-white border-[0.5px] border-[#96CC39]/20">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(230,230,230,0.4)_0%,transparent_75%)] pointer-events-none" />
+                    
+                    <div ref={globeContainerRef} className="absolute w-[200px] h-[200px] z-20 pointer-events-none">
+                        <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} className="w-full h-full">
+                            <FooterGlobe />
+                        </Canvas>
+                    </div>
+
+                    <img
+                        ref={leftHandRef}
+                        src={handLeftSvg}
+                        alt=""
+                        className="absolute top-[-10px] left-[-30px] w-[220px] h-auto pointer-events-none z-30 opacity-0"
+                        style={{ transformOrigin: 'top left', rotate: '-5deg' }}
+                    />
+
+                    <img
+                        ref={rightHandRef}
+                        src={handRightSvg}
+                        alt=""
+                        className="absolute bottom-[-10px] right-[-30px] w-[220px] h-auto pointer-events-none z-30 opacity-0"
+                        style={{ transformOrigin: 'bottom right', rotate: '5deg' }}
+                    />
+                </div>
+
+                {/* ═══ INFO CARD ═══ */}
+                <div
+                    ref={copyrightRef}
+                    className="w-full flex flex-col gap-4"
+                >
+                    <div className="bg-white p-6 border-[0.5px] border-[#96CC39]">
+                        <h2 className="text-[2.2rem] font-black text-[#96CC39] leading-none mb-3">MatNEXT</h2>
+                        <div className="text-[10.5px] leading-relaxed opacity-90 border-l border-[#96CC39] pl-2">
+                            {t('footer.matnextDesc')}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                        <div className="bg-white p-6 border-[0.5px] border-[#96CC39]">
+                            <span className="text-[8px] font-black text-[#96CC39] tracking-widest uppercase block mb-4">{t('footer.hq')}</span>
+                            <div className="flex flex-col gap-3">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-6 h-6 rounded-full bg-[#96CC39]/10 flex items-center justify-center shrink-0">
+                                        <MapPin className="w-3.5 h-3.5 text-[#96CC39]" />
+                                    </div>
+                                    <div className="text-[10px] font-bold text-black tracking-wide uppercase">
+                                        {t('footer.mumbai')} <span className="opacity-40">|</span> {t('footer.india')} 🇮🇳
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-6 h-6 rounded-full bg-[#96CC39]/10 flex items-center justify-center shrink-0">
+                                        <MapPin className="w-3.5 h-3.5 text-[#96CC39]" />
+                                    </div>
+                                    <div className="text-[10px] font-bold text-black tracking-wide uppercase">
+                                        {t('footer.tokyo')} <span className="opacity-40">|</span> {t('footer.japan')} 🇯🇵
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white p-6 border-[0.5px] border-[#96CC39]">
+                            <span className="text-[8px] font-black text-[#96CC39] tracking-widest uppercase block mb-4">{t('footer.directLine')}</span>
+                            <div className="flex flex-col gap-3">
+                                <div className="flex items-center gap-3 text-[10px] font-bold">
+                                    <div className="w-6 h-6 rounded-full bg-[#96CC39]/10 flex items-center justify-center shrink-0">
+                                        <Mail className="w-3.5 h-3.5 text-[#96CC39]" />
+                                    </div>
+                                    INFO-MATNEXT@GENBANEXT.COM
+                                </div>
+                                <div className="flex items-center gap-3 text-[10px] font-bold">
+                                    <div className="w-6 h-6 rounded-full bg-[#96CC39]/10 flex items-center justify-center shrink-0">
+                                        <Phone className="w-3.5 h-3.5 text-[#96CC39]" />
+                                    </div>
+                                    +81 80-8529-3858
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white p-6 border-[0.5px] border-[#96CC39]">
+                            <span className="text-[8px] font-black text-[#96CC39] tracking-widest uppercase block mb-4">{t('footer.quickLinks')}</span>
+                            <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+                                {[
+                                    { label: t('nav.features'), id: 'features' },
+                                    { label: t('nav.traction'), id: 'traction' },
+                                    { label: t('nav.ai'), id: 'ai' },
+                                    { label: t('nav.why'), id: 'why-matnext' },
+                                    { label: t('nav.customers'), id: 'customers' },
+                                    { label: 'Contact', id: 'customers' }
+                                ].map((link) => (
+                                    <a
+                                        key={link.label}
+                                        href={`#${link.id}`}
+                                        className="flex items-center justify-between text-[11px] font-bold text-black/50 border-b border-[#96CC39]/40 pb-1"
+                                    >
+                                        {link.label}
+                                        <ArrowUpRight className="w-3.5 h-3.5 text-[#96CC39]" />
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Lang Selector & Rights */}
+                    <div className="flex flex-col items-center gap-4 mt-4">
+                        <LanguageSelector />
+                        <span className="text-[8px] font-bold tracking-widest text-black/40 uppercase text-center mt-2">
+                            {t('footer.rights')}
+                        </span>
+                    </div>
+                </div>
+            </footer>
+        )
+    }
+
+    // ORIGINAL DESKTOP/TABLET FOOTER LAYOUT (100% UNTOUCHED)
     return (
         <footer
             ref={sectionRef}
@@ -339,7 +526,6 @@ export const FooterNarrative = () => {
 
                 {/* HQ Locations Tile */}
                 <div style={{
-                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -371,7 +557,6 @@ export const FooterNarrative = () => {
 
                 {/* Direct Line Tile */}
                 <div style={{
-                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -396,7 +581,6 @@ export const FooterNarrative = () => {
                 {/* Quick Links Tile */}
                 <div style={{
                     gridColumn: 'span 2',
-                    // background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.8) 100%)',
                     padding: '20px 20px',
                     border: '0.5px solid #96CC39',
                     boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
@@ -459,7 +643,7 @@ export const FooterNarrative = () => {
             </div>
 
             {/* ═══ LEFT HAND — from top-left, closer to center ═══ */}
-            < img
+            <img
                 ref={leftHandRef}
                 src={handLeftSvg}
                 alt=""
@@ -526,84 +710,8 @@ export const FooterNarrative = () => {
                 <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
                     <FooterGlobe />
                 </Canvas>
-
-
-                {/* ── Top Car (anticlockwise) ── */}
-                {/* <div
-                    ref={topCarRef}
-                    style={{
-                        position: 'absolute',
-                        top: '18%',
-                        left: 0,
-                        right: 0,
-                        margin: '0 auto',
-                        width: 'clamp(80px, 7vw, 120px)',
-                        height: 'clamp(50px, 4vw, 70px)',
-                        zIndex: 26,
-                    }}
-                >
-                    <Canvas camera={{ position: [0, 1.5, 4], fov: 40 }} style={{ pointerEvents: 'none', }}>
-                        <ambientLight intensity={1.2} />
-                        <directionalLight position={[3, 5, 3]} intensity={1.5} />
-                        <Suspense fallback={null}>
-                            <FooterCar direction={1} />
-                        </Suspense>
-                    </Canvas>
-                </div> */}
-
-                {/* ── MatNEXT Logo (pulsing center) ── */}
-                {/* <div
-                    ref={logoRef}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        margin: 'auto',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 30,
-                        textAlign: 'center',
-                    }}
-                >
-                    <img
-                        src={logo}
-                        alt="MatNEXT"
-                        style={{
-                            width: 'clamp(60px, 6vw, 100px)',
-                            height: 'auto',
-                        }}
-                    />
-                </div> */}
-
-                {/* ── Bottom Car (clockwise) ── */}
-                {/* <div
-                    ref={bottomCarRef}
-                    style={{
-                        position: 'absolute',
-                        bottom: '18%',
-                        left: 0,
-                        right: 0,
-                        margin: '0 auto',
-                        width: 'clamp(80px, 7vw, 120px)',
-                        height: 'clamp(50px, 4vw, 70px)',
-                        zIndex: 26,
-                    }}
-                >
-                    <Canvas camera={{ position: [0, 1.5, 4], fov: 40 }} style={{ pointerEvents: 'none' }}>
-                        <ambientLight intensity={1.2} />
-                        <directionalLight position={[3, 5, 3]} intensity={1.5} />
-                        <Suspense fallback={null}>
-                            <FooterCar direction={-1} />
-                        </Suspense>
-                    </Canvas>
-                </div> */}
             </div>
 
         </footer >
     )
 }
-
-useGLTF.preload(carModelUrl)

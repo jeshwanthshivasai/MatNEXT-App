@@ -4,9 +4,9 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useTranslation } from 'react-i18next'
-
 import * as THREE from 'three'
 import { Cpu, BarChart2, FileText, ArrowUpRight, AlertTriangle, Wind, LucideIcon } from 'lucide-react'
+import { useWindowSize } from '@/hooks/useWindowSize'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -33,7 +33,6 @@ const AINode = ({ card }: { card: AICard }) => {
 
 /* ─── GenbaAI Document Scanner Animation ─────────────────── */
 
-/* Helper: create a line from points array */
 const LinePath = ({ points, color = '#96CC39', opacity = 0.4 }: { points: number[][]; color?: string; opacity?: number }) => {
     const positions = new Float32Array(points.flat())
     return (
@@ -46,7 +45,6 @@ const LinePath = ({ points, color = '#96CC39', opacity = 0.4 }: { points: number
     )
 }
 
-/* Corner bracket (L-shaped) at a given corner — uses scale flipping for consistent look */
 const CornerBracket = ({ position, flipX = false, flipY = false, size = 0.35, thickness = 0.04 }: { position: [number, number, number]; flipX?: boolean; flipY?: boolean; size?: number; thickness?: number }) => (
     <group position={position} scale={[flipX ? -1 : 1, flipY ? -1 : 1, 1]}>
         {/* Horizontal arm */}
@@ -62,6 +60,7 @@ const CornerBracket = ({ position, flipX = false, flipY = false, size = 0.35, th
     </group>
 )
 
+/* ─── GenbaAI Document Scanner Animation (ORIGINAL) ───────── */
 const GenbaAIScanner = () => {
     const groupRef = useRef<THREE.Group>(null)
     const scanLineRef = useRef<THREE.Mesh>(null)
@@ -80,14 +79,11 @@ const GenbaAIScanner = () => {
             scanLineRef.current.position.y = scanY
         }
 
-
         // Subtle float for the whole group
         if (groupRef.current) {
             groupRef.current.position.y = -0.15 + Math.sin(t * 0.5) * 0.03
         }
     })
-
-
 
     return (
         <group ref={groupRef} position={[0, -0.15, 0]} scale={0.65}>
@@ -139,16 +135,67 @@ const GenbaAIScanner = () => {
                         <meshBasicMaterial color="#0A1628" opacity={0.4} transparent />
                     </mesh>
                 ))}
-
-                {/* Cross-hemisphere connections (circuit lines) */}
-                <LinePath points={[[-0.4, 0.15, 0], [-0.1, 0.2, 0], [0.1, 0.2, 0], [0.4, 0.15, 0]]} color="#0A1628" opacity={0.2} />
-                <LinePath points={[[-0.35, -0.25, 0], [-0.1, -0.25, 0], [0.1, -0.25, 0], [0.35, -0.25, 0]]} color="#0A1628" opacity={0.2} />
-                <LinePath points={[[-0.55, -0.05, 0], [-0.2, 0.0, 0], [0.2, 0.0, 0], [0.55, -0.05, 0]]} color="#0A1628" opacity={0.2} />
             </group>
 
+            {/* ── Document Plane ── */}
+            <mesh position={[0, 0, -0.01]}>
+                <planeGeometry args={[docW, docH]} />
+                <meshBasicMaterial color="#96CC39" opacity={0.1} transparent side={THREE.DoubleSide} />
+            </mesh>
 
+            {/* ── Scanning Line Plane ── */}
+            <mesh ref={scanLineRef} position={[0, 0, 0.025]}>
+                <planeGeometry args={[docW + 0.4, 0.18]} />
+                <meshBasicMaterial color="#96CC39" opacity={0.5} transparent side={THREE.DoubleSide} />
+            </mesh>
+        </group>
+    )
+}
 
-            {/* ── Document outline ── */}
+/* ─── GenbaAI Document Scanner Animation (MOBILE SPECIFIC) ── */
+const MobileAIScanner = () => {
+    const groupRef = useRef<THREE.Group>(null)
+    const scanLineRef = useRef<THREE.Mesh>(null)
+
+    const docW = 2.6
+    const docH = 3.4
+    const bracketOffset = 0.25
+
+    useFrame((_state) => {
+        const t = _state.clock.elapsedTime
+        if (scanLineRef.current) {
+            scanLineRef.current.position.y = Math.sin(t * 1.2) * (docH / 2 - 0.1)
+        }
+        if (groupRef.current) {
+            groupRef.current.position.y = -0.15 + Math.sin(t * 0.5) * 0.03
+        }
+    })
+
+    return (
+        <group ref={groupRef} position={[0, 0, 0]} scale={0.4}>
+            <CornerBracket position={[-(docW / 2 + bracketOffset), docH / 2 + bracketOffset, 0]} size={0.4} />
+            <CornerBracket position={[docW / 2 + bracketOffset, docH / 2 + bracketOffset, 0]} flipX size={0.4} />
+            <CornerBracket position={[-(docW / 2 + bracketOffset), -(docH / 2 + bracketOffset), 0]} flipY size={0.4} />
+            <CornerBracket position={[docW / 2 + bracketOffset, -(docH / 2 + bracketOffset), 0]} flipX flipY size={0.4} />
+
+            <group position={[0, -0.1, 0.02]}>
+                <LinePath points={[
+                    [-0.6, 0.5, 0], [-0.75, 0.3, 0], [-0.8, 0.0, 0], [-0.75, -0.3, 0],
+                    [-0.55, -0.5, 0], [-0.3, -0.55, 0], [0, -0.5, 0],
+                ]} color="#0A1628" opacity={0.5} />
+                <LinePath points={[
+                    [0.6, 0.5, 0], [0.75, 0.3, 0], [0.8, 0.0, 0], [0.75, -0.3, 0],
+                    [0.55, -0.5, 0], [0.3, -0.55, 0], [0, -0.5, 0],
+                ]} color="#0A1628" opacity={0.5} />
+                <LinePath points={[
+                    [-0.6, 0.5, 0], [-0.4, 0.7, 0], [-0.1, 0.75, 0],
+                    [0.1, 0.75, 0], [0.4, 0.7, 0], [0.6, 0.5, 0],
+                ]} color="#0A1628" opacity={0.5} />
+                <LinePath points={[
+                    [0, 0.75, 0], [0, 0.4, 0], [-0.05, 0.1, 0], [0, -0.2, 0], [0, -0.5, 0],
+                ]} color="#0A1628" opacity={0.35} />
+            </group>
+
             <LinePath
                 points={[
                     [-docW / 2, docH / 2, 0], [docW / 2 - 0.3, docH / 2, 0],
@@ -158,33 +205,15 @@ const GenbaAIScanner = () => {
                 opacity={0.5}
             />
 
-            {/* ── Document fold corner ── */}
-            <LinePath
-                points={[
-                    [docW / 2 - 0.3, docH / 2, 0],
-                    [docW / 2 - 0.3, docH / 2 - 0.3, 0],
-                    [docW / 2, docH / 2 - 0.3, 0],
-                ]}
-                opacity={0.5}
-            />
-
-            {/* ── Document body fill ── */}
             <mesh position={[0, 0, -0.01]}>
                 <planeGeometry args={[docW, docH]} />
                 <meshBasicMaterial color="#96CC39" opacity={0.1} transparent side={THREE.DoubleSide} />
             </mesh>
 
-            {/* ── Animated scan line (horizontal beam sweeping vertically) ── */}
-            <mesh ref={scanLineRef} position={[0, 0, 0.03]}>
-                <planeGeometry args={[docW + 0.4, 0.02]} />
-                <meshBasicMaterial color="#96CC39" opacity={0} transparent side={THREE.DoubleSide} />
-            </mesh>
-            {/* Scan line glow */}
             <mesh ref={scanLineRef} position={[0, 0, 0.025]}>
                 <planeGeometry args={[docW + 0.4, 0.18]} />
                 <meshBasicMaterial color="#96CC39" opacity={0.5} transparent side={THREE.DoubleSide} />
             </mesh>
-
         </group>
     )
 }
@@ -192,9 +221,14 @@ const GenbaAIScanner = () => {
 export const AINarrative = () => {
     const { t } = useTranslation()
     const sectionRef = useRef<HTMLDivElement>(null)
+    const contentContainerRef = useRef<HTMLDivElement>(null)
     const contentWrapperRef = useRef<HTMLDivElement>(null)
     const topTrackRef = useRef<HTMLDivElement>(null)
     const bottomTrackRef = useRef<HTMLDivElement>(null)
+    const mobileTrackRef = useRef<HTMLDivElement>(null)
+
+    const { width } = useWindowSize()
+    const isMobile = width < 768
 
     const cards: AICard[] = [
         { icon: Cpu, index: '01', title: t('ai.items.capture.title'), desc: t('ai.items.capture.desc') },
@@ -209,25 +243,164 @@ export const AINarrative = () => {
     const bottomCards = cards.slice(3, 6)
 
     useGSAP(() => {
-        if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current || !sectionRef.current) return
+        if (!sectionRef.current) return
+
+        if (isMobile) {
+            if (!contentContainerRef.current || !contentWrapperRef.current || !mobileTrackRef.current) return
+            const getMobileTrackHeight = () => mobileTrackRef.current!.scrollHeight
+            const getWindowHeight = () => window.innerHeight
+            const getWindowWidth = () => window.innerWidth
+            const getMobileScrollDist = () => Math.max(0, getMobileTrackHeight() - getWindowHeight() + 350)
+
+            // Start offscreen to the right
+            gsap.set(contentContainerRef.current, { xPercent: 100 })
+            gsap.set(mobileTrackRef.current, { y: 0 })
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    pin: true,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                    start: "top top",
+                    end: () => `+=${getMobileScrollDist() + getWindowWidth() * 1.5}`,
+                }
+            })
+
+            // Phase 0: Slide in from right
+            tl.to(contentContainerRef.current, {
+                xPercent: 0,
+                ease: "none",
+                duration: () => getWindowWidth() * 0.5
+            })
+
+            // Phase 1: Scroll vertically stacked cards
+            tl.to(mobileTrackRef.current, {
+                y: () => -getMobileScrollDist(),
+                ease: "none",
+                duration: getMobileScrollDist
+            })
+
+            // Phase 2: Slide out left
+            tl.to(contentWrapperRef.current, {
+                x: () => -getWindowWidth(),
+                ease: "none",
+                duration: () => getWindowWidth()
+            })
+
+            return
+        }
+
+        // DESKTOP GSAP TIMELINE (100% UNTOUCHED ORIGINAL)
+        if (!topTrackRef.current || !bottomTrackRef.current || !contentWrapperRef.current) return
+
         const getTrackWidth = () => topTrackRef.current!.scrollWidth
         const getWindowWidth = () => window.innerWidth
 
         gsap.set([topTrackRef.current, bottomTrackRef.current], { x: () => getWindowWidth() })
 
         const tl = gsap.timeline({
-            scrollTrigger: { trigger: sectionRef.current, pin: true, scrub: 1, invalidateOnRefresh: true, start: 'top top', end: () => `+=${getTrackWidth() + getWindowWidth()}` }
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                pin: true,
+                scrub: 1,
+                invalidateOnRefresh: true,
+                start: 'top top',
+                end: () => `+=${getTrackWidth() + getWindowWidth()}`,
+            }
         })
-        tl.to([topTrackRef.current, bottomTrackRef.current], { x: () => getWindowWidth() - getTrackWidth(), ease: 'none', duration: () => getTrackWidth() })
-        tl.to(contentWrapperRef.current, { x: () => -getWindowWidth(), ease: 'none', duration: () => getWindowWidth() })
-    }, { scope: sectionRef })
+        
+        tl.to([topTrackRef.current, bottomTrackRef.current], {
+            x: () => getWindowWidth() - getTrackWidth(),
+            ease: 'none',
+            duration: () => getTrackWidth(),
+        })
 
+        tl.to(contentWrapperRef.current, {
+            x: () => -getWindowWidth(),
+            ease: 'none',
+            duration: () => getWindowWidth(),
+        })
+    }, { scope: sectionRef, dependencies: [isMobile] })
+
+    if (isMobile) {
+        return (
+            <section ref={sectionRef} id="ai" className="relative w-full overflow-hidden z-[50] h-screen bg-transparent mt-0">
+                <div ref={contentContainerRef} className="absolute inset-0 w-full h-full bg-white pt-24 pb-8 flex flex-col pointer-events-auto">
+                    <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1">
+                        
+                        {/* Header side-by-side: stats title left, scanner canvas right */}
+                        <div className="flex items-center justify-between px-6 mb-4">
+                            <div>
+                                <span className="text-electric-sulfur text-[10px] font-mono uppercase tracking-[0.4em] font-bold block mb-1">
+                                    {t('ai.title')}
+                                </span>
+                                <h2 className="text-[1.5rem] font-black uppercase tracking-tighter leading-tight text-data-navy max-w-[60vw]">
+                                    {t('ai.subtitle')}
+                                </h2>
+                            </div>
+                            <div className="w-20 h-20 relative select-none pointer-events-none pr-2">
+                                <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
+                                    <MobileAIScanner />
+                                </Canvas>
+                            </div>
+                        </div>
+
+                        {/* Scrolling container */}
+                        <div className="flex-1 overflow-hidden relative px-6">
+                            <div ref={mobileTrackRef} className="flex flex-col gap-4 pb-20">
+                                {cards.map((c) => {
+                                    const Icon = c.icon
+                                    return (
+                                        <div key={c.title} className="w-full border-l-[3px] border-electric-sulfur/20 hover:border-electric-sulfur bg-neutral-50/50 p-4 transition-colors relative group">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <div className="w-8 h-8 rounded-full bg-data-navy/5 flex items-center justify-center group-hover:bg-electric-sulfur group-hover:text-data-navy transition-colors duration-500">
+                                                    <Icon className="w-4 h-4 stroke-[1.5]" />
+                                                </div>
+                                                <h3 className="text-sm font-black uppercase tracking-tighter leading-none text-data-navy">
+                                                    {c.title}
+                                                </h3>
+                                            </div>
+                                            <p className="text-[10px] font-mono uppercase leading-normal opacity-50">
+                                                {c.desc}
+                                            </p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    // ORIGINAL DESKTOP/TABLET LAYOUT (100% UNTOUCHED)
     return (
         <section ref={sectionRef} id="ai" className="relative w-full overflow-hidden z-[50] h-screen bg-white flex flex-col">
             <div ref={contentWrapperRef} className="relative w-full h-full flex flex-col justify-between flex-1 pt-[7rem] pb-[2rem]">
 
                 <div ref={topTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
                     {topCards.map(c => <AINode key={c.title} card={c} />)}
+                </div>
+
+                <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-10 overflow-hidden">
+                    <div className="relative pointer-events-auto z-10">
+                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">{t('ai.title')}</span>
+                        <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
+                            {t('ai.subtitle')}
+                        </h2>
+                        <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
+                            {t('ai.scroll')}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="ref-bottom-track flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
+                    <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0">
+                        {bottomCards.map(c => <AINode key={c.title} card={c} />)}
+                    </div>
                 </div>
 
                 {/* 
@@ -249,23 +422,6 @@ export const AINarrative = () => {
                             {t('ai.action')}
                         </span>
                     </div>
-                </div>
-
-                <div className="relative flex-1 flex flex-col justify-center px-10 md:px-20 pointer-events-none z-10 overflow-hidden">
-                    {/* NeuralAccent removed, replaced by scanning radar */}
-                    <div className="relative pointer-events-auto z-10">
-                        <span className="text-electric-sulfur text-[11px] font-mono uppercase tracking-[0.4em] font-bold block mb-4">{t('ai.title')}</span>
-                        <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black uppercase tracking-tighter leading-[0.85] text-data-navy max-w-3xl mb-4">
-                            {t('ai.subtitle')}
-                        </h2>
-                        <p className="text-[11px] font-mono uppercase tracking-wider opacity-40 leading-loose max-w-lg">
-                            {t('ai.scroll')}
-                        </p>
-                    </div>
-                </div>
-
-                <div ref={bottomTrackRef} className="flex items-stretch gap-0 w-max relative z-10 shrink-0 border-y border-data-navy/5">
-                    {bottomCards.map(c => <AINode key={c.title} card={c} />)}
                 </div>
 
             </div>

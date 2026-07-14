@@ -67,11 +67,12 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         const explodePhase = Math.max(0, (progress - loaderExplodeStart) / (1 - loaderExplodeStart))
         const hover = Math.sin(time * 0.5) * 0.05
 
-        const scale = 1.2
+        const isMobile = window.innerWidth < 768
+        const scale = isMobile ? (isLoader ? 0.6 : 0.65) : 1.2
         groupRef.current.scale.setScalar(scale)
 
         // Move car down in loader to center it (was 0.25)
-        const verticalLift = isLoader ? -1.0 : 0.25
+        const verticalLift = isLoader ? -1.0 : (isMobile ? 1.7 : 0.25)
 
         let yOffset = 0
         let xOffset = 0
@@ -79,11 +80,11 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
             if (progress < 0) {
                 const entryVal = Math.abs(progress)
                 yOffset = entryVal * 8
-                xOffset = 3.0
+                xOffset = isMobile ? 0 : 3.0
             } else {
                 if (progress < 0.2) {
                     const transitionProgress = progress / 0.2
-                    xOffset = 3.0 * (1 - transitionProgress)
+                    xOffset = isMobile ? 0 : 3.0 * (1 - transitionProgress)
                 }
             }
         }
