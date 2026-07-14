@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { SoundController } from '@/utils/SoundController'
+import { useWindowSize } from '@/hooks/useWindowSize'
 import logo from '../../assets/MatNEXT.png'
 
 interface IntroScreenProps {
@@ -23,7 +24,7 @@ const interpolate = (value: number, inputRange: [number, number], outputRange: [
     return outputMin + (outputMax - outputMin) * (value - inputMin) / (inputMax - inputMin);
 }
 
-const PulsatingGrid: React.FC = () => {
+const PulsatingGrid: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     const [frame, setFrame] = useState(0);
 
     useEffect(() => {
@@ -36,8 +37,8 @@ const PulsatingGrid: React.FC = () => {
         return () => cancelAnimationFrame(frameId);
     }, []);
 
-    const ROWS = 30;
-    const COLS = 50;
+    const ROWS = isMobile ? 12 : 30;
+    const COLS = isMobile ? 20 : 50;
 
     // We use innerWidth/Height for spacing calculation
     const SPACING_X = typeof window !== 'undefined' ? window.innerWidth / COLS : 40;
@@ -51,7 +52,6 @@ const PulsatingGrid: React.FC = () => {
                     const baseUrlY = i * SPACING_Y;
 
                     // Organic "Turbulent" motion
-                    // Use trig functions with different frequencies to simulate randomness
                     const noiseX = Math.sin(frame / 20 + i * 0.5) * 10 + Math.cos(frame / 30 + j * 0.3) * 5;
                     const noiseY = Math.cos(frame / 25 + j * 0.4) * 10 + Math.sin(frame / 35 + i * 0.2) * 5;
 
@@ -173,12 +173,17 @@ const MaterialViewfinder = ({ isHovered }: { isHovered: boolean }) => {
 
 export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
     const [isHovered, setIsHovered] = useState(false)
+    const { width } = useWindowSize()
+    const isMobile = width < 768
 
     const handleExplore = () => {
         SoundController.init()
         SoundController.playClickSound()
         onExplore()
     }
+
+    const buttonContainerWidth = isMobile ? Math.min(width - 32, 320) : 480
+    const buttonExploreWidth = isMobile ? 140 : 180
 
     return (
         <motion.div
@@ -188,34 +193,35 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
             className="fixed inset-0 z-[300] flex flex-col items-center justify-center bg-white overflow-hidden select-none"
         >
             {/* TURBULENT PULSATING GRID BACKGROUND */}
-            <PulsatingGrid />
+            <PulsatingGrid isMobile={isMobile} />
 
             {/* CENTRAL BRANDING - STATIC LAYOUT */}
-            <div className="relative z-10 flex flex-col items-center text-center">
+            <div className="relative z-10 flex flex-col items-center text-center px-4 w-full">
                 {/* LOGO IMAGE */}
                 <div className="mb-2">
-                    <img src={logo} alt="MatNEXT Logo" className="h-20 w-auto object-contain select-none pointer-events-none" />
+                    <img src={logo} alt="MatNEXT Logo" className="h-16 sm:h-20 w-auto object-contain select-none pointer-events-none" />
                 </div>
 
                 {/* SUBTITLE WITH SIMPLE LINES */}
-                <div className="flex items-center gap-4 mt-5">
+                <div className="flex items-center justify-center gap-4 mt-5 w-full max-w-xl">
                     {/* Left Line */}
-                    <div className="w-[120px] h-[1.5px] bg-gradient-to-r from-transparent to-[#96CC39]" />
+                    {!isMobile && <div className="w-[120px] h-[1.5px] bg-gradient-to-r from-transparent to-[#96CC39]" />}
 
                     <span
-                        className="text-data-navy font-light uppercase tracking-wider whitespace-nowrap"
-                        style={{ fontSize: '12px', fontFamily: 'Inter, sans-serif' }}
+                        className="text-data-navy font-light uppercase tracking-wider whitespace-nowrap text-[10px] sm:text-[12px]"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
                     >
                         Stands for MaterialNEXT
                     </span>
 
                     {/* Right Line */}
-                    <div className="w-[120px] h-[1.5px] bg-gradient-to-l from-transparent to-[#96CC39]" />
+                    {!isMobile && <div className="w-[120px] h-[1.5px] bg-gradient-to-l from-transparent to-[#96CC39]" />}
                 </div>
 
                 {/* MORPHING EXPLORE BUTTON container */}
                 <div 
-                    className="mt-12 w-[480px] h-[64px] flex items-center justify-center cursor-pointer"
+                    style={{ width: buttonContainerWidth }}
+                    className="mt-12 h-[64px] flex items-center justify-center cursor-pointer"
                     onMouseEnter={() => {
                         setIsHovered(true)
                         SoundController.playHoverSound()
@@ -228,7 +234,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                         animate={{
                             opacity: 1,
                             y: 0,
-                            width: isHovered ? 180 : 480,
+                            width: isHovered ? buttonExploreWidth : buttonContainerWidth,
                         }}
                         transition={{
                             duration: 0.8,
@@ -238,6 +244,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                         }}
                         onClick={handleExplore}
                         className="relative h-[64px] bg-[#96CC39] text-white rounded-none flex items-center justify-center overflow-hidden cursor-pointer"
+                        style={{ width: '100%' }}
                     >
                         <div className="relative h-8 w-full flex items-center justify-center pointer-events-none">
                             {/* State 1: Slogan (Default) */}
@@ -248,13 +255,13 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                                     opacity: isHovered ? 0 : 1
                                 }}
                                 transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
-                                className="absolute flex items-center justify-center whitespace-nowrap px-10"
+                                className="absolute flex items-center justify-center whitespace-nowrap px-4"
                             >
                                 <span 
-                                    className="text-[13px] font-bold tracking-[0.2em] uppercase leading-none"
+                                    className="text-[9px] sm:text-[13px] font-bold tracking-[0.12em] sm:tracking-[0.2em] uppercase leading-none"
                                     style={{ fontFamily: 'Inter, sans-serif' }}
                                 >
-                                    Intelligent Material Traceability System
+                                    {isMobile ? "Material Traceability System" : "Intelligent Material Traceability System"}
                                 </span>
                             </motion.div>
                             
@@ -269,7 +276,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                                 className="absolute flex items-center justify-center whitespace-nowrap gap-3"
                             >
                                 <span 
-                                    className="text-[13px] font-bold tracking-[0.2em] uppercase leading-none"
+                                    className="text-[11px] sm:text-[13px] font-bold tracking-[0.2em] uppercase leading-none"
                                     style={{ fontFamily: 'JetBrains Mono, monospace' }}
                                 >
                                     Explore
