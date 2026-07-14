@@ -24,7 +24,7 @@ const interpolate = (value: number, inputRange: [number, number], outputRange: [
     return outputMin + (outputMax - outputMin) * (value - inputMin) / (inputMax - inputMin);
 }
 
-const PulsatingGrid: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
+const PulsatingGrid: React.FC = () => {
     const [frame, setFrame] = useState(0);
 
     useEffect(() => {
@@ -37,12 +37,13 @@ const PulsatingGrid: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         return () => cancelAnimationFrame(frameId);
     }, []);
 
-    const ROWS = isMobile ? 12 : 30;
-    const COLS = isMobile ? 20 : 50;
+    // Fixed spacing ensures a perfect square grid at all screen aspect ratios
+    const SPACING = 36;
+    const COLS = typeof window !== 'undefined' ? Math.ceil(window.innerWidth / SPACING) + 2 : 50;
+    const ROWS = typeof window !== 'undefined' ? Math.ceil(window.innerHeight / SPACING) + 2 : 30;
 
-    // We use innerWidth/Height for spacing calculation
-    const SPACING_X = typeof window !== 'undefined' ? window.innerWidth / COLS : 40;
-    const SPACING_Y = typeof window !== 'undefined' ? window.innerHeight / ROWS : 40;
+    const SPACING_X = SPACING;
+    const SPACING_Y = SPACING;
 
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ backgroundColor: COLOR_TOKENS.background }}>
@@ -60,9 +61,10 @@ const PulsatingGrid: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
                     const centerY = ROWS / 2;
                     const distance = Math.sqrt(Math.pow(j - centerX, 2) + Math.pow(i - centerY, 2));
 
-                    // Slower speed and wider pulse factor on mobile to make it look like a uniform grid pulse
-                    const speedFactor = isMobile ? 30 : 15;
-                    const distanceFactor = isMobile ? 8 : 3;
+                    // Slower speed and slightly wider distance factor on smaller mobile screen areas to keep the wave speed relaxed/generous
+                    const isMobileGrid = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+                    const speedFactor = isMobileGrid ? 45 : 15;
+                    const distanceFactor = isMobileGrid ? 3.5 : 3;
                     const wave = Math.sin(frame / speedFactor - distance / distanceFactor) * 0.5 + 0.5;
 
                     // Appearance properties
@@ -184,8 +186,15 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
         onExplore()
     }
 
-    const buttonContainerWidth = isMobile ? Math.min(width - 32, 320) : 480
+    // Dynamic sizing to match logo width exactly on all devices (aspect ratio: 5.882)
+    const logoHeight = isMobile ? Math.min(60, (width - 48) / 5.88) : 80;
+    const logoWidth = logoHeight * 5.882;
+
+    const buttonContainerWidth = isMobile ? logoWidth : 480
     const buttonExploreWidth = isMobile ? 140 : 180
+
+    // Dynamically scale slogan font-size to fit container width perfectly with equal padding (slightly larger)
+    const sloganFontSize = isMobile ? Math.max(11, logoWidth * 0.035) : 13;
 
     return (
         <motion.div
@@ -195,29 +204,34 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
             className="fixed inset-0 z-[300] flex flex-col items-center justify-center bg-white overflow-hidden select-none"
         >
             {/* TURBULENT PULSATING GRID BACKGROUND */}
-            <PulsatingGrid isMobile={isMobile} />
+            <PulsatingGrid />
 
             {/* CENTRAL BRANDING - STATIC LAYOUT */}
             <div className="relative z-10 flex flex-col items-center text-center px-4 w-full">
                 {/* LOGO IMAGE */}
-                <div className="mb-2">
-                    <img src={logo} alt="MatNEXT Logo" className="h-16 sm:h-20 w-auto object-contain select-none pointer-events-none" />
+                <div className="mb-2 flex justify-center">
+                    <img 
+                        src={logo} 
+                        alt="MatNEXT Logo" 
+                        style={{ height: logoHeight, width: logoWidth }}
+                        className="object-contain select-none pointer-events-none" 
+                    />
                 </div>
 
                 {/* SUBTITLE WITH SIMPLE LINES */}
-                <div className="flex items-center justify-center gap-4 mt-5 w-full max-w-xl">
+                <div className="flex items-center justify-center gap-2 sm:gap-4 mt-5 w-full max-w-xl px-2">
                     {/* Left Line */}
-                    {!isMobile && <div className="w-[120px] h-[1.5px] bg-gradient-to-r from-transparent to-[#96CC39]" />}
+                    <div className="flex-1 max-w-[80px] sm:max-w-[120px] h-[1.5px] bg-gradient-to-r from-transparent to-[#96CC39]" />
 
                     <span
-                        className="text-data-navy font-light uppercase tracking-wider whitespace-nowrap text-[10px] sm:text-[12px]"
+                        className="text-data-navy font-light uppercase tracking-wider whitespace-nowrap text-[10.5px] sm:text-[12px] shrink-0"
                         style={{ fontFamily: 'Inter, sans-serif' }}
                     >
                         Stands for MaterialNEXT
                     </span>
 
                     {/* Right Line */}
-                    {!isMobile && <div className="w-[120px] h-[1.5px] bg-gradient-to-l from-transparent to-[#96CC39]" />}
+                    <div className="flex-1 max-w-[80px] sm:max-w-[120px] h-[1.5px] bg-gradient-to-l from-transparent to-[#96CC39]" />
                 </div>
 
                 {/* MORPHING EXPLORE BUTTON container */}
@@ -260,8 +274,8 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                                 className="absolute flex items-center justify-center whitespace-nowrap px-4"
                             >
                                 <span 
-                                    className="text-[9px] sm:text-[13px] font-bold tracking-[0.12em] sm:tracking-[0.2em] uppercase leading-none"
-                                    style={{ fontFamily: 'Inter, sans-serif' }}
+                                    className="font-bold uppercase leading-none sm:text-[13px] tracking-[0.14em] sm:tracking-[0.2em]"
+                                    style={{ fontFamily: 'Inter, sans-serif', fontSize: isMobile ? `${sloganFontSize}px` : undefined }}
                                 >
                                     {isMobile ? "Material Traceability System" : "Intelligent Material Traceability System"}
                                 </span>
