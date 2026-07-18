@@ -148,6 +148,10 @@ function App() {
     }, { scope: container })
 
     const onLoaderComplete = useCallback(() => {
+        // Reset scroll position to top immediately
+        window.scrollTo(0, 0);
+        lenisRef.current?.scrollTo(0, { immediate: true });
+
         setLoading(false)
 
         // 1. Reveal Hero content FIRST

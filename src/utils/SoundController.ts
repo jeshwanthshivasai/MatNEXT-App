@@ -8,6 +8,10 @@ class SoundManager {
 
     private isInitialized: boolean = false;
 
+    // Track drawing sound nodes
+    private drawOsc: OscillatorNode | null = null;
+    private drawGain: GainNode | null = null;
+
     // Track which one-shot events have fired (to avoid repeats)
     private firedEvents = new Set<string>();
 
@@ -194,6 +198,150 @@ class SoundManager {
     /** Reset a specific event to allow it to be re-triggered */
     public resetEvent(eventName: string) {
         this.firedEvents.delete(eventName);
+    }
+
+    /** Start a soft drawing oscillator sweep */
+    public startDrawingSound() {
+        if (!this.ctx || !this.masterGain || this.isMuted) return;
+        this.init(); // Make sure context is initialized
+        try {
+            const t = this.ctx.currentTime;
+            this.drawOsc = this.ctx.createOscillator();
+            this.drawGain = this.ctx.createGain();
+
+            this.drawOsc.type = 'sine';
+            this.drawOsc.frequency.setValueAtTime(200, t);
+
+            // Very quiet, gentle humming
+            this.drawGain.gain.setValueAtTime(0, t);
+            this.drawGain.gain.linearRampToValueAtTime(0.015, t + 0.05);
+
+            this.drawOsc.connect(this.drawGain);
+            this.drawGain.connect(this.masterGain);
+            this.drawOsc.start(t);
+        } catch (e) {
+            console.warn("Failed to start drawing sound", e);
+        }
+    }
+
+    /** Dynamically change pitch based on user movement speed */
+    public updateDrawingSound(speed: number) {
+        if (!this.ctx || !this.drawOsc || !this.drawGain || this.isMuted) return;
+        try {
+            const t = this.ctx.currentTime;
+            // Map speed (pixels per frame) to frequency between 180Hz and 550Hz
+            const freq = Math.min(550, Math.max(180, 180 + speed * 4));
+            this.drawOsc.frequency.setTargetAtTime(freq, t, 0.05);
+        } catch (e) {}
+    }
+
+    /** Stop drawing sound with a fast fade-out to prevent pops */
+    public stopDrawingSound() {
+        if (!this.ctx || !this.drawOsc || !this.drawGain) return;
+        try {
+            const t = this.ctx.currentTime;
+            this.drawGain.gain.cancelScheduledValues(t);
+            this.drawGain.gain.setValueAtTime(this.drawGain.gain.value, t);
+            this.drawGain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+            const osc = this.drawOsc;
+            setTimeout(() => {
+                try {
+                    osc.stop();
+                    osc.disconnect();
+                } catch (e) {}
+            }, 120);
+        } catch (e) {
+            console.warn("Failed to stop drawing sound", e);
+        }
+        this.drawOsc = null;
+        this.drawGain = null;
+    }
+
+    /** Premium success double-chime with low frequency sub-boom */
+    public playUnlockSound() {
+        if (!this.ctx || !this.masterGain || this.isMuted) return;
+        this.init();
+        try {
+            const t = this.ctx.currentTime;
+
+            // Arpeggiated C Major chord (C5, E5, G5)
+            const notes = [523.25, 659.25, 783.99]; 
+            notes.forEach((freq, idx) => {
+                const osc = this.ctx!.createOscillator();
+                const gain = this.ctx!.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, t + idx * 0.06);
+
+                gain.gain.setValueAtTime(0, t + idx * 0.06);
+                gain.gain.linearRampToValueAtTime(0.08, t + idx * 0.06 + 0.015);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.06 + 0.5);
+
+                osc.connect(gain);
+                gain.connect(this.masterGain!);
+                osc.start(t + idx * 0.06);
+                osc.stop(t + idx * 0.06 + 0.5);
+            });
+
+            // Sub boom
+            const sub = this.ctx.createOscillator();
+            const subGain = this.ctx.createGain();
+            
+            sub.type = 'sine';
+            sub.frequency.setValueAtTime(90, t);
+            sub.frequency.exponentialRampToValueAtTime(30, t + 0.6);
+
+            subGain.gain.setValueAtTime(0.35, t);
+            subGain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+
+            sub.connect(subGain);
+            subGain.connect(this.masterGain);
+            sub.start(t);
+            sub.stop(t + 0.6);
+        } catch (e) {
+            console.warn("Failed to play unlock sound", e);
+        }
+    }
+
+    /** High-tech synthetic glitch sound for micro-interactions */
+    public playGlitchSound() {
+        if (!this.ctx || !this.masterGain || this.isMuted) return;
+        this.init();
+        try {
+            const t = this.ctx.currentTime;
+            
+            // Rapid double beeps + pitch modulation + buzz
+            const osc1 = this.ctx.createOscillator();
+            const gain1 = this.ctx.createGain();
+            osc1.type = 'sawtooth';
+            osc1.frequency.setValueAtTime(880, t);
+            osc1.frequency.exponentialRampToValueAtTime(110, t + 0.08);
+
+            gain1.gain.setValueAtTime(0.03, t);
+            gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+            osc1.connect(gain1);
+            gain1.connect(this.masterGain);
+            osc1.start(t);
+            osc1.stop(t + 0.08);
+
+            const osc2 = this.ctx.createOscillator();
+            const gain2 = this.ctx.createGain();
+            osc2.type = 'triangle';
+            osc2.frequency.setValueAtTime(600, t + 0.03);
+            osc2.frequency.setValueAtTime(1500, t + 0.06);
+
+            gain2.gain.setValueAtTime(0, t + 0.03);
+            gain2.gain.linearRampToValueAtTime(0.04, t + 0.035);
+            gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+
+            osc2.connect(gain2);
+            gain2.connect(this.masterGain);
+            osc2.start(t + 0.03);
+            osc2.stop(t + 0.1);
+        } catch (e) {
+            console.warn("Failed to play glitch sound", e);
+        }
     }
 
     public toggleMute(): boolean {
