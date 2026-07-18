@@ -27,8 +27,11 @@ const PulsatingGrid: React.FC = () => {
         let frameId: number;
 
         const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.resetTransform();
+            ctx.scale(dpr, dpr);
         };
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -44,14 +47,14 @@ const PulsatingGrid: React.FC = () => {
         window.addEventListener('pointermove', handlePointerMove);
         document.addEventListener('pointerleave', handlePointerLeave);
 
-        const SPACING = 36;
-        const INTERACTION_RADIUS = 240;
+        const SPACING = 20;
+        const INTERACTION_RADIUS = 160;
 
         const draw = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const cols = Math.ceil(canvas.width / SPACING) + 2;
-            const rows = Math.ceil(canvas.height / SPACING) + 2;
+            const cols = Math.ceil(window.innerWidth / SPACING) + 2;
+            const rows = Math.ceil(window.innerHeight / SPACING) + 2;
             const mouse = mousePosRef.current;
 
             // 1. Draw Wavy Interactive Dot Grid
@@ -62,7 +65,7 @@ const PulsatingGrid: React.FC = () => {
 
                     let drawX = dotX;
                     let drawY = dotY;
-                    let size = 3.0;
+                    let size = 2.0;
                     let opacity = 0.12;
                     let color = '#D1D5DB';
 
@@ -76,12 +79,12 @@ const PulsatingGrid: React.FC = () => {
                             
                             // Premium magnetic repulsion displacement (clean slide, zero jittering)
                             const angle = Math.atan2(dy, dx);
-                            const push = 8 * influence;
+                            const push = 6 * influence;
                             drawX = dotX + Math.cos(angle) * push;
                             drawY = dotY + Math.sin(angle) * push;
 
                             // Spotlight sizes and opacities (highly visible near cursor)
-                            size = 3.0 + influence * 2.2;
+                            size = 2.0 + influence * 1.5;
                             opacity = 0.12 + influence * 0.40;
                             color = influence > 0.6 ? COLOR_TOKENS.primary : '#D1D5DB';
                         }
@@ -316,13 +319,8 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                         y: R * Math.sin(-Math.PI / 2 + accumulatedAngle),
                     }}
                 >
-                    {/* Core dot */}
-                    <div className="w-2.5 h-2.5 bg-white rounded-full" />
-                    
-                    {/* Pulsing live rec indicator outer ring */}
-                    {drawingStatus === 'idle' && (
-                        <span className="absolute w-12 h-12 rounded-full border border-[#96CC39] animate-ping opacity-35 pointer-events-none" />
-                    )}
+                    {/* Glowing highlight backdrop */}
+                    <div className="absolute w-12 h-12 bg-[#96CC39] rounded-full filter blur-md opacity-50 -z-10 pointer-events-none" />
                 </motion.div>
             </div>
 
@@ -355,7 +353,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                 */}
 
                 {/* SLOGAN BUTTON FALLBACK & STATUS TEXT */}
-                <div className="mt-6 sm:mt-10 flex flex-col items-center pointer-events-auto w-full max-w-[240px] sm:max-w-[440px]">
+                <div className="mt-6 sm:mt-10 flex flex-col items-center pointer-events-auto w-full max-w-[320px] sm:max-w-[440px]">
                     <motion.button
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ 
@@ -391,7 +389,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                             color: '#0A1628',
                             textShadow: isGlitchActive ? '1.5px -0.5px 0 #96CC39, -1.5px 0.5px 0 #ff0055' : 'none'
                         }}
-                        className="w-full h-[48px] sm:h-[64px] rounded-none flex items-center justify-center cursor-pointer uppercase font-bold tracking-[0.14em] sm:tracking-[0.2em] text-[9.5px] sm:text-[12px] border relative transition-all duration-300"
+                        className="w-full h-[48px] sm:h-[64px] rounded-none flex items-center justify-center cursor-pointer uppercase font-bold tracking-[0.14em] sm:tracking-[0.2em] text-[8.5px] sm:text-[12px] border relative transition-all duration-300 whitespace-nowrap"
                     >
                         {/* VIEWFINDER CORNER BRACKETS */}
                         <motion.span
@@ -443,11 +441,16 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                             className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 origin-center"
                         />
 
-                        {isMobile ? "Material Traceability System" : "Intelligent Material Traceability System"}
+                        {"Intelligent Material Traceability System"}
                     </motion.button>
                     
                     <span className="text-[7.5px] sm:text-[8.5px] tracking-[0.12em] sm:tracking-[0.18em] text-[#0A1628]/50 uppercase mt-4 sm:mt-5 select-none text-center max-w-[220px] sm:max-w-[380px] leading-relaxed">
-                        {drawingStatus === 'idle' && "Close the loop to unlock infinite material circularity"}
+                        {drawingStatus === 'idle' && (
+                            <>
+                                Close the loop to unlock
+                                <br className="sm:hidden" /> material circularity
+                            </>
+                        )}
                         {drawingStatus === 'drawing' && "Tracing..."}
                         {drawingStatus === 'error' && "Loop unrecognized. try again"}
                         {drawingStatus === 'success' && "Access granted. welcome"}
