@@ -10,6 +10,7 @@ import { AINarrative } from '@/components/common/AINarrative'
 import { WhyMatNextNarrative } from '@/components/common/WhyMatNextNarrative'
 import { FooterNarrative } from '@/components/common/FooterNarrative'
 import { FeaturesNarrative } from '@/components/common/FeaturesNarrative'
+import { UnifiedNarrative } from '@/components/common/UnifiedNarrative'
 import { IntroScreen } from '@/components/common/IntroScreen'
 import { MobileNav } from '@/components/common/MobileNav'
 import { useWindowSize } from '@/hooks/useWindowSize'
@@ -438,17 +439,24 @@ function App() {
                 </motion.div>
             </div>
 
-            {/* SECTION 2: FEATURES NARRATIVE (HORIZONTAL SCROLL) */}
-            <FeaturesNarrative />
+            {/* NARRATIVE SECTIONS */}
+            {isMobile ? (
+                <>
+                    {/* SECTION 2: FEATURES NARRATIVE (HORIZONTAL SCROLL) */}
+                    <FeaturesNarrative />
 
-            {/* SECTION 3: TRACTION NARRATIVE (HORIZONTAL SCROLL) */}
-            <TractionNarrative />
+                    {/* SECTION 3: TRACTION NARRATIVE (HORIZONTAL SCROLL) */}
+                    <TractionNarrative />
 
-            {/* SECTION 4: AI NARRATIVE (HORIZONTAL SCROLL) */}
-            <AINarrative />
+                    {/* SECTION 4: AI NARRATIVE (HORIZONTAL SCROLL) */}
+                    <AINarrative />
 
-            {/* SECTION 5: WHY MATNEXT NARRATIVE (HORIZONTAL SCROLL) */}
-            <WhyMatNextNarrative />
+                    {/* SECTION 5: WHY MATNEXT NARRATIVE (HORIZONTAL SCROLL) */}
+                    <WhyMatNextNarrative />
+                </>
+            ) : (
+                <UnifiedNarrative />
+            )}
 
             {/* FOOTER + CONTACT: Unified horizontal-scroll narrative */}
             <FooterNarrative />

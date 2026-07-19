@@ -53,7 +53,7 @@ const MetricNode = ({ metric }: { metric: MetricDef }) => {
 }
 
 /* ─── Rotating Wireframe Globe (ORIGINAL) ─────────────────────── */
-const RotatingGlobe = () => {
+export const RotatingGlobe = () => {
     const meshRef = useRef<THREE.LineSegments>(null)
 
     // Rotate counter-clockwise (positive Y axis rotation in Three.js)

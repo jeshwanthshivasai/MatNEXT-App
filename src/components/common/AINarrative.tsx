@@ -61,7 +61,7 @@ const CornerBracket = ({ position, flipX = false, flipY = false, size = 0.35, th
 )
 
 /* ─── GenbaAI Document Scanner Animation (ORIGINAL) ───────── */
-const GenbaAIScanner = () => {
+export const GenbaAIScanner = () => {
     const groupRef = useRef<THREE.Group>(null)
     const scanLineRef = useRef<THREE.Mesh>(null)
 

@@ -18,7 +18,7 @@ gsap.registerPlugin(ScrollTrigger)
 // const carModelUrl = '/models/generic_sedan_car_optimized.glb'
 
 /* ─── Wireframe Globe ─────── */
-const FooterGlobe = () => {
+export const FooterGlobe = () => {
     const meshRef = useRef<THREE.LineSegments>(null)
     useFrame((_s, delta) => {
         if (meshRef.current) {
@@ -35,7 +35,7 @@ const FooterGlobe = () => {
 }
 
 /* ─── Footer Language Selector ─────── */
-const LanguageSelector = () => {
+export const LanguageSelector = () => {
     const { i18n } = useTranslation()
     const currentLang = i18n.language
 
