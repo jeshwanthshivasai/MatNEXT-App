@@ -44,6 +44,7 @@ class SoundManager {
 
     /** Whoosh: rising filtered noise sweep — call when car enters */
     public playWhoosh() {
+        this.init();
         if (!this.ctx || !this.masterGain || this.isMuted) return;
         if (this.firedEvents.has('whoosh')) return;
         this.firedEvents.add('whoosh');
@@ -68,8 +69,8 @@ class SoundManager {
 
         const gain = this.ctx.createGain();
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.25, this.ctx.currentTime + 0.05);
-        gain.gain.linearRampToValueAtTime(0.15, this.ctx.currentTime + duration * 0.5);
+        gain.gain.linearRampToValueAtTime(0.45, this.ctx.currentTime + 0.05);
+        gain.gain.linearRampToValueAtTime(0.30, this.ctx.currentTime + duration * 0.5);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
 
         source.connect(filter);
@@ -81,6 +82,7 @@ class SoundManager {
 
     /** Shatter/Impact: low boom + noise burst — call when car explodes */
     public playShatter() {
+        this.init();
         if (!this.ctx || !this.masterGain || this.isMuted) return;
         if (this.firedEvents.has('shatter')) return;
         this.firedEvents.add('shatter');
@@ -94,7 +96,7 @@ class SoundManager {
         boom.frequency.exponentialRampToValueAtTime(20, t + 0.8);
 
         const boomGain = this.ctx.createGain();
-        boomGain.gain.setValueAtTime(0.4, t);
+        boomGain.gain.setValueAtTime(0.65, t);
         boomGain.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
 
         boom.connect(boomGain);
@@ -119,7 +121,7 @@ class SoundManager {
         noiseFilter.frequency.exponentialRampToValueAtTime(200, t + 0.5);
 
         const noiseGain = this.ctx.createGain();
-        noiseGain.gain.setValueAtTime(0.2, t);
+        noiseGain.gain.setValueAtTime(0.40, t);
         noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
 
         noiseSource.connect(noiseFilter);
@@ -131,6 +133,7 @@ class SoundManager {
 
     /** Loading blips: small data-processing ticks */
     public playLoadingTick() {
+        this.init();
         if (!this.ctx || !this.masterGain || this.isMuted) return;
 
         const osc = this.ctx.createOscillator();
@@ -141,7 +144,7 @@ class SoundManager {
         osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.04, this.ctx.currentTime + 0.005);
+        gain.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime + 0.005);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.06);
 
         osc.connect(gain);
@@ -152,6 +155,7 @@ class SoundManager {
 
     /** Soft click for hover states */
     public playHoverSound() {
+        this.init();
         if (!this.ctx || !this.masterGain || this.isMuted) return;
 
         const osc = this.ctx.createOscillator();
@@ -161,7 +165,7 @@ class SoundManager {
         osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.04);
 
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.03, this.ctx.currentTime + 0.005);
+        gain.gain.linearRampToValueAtTime(0.15, this.ctx.currentTime + 0.005);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
 
         osc.connect(gain);
@@ -172,6 +176,7 @@ class SoundManager {
 
     /** Button click sound */
     public playClickSound() {
+        this.init();
         if (!this.ctx || !this.masterGain || this.isMuted) return;
 
         const osc = this.ctx.createOscillator();
@@ -181,7 +186,7 @@ class SoundManager {
         osc.frequency.exponentialRampToValueAtTime(200, this.ctx.currentTime + 0.08);
 
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.08, this.ctx.currentTime + 0.005);
+        gain.gain.linearRampToValueAtTime(0.28, this.ctx.currentTime + 0.005);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
 
         osc.connect(gain);
@@ -202,8 +207,22 @@ class SoundManager {
 
     /** Start a soft drawing oscillator sweep */
     public startDrawingSound() {
+        this.init();
         if (!this.ctx || !this.masterGain || this.isMuted) return;
-        this.init(); // Make sure context is initialized
+        // Clean up any existing drawing sound first to prevent double-trigger leaking!
+        if (this.drawOsc) {
+            try {
+                this.drawOsc.stop();
+                this.drawOsc.disconnect();
+            } catch (e) {}
+            this.drawOsc = null;
+        }
+        if (this.drawGain) {
+            try {
+                this.drawGain.disconnect();
+            } catch (e) {}
+            this.drawGain = null;
+        }
         try {
             const t = this.ctx.currentTime;
             this.drawOsc = this.ctx.createOscillator();
@@ -214,7 +233,7 @@ class SoundManager {
 
             // Very quiet, gentle humming
             this.drawGain.gain.setValueAtTime(0, t);
-            this.drawGain.gain.linearRampToValueAtTime(0.015, t + 0.05);
+            this.drawGain.gain.linearRampToValueAtTime(0.05, t + 0.05);
 
             this.drawOsc.connect(this.drawGain);
             this.drawGain.connect(this.masterGain);
@@ -259,8 +278,8 @@ class SoundManager {
 
     /** Premium success double-chime with low frequency sub-boom */
     public playUnlockSound() {
-        if (!this.ctx || !this.masterGain || this.isMuted) return;
         this.init();
+        if (!this.ctx || !this.masterGain || this.isMuted) return;
         try {
             const t = this.ctx.currentTime;
 
@@ -274,7 +293,7 @@ class SoundManager {
                 osc.frequency.setValueAtTime(freq, t + idx * 0.06);
 
                 gain.gain.setValueAtTime(0, t + idx * 0.06);
-                gain.gain.linearRampToValueAtTime(0.08, t + idx * 0.06 + 0.015);
+                gain.gain.linearRampToValueAtTime(0.28, t + idx * 0.06 + 0.015);
                 gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.06 + 0.5);
 
                 osc.connect(gain);
@@ -291,7 +310,7 @@ class SoundManager {
             sub.frequency.setValueAtTime(90, t);
             sub.frequency.exponentialRampToValueAtTime(30, t + 0.6);
 
-            subGain.gain.setValueAtTime(0.35, t);
+            subGain.gain.setValueAtTime(0.60, t);
             subGain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
 
             sub.connect(subGain);
@@ -305,8 +324,8 @@ class SoundManager {
 
     /** High-tech synthetic glitch sound for micro-interactions */
     public playGlitchSound() {
-        if (!this.ctx || !this.masterGain || this.isMuted) return;
         this.init();
+        if (!this.ctx || !this.masterGain || this.isMuted) return;
         try {
             const t = this.ctx.currentTime;
             
@@ -317,7 +336,7 @@ class SoundManager {
             osc1.frequency.setValueAtTime(880, t);
             osc1.frequency.exponentialRampToValueAtTime(110, t + 0.08);
 
-            gain1.gain.setValueAtTime(0.03, t);
+            gain1.gain.setValueAtTime(0.15, t);
             gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
 
             osc1.connect(gain1);
@@ -332,7 +351,7 @@ class SoundManager {
             osc2.frequency.setValueAtTime(1500, t + 0.06);
 
             gain2.gain.setValueAtTime(0, t + 0.03);
-            gain2.gain.linearRampToValueAtTime(0.04, t + 0.035);
+            gain2.gain.linearRampToValueAtTime(0.20, t + 0.035);
             gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
 
             osc2.connect(gain2);

@@ -66,7 +66,7 @@ const PulsatingGrid: React.FC = () => {
                     let drawX = dotX;
                     let drawY = dotY;
                     let size = 2.0;
-                    let opacity = 0.12;
+                    let opacity = 0.24;
                     let color = '#D1D5DB';
 
                     if (mouse) {
@@ -85,7 +85,7 @@ const PulsatingGrid: React.FC = () => {
 
                             // Spotlight sizes and opacities (highly visible near cursor)
                             size = 2.0 + influence * 1.5;
-                            opacity = 0.12 + influence * 0.40;
+                            opacity = 0.24 + influence * 0.40;
                             color = influence > 0.6 ? COLOR_TOKENS.primary : '#D1D5DB';
                         }
                     }
@@ -222,10 +222,15 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
     };
 
     const handlePointerUp = (e: React.PointerEvent) => {
-        if (!isDraggingRef.current) return;
+        const wasDragging = isDraggingRef.current;
         isDraggingRef.current = false;
         SoundController.stopDrawingSound();
-        e.currentTarget.releasePointerCapture(e.pointerId);
+        
+        try {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+        } catch (err) {}
+
+        if (!wasDragging) return;
 
         const currentProgress = accumulatedAngleRef.current / (2 * Math.PI);
         if (currentProgress < 0.99) {
@@ -311,6 +316,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                     onPointerMove={handlePointerMove}
                     onPointerUp={handlePointerUp}
                     onPointerCancel={handlePointerUp}
+                    onLostPointerCapture={handlePointerUp}
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.95 }}
                     className="absolute w-7 h-7 bg-[#96CC39] rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing shadow-[0_0_20px_#96CC39] z-20 pointer-events-auto select-none touch-none"
