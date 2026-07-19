@@ -325,38 +325,41 @@ function App() {
             {/* SECTION 1: HERO OVERHAUL */}
             <div className="hero-wrapper relative w-full overflow-hidden bg-transparent">
                 {isMobile ? (
-                    // MOBILE HERO LAYOUT (Centered car at top, text stacked below)
-                    <section className="h-screen w-full flex flex-col justify-end p-6 pb-24 bg-transparent">
+                    // MOBILE HERO LAYOUT (Centered car at top, centered text stacked below in natural flow)
+                    <section className="h-screen w-full flex flex-col justify-center items-center p-6 pt-20 pb-16 bg-transparent text-center">
                         <div
                             style={{
                                 opacity: Math.max(0, 1 - scrollProgress * 5),
                                 transform: `translateY(${scrollProgress * -100}px)`,
                                 pointerEvents: scrollProgress > 0.15 ? 'none' : 'auto'
                             }}
-                            className="hero-content z-10 w-full"
+                            className="hero-content z-10 w-full flex flex-col items-center gap-5 max-w-sm"
                         >
-                            <h1 className="hero-reveal text-[2.2rem] uppercase text-electric-sulfur max-w-5xl opacity-0 leading-none mb-3">
+                            {/* Car Spacer/Placeholder - reserves space for the floating 3D car at the top */}
+                            <div className="w-full h-[24vh] min-h-[160px] select-none pointer-events-none" />
+
+                            <h1 className="hero-reveal text-[1.45rem] sm:text-[1.8rem] uppercase text-electric-sulfur leading-[1.1] opacity-0 text-center font-black">
                                 <Trans i18nKey="hero.title" components={{ br: <br /> }} />
                             </h1>
 
-                            <div className="flex flex-col items-start w-full">
-                                <p className="hero-reveal text-[11px] text-justify opacity-0 mb-4 leading-relaxed">
-                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-xl font-bold">MatNEXT</span> {t('hero.description')}
+                            <div className="flex flex-col items-center w-full gap-4">
+                                <p className="hero-reveal text-[10.5px] opacity-0 leading-relaxed text-center text-data-navy max-w-[90%]">
+                                    <span style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }} className="text-electric-sulfur text-[14px] font-bold">MatNEXT</span> {t('hero.description')}
                                 </p>
-                                <div className="hero-reveal flex gap-3 opacity-0">
+                                <div className="hero-reveal flex gap-3 opacity-0 w-full justify-center mt-1">
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
-                                        className="btn-premium py-2 px-4 group flex items-center gap-2 pointer-events-auto whitespace-nowrap text-[9px] font-bold"
+                                        className="btn-premium py-2.5 px-4 group flex items-center justify-center gap-2 pointer-events-auto whitespace-nowrap text-[9px] font-bold flex-1 max-w-[160px]"
                                     >
-                                        {t('nav.demo')} <ArrowRight className="w-3 h-3 group-hover:translate-x-2 transition-transform" />
+                                        {t('nav.demo')} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                     </button>
                                     <button
                                         onMouseEnter={() => SoundController.playHoverSound()}
                                         onClick={() => SoundController.playClickSound()}
-                                        className="btn-premium py-2 px-4 group flex items-center gap-2 text-data-navy tracking-widest font-bold bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all pointer-events-auto whitespace-nowrap text-[9px]"
+                                        className="btn-premium py-2.5 px-4 group flex items-center justify-center gap-2 text-data-navy tracking-widest font-bold bg-electric-sulfur hover:bg-data-navy hover:text-white transition-all pointer-events-auto whitespace-nowrap text-[9px] flex-1 max-w-[160px]"
                                     >
-                                        {t('hero.explore')} <ArrowRight className="w-3 h-3 group-hover:translate-x-2 transition-transform" />
+                                        {t('hero.explore')} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                     </button>
                                 </div>
                             </div>

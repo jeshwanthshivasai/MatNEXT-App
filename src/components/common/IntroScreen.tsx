@@ -355,7 +355,7 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                 {/* SLOGAN BUTTON FALLBACK & STATUS TEXT */}
                 <div className="mt-6 sm:mt-10 flex flex-col items-center pointer-events-auto w-full max-w-[320px] sm:max-w-[440px]">
                     <motion.button
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ 
                             opacity: 1, 
                             y: 0,
@@ -364,8 +364,8 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                             scale: isBtnHovered ? 1.02 : 1,
                         }}
                         transition={{ 
-                            opacity: { duration: 0.8, delay: 0.5 },
-                            y: { duration: 0.8, delay: 0.5 },
+                            opacity: { duration: 0.3 },
+                            y: { duration: 0.3 },
                             x: { duration: 0.15 },
                             skewX: { duration: 0.15 },
                             scale: { duration: 0.2, ease: "easeOut" }
