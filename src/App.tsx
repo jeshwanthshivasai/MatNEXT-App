@@ -133,20 +133,22 @@ function App() {
             }
         })
 
-        // Hide header when reaching footer
-        ScrollTrigger.create({
-            trigger: '#customers',
-            start: 'top 60%',
-            end: 'bottom bottom',
-            onEnter: () => setIsFooterReached(true),
-            onLeaveBack: () => setIsFooterReached(false),
-            onUpdate: (self) => {
-                if (self.progress > 0.01) setIsFooterReached(true)
-                else setIsFooterReached(false)
-            }
-        })
+        // Hide header when reaching footer (Mobile only - Desktop handles this inside UnifiedNarrative timeline)
+        if (isMobile) {
+            ScrollTrigger.create({
+                trigger: '#customers',
+                start: 'top 60%',
+                end: 'bottom bottom',
+                onEnter: () => setIsFooterReached(true),
+                onLeaveBack: () => setIsFooterReached(false),
+                onUpdate: (self) => {
+                    if (self.progress > 0.01) setIsFooterReached(true)
+                    else setIsFooterReached(false)
+                }
+            })
+        }
 
-    }, { scope: container })
+    }, { scope: container, dependencies: [isMobile] })
 
     const onLoaderComplete = useCallback(() => {
         // Reset scroll position to top immediately
@@ -453,13 +455,13 @@ function App() {
 
                     {/* SECTION 5: WHY MATNEXT NARRATIVE (HORIZONTAL SCROLL) */}
                     <WhyMatNextNarrative />
+
+                    {/* FOOTER + CONTACT: Unified horizontal-scroll narrative */}
+                    <FooterNarrative />
                 </>
             ) : (
-                <UnifiedNarrative />
+                <UnifiedNarrative onFooterReached={setIsFooterReached} />
             )}
-
-            {/* FOOTER + CONTACT: Unified horizontal-scroll narrative */}
-            <FooterNarrative />
             <Analytics />
         </main>
     )

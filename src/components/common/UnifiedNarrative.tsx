@@ -32,15 +32,23 @@ import {
     ShieldCheck,
     Plug,
     Lock,
+    MapPin,
+    Mail,
+    Phone,
     ArrowUpRight,
+    Send,
     LucideIcon
 } from 'lucide-react'
 
 import { useWindowSize } from '@/hooks/useWindowSize'
 
+import handLeftSvg from '@/assets/1.svg'
+import handRightSvg from '@/assets/2.svg'
+
 import { RotatingGlobe } from './TractionNarrative'
 import { GenbaAIScanner } from './AINarrative'
 import { DeconstructibleCar } from './DeconstructibleCar'
+import { FooterGlobe, LanguageSelector } from './FooterNarrative'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -176,7 +184,7 @@ const WhyNode = ({ card }: { card: WhyCardDef }) => {
 
 // --- MAIN UNIFIED NARRATIVE COMPONENT ---
 
-export const UnifiedNarrative = () => {
+export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reached: boolean) => void }) => {
     const { t } = useTranslation()
     const triggerRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
@@ -186,6 +194,7 @@ export const UnifiedNarrative = () => {
     const tractionSectionRef = useRef<HTMLDivElement>(null)
     const aiSectionRef = useRef<HTMLDivElement>(null)
     const whySectionRef = useRef<HTMLDivElement>(null)
+    const footerSectionRef = useRef<HTMLDivElement>(null)
 
     // Refs for individual section elements
     const featuresTitleRef = useRef<HTMLDivElement>(null)
@@ -205,6 +214,12 @@ export const UnifiedNarrative = () => {
     const whyTitleRef = useRef<HTMLDivElement>(null)
     const whyTopTrackRef = useRef<HTMLDivElement>(null)
     const whyBottomTrackRef = useRef<HTMLDivElement>(null)
+
+    const leftHandRef = useRef<HTMLImageElement>(null)
+    const rightHandRef = useRef<HTMLImageElement>(null)
+    const globeContainerRef = useRef<HTMLDivElement>(null)
+    const contactRef = useRef<HTMLDivElement>(null)
+    const copyrightRef = useRef<HTMLDivElement>(null)
 
     const { width, height } = useWindowSize()
     const W = width || window.innerWidth
@@ -253,10 +268,17 @@ export const UnifiedNarrative = () => {
         gsap.set(whyTitleRef.current, { y: H * 0.8 })
 
         // Set initial positions for section containers (Option B starting offset)
-        gsap.set([tractionSectionRef.current, aiSectionRef.current, whySectionRef.current], { x: W, y: H })
+        gsap.set([tractionSectionRef.current, aiSectionRef.current, whySectionRef.current, footerSectionRef.current], { x: W, y: H })
+
+        // Bento elements and hands inside footer start hidden/offscreen
+        gsap.set(copyrightRef.current, { x: -W, opacity: 0 })
+        gsap.set(contactRef.current, { x: W, opacity: 0 })
+        gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
+        gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
+        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
 
         // 3. Create Timeline & ScrollTrigger
-        const totalScrollLength = fTrackWidth + W + tTrackWidth + W + aiTrackWidth + W + whyTrackWidth
+        const totalScrollLength = fTrackWidth + W + tTrackWidth + W + aiTrackWidth + W + whyTrackWidth + W + 2500
 
         const tl = gsap.timeline({
             scrollTrigger: {
@@ -266,6 +288,17 @@ export const UnifiedNarrative = () => {
                 start: 'top top',
                 end: () => `+=${totalScrollLength}`,
                 invalidateOnRefresh: true,
+                onUpdate: () => {
+                    if (footerSectionRef.current) {
+                        const currentX = gsap.getProperty(footerSectionRef.current, 'x') as number
+                        // Hide navbar when the footer is almost in view (x <= 0.05 * W)
+                        if (currentX <= 0.05 * W) {
+                            onFooterReached(true)
+                        } else {
+                            onFooterReached(false)
+                        }
+                    }
+                }
             }
         })
 
@@ -320,6 +353,22 @@ export const UnifiedNarrative = () => {
             ease: 'none',
             duration: whyTrackWidth
         })
+
+        // Transition Why Choose Us -> Footer (Option B Transition)
+        tl.addLabel('why_exit')
+        tl.to(whySectionRef.current, { x: -W, ease: 'power2.inOut', duration: W }, 'why_exit')
+        tl.to(footerSectionRef.current, { x: 0, y: 0, ease: 'power2.inOut', duration: W }, 'why_exit')
+
+        // Sequential Reveals: Phase 1 (Bento Cards slide in from sides)
+        tl.addLabel('footer_cards_slide', 'why_exit+=' + W)
+        tl.to(copyrightRef.current, { x: 0, opacity: 1, duration: W * 0.45, ease: 'power3.out' }, 'footer_cards_slide')
+        tl.to(contactRef.current, { x: 0, opacity: 1, duration: W * 0.45, ease: 'power3.out' }, 'footer_cards_slide')
+
+        // Sequential Reveals: Phase 2 (Hands slide in, Globe scales up)
+        tl.addLabel('footer_hands_reveal', 'footer_cards_slide+=' + (W * 0.45))
+        tl.to(leftHandRef.current, { x: '0%', opacity: 0.8, duration: W * 0.55, ease: 'power3.out' }, 'footer_hands_reveal')
+        tl.to(rightHandRef.current, { x: '0%', opacity: 0.8, duration: W * 0.55, ease: 'power3.out' }, 'footer_hands_reveal')
+        tl.to(globeContainerRef.current, { scale: 1, opacity: 1, duration: W * 0.55, ease: 'power2.out' }, 'footer_hands_reveal')
 
     }, { scope: triggerRef, dependencies: [W, H] })
 
@@ -489,6 +538,249 @@ export const UnifiedNarrative = () => {
                             <WhyNode key={c.title} card={c} />
                         ))}
                     </div>
+                </div>
+
+                {/* ═══ SECTION 5: FOOTER & CONTACT ═══ */}
+                <div ref={footerSectionRef} id="customers" className="absolute inset-0 w-screen h-screen overflow-hidden bg-white z-10 select-none">
+                    
+                    {/* Contact Form (Bento Style) */}
+                    <div
+                        ref={contactRef}
+                        style={{
+                            position: 'absolute',
+                            top: '1.25rem',
+                            right: '1.25rem',
+                            width: 'clamp(380px, 30vw, 550px)',
+                            zIndex: 25,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 12
+                        }}
+                    >
+                        <div style={{
+                            background: 'rgba(255,255,255,0.95)',
+                            padding: '20px',
+                            border: '0.5px solid #96CC39',
+                            boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                        }}>
+                            <div style={{ marginBottom: 24 }}>
+                                <h3 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#96CC39', marginBottom: 8, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>{t('footer.getInTouch')}</h3>
+                                <div style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.5, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <div style={{ width: 1, height: 12, background: '#96CC39' }} />
+                                    {t('footer.contactDesc')}
+                                </div>
+                            </div>
+
+                            <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 20px' }} onSubmit={e => e.preventDefault()}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                    <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.fullName')}</label>
+                                    <input type="text" placeholder={t('footer.fullNamePlaceholder')}
+                                        style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', fontWeight: 500 }} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                    <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.email')}</label>
+                                    <input type="email" placeholder={t('footer.emailPlaceholder')}
+                                        style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', fontWeight: 500 }} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                    <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.industry')}</label>
+                                    <div style={{ position: 'relative' }}>
+                                        <select style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: 'rgba(0,0,0,0.7)', cursor: 'pointer', fontWeight: 500 }}>
+                                            <option>{t('footer.selectIndustry')}</option>
+                                            <option>{t('footer.industries.automotive')}</option>
+                                            <option>{t('footer.industries.steel')}</option>
+                                            <option>{t('footer.industries.plastic')}</option>
+                                            <option>{t('footer.industries.aluminium')}</option>
+                                            <option>{t('footer.industries.battery')}</option>
+                                            <option>{t('footer.industries.hvac')}</option>
+                                            <option>{t('footer.industries.others')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                    <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.volume')}</label>
+                                    <input type="text" placeholder={t('footer.volumePlaceholder')}
+                                        style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '12px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', fontWeight: 500 }} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: 'span 2' }}>
+                                    <label style={{ fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{t('footer.message')}</label>
+                                    <textarea placeholder={t('footer.messagePlaceholder')}
+                                        style={{ width: '100%', background: 'rgba(255,255,255,0.4)', border: '0.5px solid rgba(0,0,0,0.2)', padding: '14px 16px', fontSize: 11, outline: 'none', color: '#0A0A0A', minHeight: 80, resize: 'none', lineHeight: 1.6, fontWeight: 500 }} />
+                                </div>
+                                <button type="submit"
+                                    style={{ gridColumn: 'span 2', background: '#96CC39', color: '#000', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '14px 0', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 8, boxShadow: '0 8px 24px rgba(150,204,57,0.1)' }}
+                                >
+                                    {t('footer.send')} <Send style={{ width: 14, height: 14, strokeWidth: 2 }} />
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    {/* Info Card (Bento Grid Style) */}
+                    <div
+                        ref={copyrightRef}
+                        style={{
+                            position: 'absolute',
+                            bottom: '1.25rem',
+                            left: '1.25rem',
+                            width: 'clamp(380px, 30vw, 550px)',
+                            zIndex: 25,
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: 12
+                        }}
+                    >
+                        {/* Intro Tile */}
+                        <div style={{
+                            gridColumn: 'span 2',
+                            background: 'rgba(255,255,255,0.95)',
+                            padding: '20px',
+                            border: '0.5px solid #96CC39',
+                            boxShadow: '0 10px 40px rgba(0,0,0,0.03)',
+                        }}>
+                            <h2 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#96CC39', lineHeight: 0.8, marginBottom: 16, letterSpacing: '-0.06em' }}>MatNEXT</h2>
+                            <div style={{ color: 'rgba(0,0,0,1)', fontSize: 10.5, lineHeight: 1.6, letterSpacing: '0.01em', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <div style={{ width: 1, height: 30, background: '#96CC39' }} />
+                                {t('footer.matnextDesc')}
+                            </div>
+                        </div>
+
+                        {/* HQ Locations Tile */}
+                        <div style={{ padding: '20px 20px', border: '0.5px solid #96CC39', boxShadow: '0 10px 40px rgba(0,0,0,0.03)' }}>
+                            <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>{t('footer.hq')}</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <MapPin size={12} color="#96CC39" strokeWidth={3} />
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <div style={{ fontSize: 10, color: '#0A0A0A', letterSpacing: '0.1em' }}>{t('footer.mumbai')}</div>
+                                        <div style={{ width: 1, height: 12, background: '#96CC39' }} />
+                                        <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>{t('footer.india')} 🇮🇳</div>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <MapPin size={12} color="#96CC39" strokeWidth={3} />
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>{t('footer.tokyo')}</div>
+                                        <div style={{ width: 1, height: 12, background: '#96CC39' }} />
+                                        <div style={{ fontSize: 10, color: 'rgba(0, 0, 0, 1)', letterSpacing: '0.1em' }}>{t('footer.japan')} 🇯🇵</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Direct Line Tile */}
+                        <div style={{ padding: '20px 20px', border: '0.5px solid #96CC39', boxShadow: '0 10px 40px rgba(0,0,0,0.03)' }}>
+                            <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 20 }}>{t('footer.directLine')}</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(0,0,0,1)', fontSize: 11 }}>
+                                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Mail size={12} color="#96CC39" strokeWidth={3} />
+                                    </div>
+                                    INFO-MATNEXT@GENBANEXT.COM
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(0,0,0,1)', fontSize: 11 }}>
+                                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(150,204,57,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Phone size={12} color="#96CC39" strokeWidth={3} />
+                                    </div>
+                                    +81 80-8529-3858
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Quick Links Tile */}
+                        <div style={{ gridColumn: 'span 2', padding: '20px 20px', border: '0.5px solid #96CC39', boxShadow: '0 10px 40px rgba(0,0,0,0.03)' }}>
+                            <span style={{ fontSize: 9, fontWeight: 900, color: '#96CC39', letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block', marginBottom: 16 }}>{t('footer.quickLinks')}</span>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 40 }}>
+                                {[
+                                    { label: t('nav.features'), id: 'features' },
+                                    { label: t('nav.traction'), id: 'traction' },
+                                    { label: t('nav.ai'), id: 'ai' },
+                                    { label: t('nav.why'), id: 'why-matnext' },
+                                    { label: t('nav.customers'), id: 'customers' },
+                                    { label: 'Contact', id: 'customers' }
+                                ].map((link) => (
+                                    <a key={link.label} href={`#${link.id}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'rgba(0,0,0,0.5)', textDecoration: 'none', fontSize: 12, fontWeight: 600, padding: '5px 0', borderBottom: '0.5px solid #96CC39', transition: 'all 0.2s ease' }}>
+                                        {link.label}
+                                        <ArrowUpRight size={14} style={{ opacity: 1, color: '#96CC39' }} />
+                                    </a>
+                                ))}
+                            </div>
+                            <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', opacity: 0.5 }}>
+                                <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>{t('footer.rights')}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Language Selector */}
+                    <div style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', zIndex: 45 }}>
+                        <LanguageSelector />
+                    </div>
+
+                    {/* Left Hand */}
+                    <img
+                        ref={leftHandRef}
+                        src={handLeftSvg}
+                        alt=""
+                        style={{
+                            position: 'absolute',
+                            top: '-5%',
+                            rotate: '-7deg',
+                            left: '-0.5%',
+                            width: 'clamp(1000px, 80vw, 1100px)',
+                            height: 'auto',
+                            pointerEvents: 'none',
+                            zIndex: 40,
+                            opacity: 0,
+                        }}
+                    />
+
+                    {/* Right Hand */}
+                    <img
+                        ref={rightHandRef}
+                        src={handRightSvg}
+                        alt=""
+                        style={{
+                            position: 'absolute',
+                            bottom: '2%',
+                            rotate: '7deg',
+                            right: '-2%',
+                            width: 'clamp(1000px, 80vw, 1100px)',
+                            height: 'auto',
+                            pointerEvents: 'none',
+                            zIndex: 40,
+                            opacity: 0,
+                        }}
+                    />
+
+                    {/* Center Globe / Logo / Cars */}
+                    <div
+                        ref={globeContainerRef}
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            margin: 'auto',
+                            width: 'clamp(550px, 50vw, 750px)',
+                            height: 'clamp(550px, 50vw, 750px)',
+                            zIndex: 20,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            opacity: 0,
+                        }}
+                    >
+                        <div style={{ position: 'absolute', inset: '-10%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(230,230,230,0.4) 0%, transparent 75%)', pointerEvents: 'none' }} />
+                        <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                            <FooterGlobe />
+                        </Canvas>
+                    </div>
+
                 </div>
 
             </div>

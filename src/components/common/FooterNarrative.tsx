@@ -126,32 +126,42 @@ export const FooterNarrative = () => {
 
     useGSAP(() => {
         if (!sectionRef.current || !leftHandRef.current || !rightHandRef.current ||
-            !globeContainerRef.current) return
+            !globeContainerRef.current || !contactRef.current || !copyrightRef.current) return
+
+        const W = width || window.innerWidth
 
         if (isMobile) {
             // Initial states for mobile
+            gsap.set(copyrightRef.current, { x: -W, opacity: 0 })
+            gsap.set(contactRef.current, { x: W, opacity: 0 })
             gsap.set(leftHandRef.current, { x: '-60%', opacity: 0 })
             gsap.set(rightHandRef.current, { x: '60%', opacity: 0 })
             gsap.set(globeContainerRef.current, { scale: 0.5, opacity: 0 })
 
             const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: globeContainerRef.current,
+                    trigger: sectionRef.current,
                     start: 'top 85%',
-                    end: 'bottom 45%',
+                    end: 'bottom 15%',
                     scrub: true,
                 }
             })
 
-            tl.to(leftHandRef.current, { x: '0%', opacity: 0.8, ease: 'power2.out' }, 0)
-            tl.to(rightHandRef.current, { x: '0%', opacity: 0.8, ease: 'power2.out' }, 0)
-            tl.to(globeContainerRef.current, { scale: 1, opacity: 1, ease: 'power2.out' }, 0.05)
+            // Phase 1: Bento Cards slide in (0% → 45%)
+            tl.to(copyrightRef.current, { x: 0, opacity: 1, ease: 'power3.out' }, 0)
+            tl.to(contactRef.current, { x: 0, opacity: 1, ease: 'power3.out' }, 0)
+
+            // Phase 2: Hands & Globe reveal (45% → 100%)
+            tl.to(leftHandRef.current, { x: '0%', opacity: 0.8, ease: 'power2.out' }, 0.45)
+            tl.to(rightHandRef.current, { x: '0%', opacity: 0.8, ease: 'power2.out' }, 0.45)
+            tl.to(globeContainerRef.current, { scale: 1, opacity: 1, ease: 'power2.out' }, 0.50)
 
             return
         }
 
         // Desktop initial states
-        if (!contactRef.current || !copyrightRef.current) return
+        gsap.set(copyrightRef.current, { x: -W, opacity: 0 })
+        gsap.set(contactRef.current, { x: W, opacity: 0 })
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
         gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
@@ -169,12 +179,16 @@ export const FooterNarrative = () => {
             }
         })
 
-        // Phase 1: Hands reveal + Globe (0% → 55%)
-        tl.to(leftHandRef.current, { x: '0%', opacity: 0.8, duration: 0.55, ease: 'power3.out' }, 0)
-        tl.to(rightHandRef.current, { x: '0%', opacity: 0.8, duration: 0.55, ease: 'power3.out' }, 0)
-        tl.to(globeContainerRef.current, { scale: 1, opacity: 1, duration: 0.55, ease: 'power2.out' }, 0.05)
+        // Phase 1: Bento Cards slide in (0% → 45%)
+        tl.to(copyrightRef.current, { x: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, 0)
+        tl.to(contactRef.current, { x: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, 0)
 
-        // Phase 2: Logo + Cars (55% → 100%)
+        // Phase 2: Hands & Globe reveal (45% → 100%)
+        tl.to(leftHandRef.current, { x: '0%', opacity: 0.8, duration: 0.55, ease: 'power3.out' }, 0.45)
+        tl.to(rightHandRef.current, { x: '0%', opacity: 0.8, duration: 0.55, ease: 'power3.out' }, 0.45)
+        tl.to(globeContainerRef.current, { scale: 1, opacity: 1, duration: 0.55, ease: 'power2.out' }, 0.50)
+
+        // Phase 3: Logo + Cars (55% → 100%)
         if (logoRef.current) {
             tl.to(logoRef.current, { scale: 1, opacity: 1, duration: 0.2, ease: 'back.out(1.7)' }, 0.58)
         }
@@ -196,14 +210,14 @@ export const FooterNarrative = () => {
             })
         }
 
-    }, { scope: sectionRef, dependencies: [isMobile] })
+    }, { scope: sectionRef, dependencies: [isMobile, width] })
 
     if (isMobile) {
         return (
             <footer
                 ref={sectionRef}
                 id="customers"
-                className="relative w-full bg-white flex flex-col gap-6 py-12 px-6"
+                className="relative w-full bg-white flex flex-col gap-6 py-12 px-6 overflow-x-hidden"
             >
                 {/* ═══ CONTACT FORM ═══ */}
                 <div
