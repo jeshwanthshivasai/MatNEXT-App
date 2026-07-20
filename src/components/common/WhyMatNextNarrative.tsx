@@ -2,9 +2,8 @@ import { useRef, Suspense } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Canvas } from '@react-three/fiber'
 import { useTranslation, Trans } from 'react-i18next'
-import { Environment, PerspectiveCamera } from '@react-three/drei'
+import { Environment, PerspectiveCamera, View } from '@react-three/drei'
 import { DeconstructibleCar } from './DeconstructibleCar'
 import { Target, Brain, Globe, ShieldCheck, Plug, Lock, LucideIcon } from 'lucide-react'
 import { useWindowSize } from '@/hooks/useWindowSize'
@@ -137,15 +136,15 @@ export const WhyMatNextNarrative = () => {
                                     {t('why.subtitle')}
                                 </h2>
                             </div>
-                            <div className="w-20 h-20 relative select-none pointer-events-none pr-2">
-                                <Canvas camera={{ position: [0, 0, 10], fov: 22 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
+                            <div className="w-20 h-20 relative select-none pr-2">
+                                <View className="w-full h-full">
                                     <Suspense fallback={null}>
                                         <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={22} />
                                         <DeconstructibleCar progress={0.25} isLoader={true} />
                                         <ambientLight intensity={0.5} />
                                         <Environment preset="city" />
                                     </Suspense>
-                                </Canvas>
+                                </View>
                             </div>
                         </div>
 
@@ -204,7 +203,7 @@ export const WhyMatNextNarrative = () => {
 
                     {/* Right: 3D car — same height as text content area, no watermark text */}
                     <div className="relative z-0 pointer-events-auto" style={{ width: '35%', height: '100%' }}>
-                        <Canvas gl={{ antialias: true, alpha: true }}>
+                        <View style={{ width: '100%', height: '100%' }}>
                             <Suspense fallback={null}>
                                 <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
                                 <DeconstructibleCar progress={0.25} isLoader={true} />
@@ -212,7 +211,7 @@ export const WhyMatNextNarrative = () => {
                                 <ambientLight intensity={0.5} />
                                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#96CC39" />
                             </Suspense>
-                        </Canvas>
+                        </View>
                     </div>
                 </div>
 

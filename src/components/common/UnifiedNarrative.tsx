@@ -2,9 +2,8 @@ import { useRef, Suspense } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Canvas } from '@react-three/fiber'
+import { Environment, PerspectiveCamera, View } from '@react-three/drei'
 import { useTranslation, Trans } from 'react-i18next'
-import { Environment, PerspectiveCamera } from '@react-three/drei'
 
 import {
     BarChart3,
@@ -275,7 +274,7 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
         gsap.set(contactRef.current, { x: W, opacity: 0 })
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
-        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
+        gsap.set(globeContainerRef.current, { scale: 0, opacity: 0 })
 
         // 3. Create Timeline & ScrollTrigger
         const totalScrollLength = fTrackWidth + W + tTrackWidth + W + aiTrackWidth + W + whyTrackWidth + W + 2500
@@ -446,9 +445,9 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
 
                     {/* Globe Canvas Graphic */}
                     <div ref={tractionGraphicRef} className="absolute -right-25 w-[50vw] max-w-[900px] top-[12.5vh] h-[75vh] z-20 pointer-events-none">
-                        <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
+                        <View className="w-full h-full">
                             <RotatingGlobe />
-                        </Canvas>
+                        </View>
                     </div>
                 </div>
 
@@ -486,9 +485,9 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
 
                     {/* Scanner Canvas Graphic */}
                     <div ref={aiGraphicRef} className="absolute -right-25 w-[50vw] max-w-[900px] top-[12.5vh] h-[75vh] z-20 pointer-events-none">
-                        <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
+                        <View className="w-full h-full">
                             <GenbaAIScanner />
-                        </Canvas>
+                        </View>
                     </div>
                 </div>
 
@@ -520,7 +519,7 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
 
                         {/* Right: 3D car — side-by-side with text */}
                         <div className="relative z-0 pointer-events-auto" style={{ width: '35%', height: '100%' }}>
-                            <Canvas gl={{ antialias: true, alpha: true }} style={{ height: '100%', width: '100%' }}>
+                            <View style={{ height: '100%', width: '100%' }}>
                                 <Suspense fallback={null}>
                                     <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
                                     <DeconstructibleCar progress={0.25} isLoader={true} />
@@ -528,7 +527,7 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
                                     <ambientLight intensity={0.5} />
                                     <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#96CC39" />
                                 </Suspense>
-                            </Canvas>
+                            </View>
                         </div>
                     </div>
 
@@ -776,9 +775,9 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
                         }}
                     >
                         <div style={{ position: 'absolute', inset: '-10%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(230,230,230,0.4) 0%, transparent 75%)', pointerEvents: 'none' }} />
-                        <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                        <View style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
                             <FooterGlobe />
-                        </Canvas>
+                        </View>
                     </div>
 
                 </div>

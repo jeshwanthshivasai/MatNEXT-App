@@ -1,6 +1,5 @@
 import { useState, useEffect, Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Environment, PerspectiveCamera, useProgress } from '@react-three/drei'
+import { Environment, PerspectiveCamera, useProgress, View } from '@react-three/drei'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DeconstructibleCar } from './DeconstructibleCar'
@@ -64,7 +63,7 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                     className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-white text-electric-sulfur font-mono overflow-hidden"                >
                     {/* 3D LOADING CANVAS */}
                     <div className="absolute inset-0 w-full h-full">
-                        <Canvas gl={{ antialias: true, alpha: true }}>
+                        <View className="w-full h-full">
                             <Suspense fallback={null}>
                                 <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
                                 <DeconstructibleCar progress={getCarProgress()} isLoader={true} />
@@ -72,7 +71,7 @@ export const Loader = ({ onComplete }: { onComplete: () => void }) => {
                                 <ambientLight intensity={1} />
                                 <pointLight position={[10, 10, 10]} />
                             </Suspense>
-                        </Canvas>
+                        </View>
                     </div>
 
                     <motion.div

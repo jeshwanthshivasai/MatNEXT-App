@@ -1,4 +1,4 @@
-import { useRef, useMemo, Suspense } from 'react'
+import { useRef, useMemo, Suspense, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
@@ -28,7 +28,7 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
                 clone.position.copy(worldPos)
                 clone.quaternion.copy(worldQuat)
                 clone.scale.copy(worldScale)
-                clone.geometry = clone.geometry.clone()
+                
                 if (isWireframe) {
                     clone.material = new THREE.MeshBasicMaterial({ color: "#96CC39", wireframe: true, transparent: true })
                 } else if (clone.material) {
@@ -50,6 +50,17 @@ const ProcessedMeshGroup = ({ scene, isWireframe, progress, isLoader }: { scene:
         })
         return meshes
     }, [scene, isWireframe])
+
+    useEffect(() => {
+        return () => {
+            parts.forEach(mesh => {
+                const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+                materials.forEach(m => {
+                    if (m) m.dispose()
+                })
+            })
+        }
+    }, [parts])
 
     const autoRotateY = useRef(0)
 

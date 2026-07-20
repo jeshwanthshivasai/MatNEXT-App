@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import { SoundController } from '@/utils/SoundController'
 import { useWindowSize } from '@/hooks/useWindowSize'
 import logo from '../../assets/MatNEXT.png'
@@ -157,6 +157,47 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
         };
     }, []);
 
+    const [showGuide, setShowGuide] = useState(false);
+
+    useEffect(() => {
+        if (drawingStatus === 'drawing' || drawingStatus === 'success') {
+            setShowGuide(false);
+            return;
+        }
+
+        // Wait 3.5 seconds of dragging inactivity before showing the guide
+        const timeout = setTimeout(() => {
+            setShowGuide(true);
+        }, 3500);
+
+        return () => clearTimeout(timeout);
+    }, [drawingStatus]);
+
+    const guideAngle = useMotionValue(0);
+    const guideX = useTransform(guideAngle, (angle) => R * Math.cos(-Math.PI / 2 + angle));
+    const guideY = useTransform(guideAngle, (angle) => R * Math.sin(-Math.PI / 2 + angle));
+    const guideOpacity = useTransform(guideAngle, [0, Math.PI * 0.2, 2 * Math.PI - 0.4, 2 * Math.PI], [0, 0.45, 0.45, 0]);
+    const guideScale = useTransform(guideAngle, [0, Math.PI * 0.2, 2 * Math.PI - 0.4, 2 * Math.PI], [0.8, 1, 1, 0.8]);
+
+    // Single source of truth for the SVG ghost path animation
+    const ghostDashoffset = useTransform(guideAngle, [0, 2 * Math.PI], [2 * Math.PI * R, 0]);
+    const ghostOpacity = useTransform(guideAngle, [0, Math.PI * 0.2, 2 * Math.PI - 0.4, 2 * Math.PI], [0, 0.4, 0.4, 0]);
+
+    useEffect(() => {
+        if (!showGuide) {
+            guideAngle.set(0);
+            return;
+        }
+
+        const controls = animate(guideAngle, [0, 2 * Math.PI], {
+            duration: 3.2,
+            repeat: Infinity,
+            ease: "easeInOut"
+        });
+
+        return () => controls.stop();
+    }, [showGuide, R]);
+
     const triggerSuccessUnlock = () => {
         setDrawingStatus('success');
         SoundController.playUnlockSound();
@@ -308,6 +349,23 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                             strokeDashoffset={2 * Math.PI * R * (1 - progress)}
                         />
                     )}
+                    {/* Ghost Guide Trail */}
+                    {showGuide && (
+                        <motion.circle
+                            cx={R + 50}
+                            cy={R + 50}
+                            r={R}
+                            fill="none"
+                            stroke="#96CC39"
+                            strokeWidth="3.0"
+                            strokeLinecap="round"
+                            style={{
+                                strokeDashoffset: ghostDashoffset,
+                                opacity: ghostOpacity,
+                            }}
+                            strokeDasharray={2 * Math.PI * R}
+                        />
+                    )}
                 </svg>
 
                 {/* Draggable Handle (Recording Live Indicator) */}
@@ -328,6 +386,25 @@ export const IntroScreen = ({ onExplore }: IntroScreenProps) => {
                     {/* Glowing highlight backdrop */}
                     <div className="absolute w-12 h-12 bg-[#96CC39] rounded-full filter blur-md opacity-50 -z-10 pointer-events-none" />
                 </motion.div>
+
+                {/* Ghost Guide Dot */}
+                {showGuide && (
+                    <motion.div
+                        style={{
+                            position: 'absolute',
+                            width: 28,
+                            height: 28,
+                            x: guideX,
+                            y: guideY,
+                            opacity: guideOpacity,
+                            scale: guideScale,
+                            pointerEvents: 'none',
+                            zIndex: 18,
+                        }}
+                    >
+                        <div className="w-full h-full bg-[#96CC39] rounded-full flex items-center justify-center shadow-[0_0_15px_#96CC39]" />
+                    </motion.div>
+                )}
             </div>
 
             {/* ZERO-STYLE BIG DASHED TARGET RING REMOVED */}
