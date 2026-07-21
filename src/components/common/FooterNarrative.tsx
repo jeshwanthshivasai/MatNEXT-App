@@ -136,7 +136,7 @@ export const FooterNarrative = () => {
             gsap.set(contactRef.current, { x: W, opacity: 0 })
             gsap.set(leftHandRef.current, { x: '-60%', opacity: 0 })
             gsap.set(rightHandRef.current, { x: '60%', opacity: 0 })
-            gsap.set(globeContainerRef.current, { scale: 0.5, opacity: 0 })
+            gsap.set(globeContainerRef.current, { scale: 0, opacity: 0 })
 
             const tl = gsap.timeline({
                 scrollTrigger: {
@@ -164,7 +164,7 @@ export const FooterNarrative = () => {
         gsap.set(contactRef.current, { x: W, opacity: 0 })
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
-        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
+        gsap.set(globeContainerRef.current, { scale: 0, opacity: 0 })
         if (logoRef.current) gsap.set(logoRef.current, { scale: 0, opacity: 0 })
         if (topCarRef.current) gsap.set(topCarRef.current, { scale: 0, opacity: 0 })
         if (bottomCarRef.current) gsap.set(bottomCarRef.current, { scale: 0, opacity: 0 })

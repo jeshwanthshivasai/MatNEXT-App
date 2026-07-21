@@ -275,7 +275,7 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
         gsap.set(contactRef.current, { x: W, opacity: 0 })
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
-        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
+        gsap.set(globeContainerRef.current, { scale: 0, opacity: 0 })
 
         // 3. Create Timeline & ScrollTrigger
         const totalScrollLength = fTrackWidth + W + tTrackWidth + W + aiTrackWidth + W + whyTrackWidth + W + 2500
