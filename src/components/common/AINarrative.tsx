@@ -2,8 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useFrame } from '@react-three/fiber'
-import { View } from '@react-three/drei'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { useTranslation } from 'react-i18next'
 import * as THREE from 'three'
 import { Cpu, BarChart2, FileText, ArrowUpRight, AlertTriangle, Wind, LucideIcon } from 'lucide-react'
@@ -340,10 +339,10 @@ export const AINarrative = () => {
                                     {t('ai.subtitle')}
                                 </h2>
                             </div>
-                            <div className="w-20 h-20 relative select-none pr-2">
-                                <View className="w-full h-full">
+                            <div className="w-20 h-20 relative select-none pointer-events-none pr-2">
+                                <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
                                     <MobileAIScanner />
-                                </View>
+                                </Canvas>
                             </div>
                         </div>
 
@@ -411,9 +410,9 @@ export const AINarrative = () => {
                     - No overflow-hidden so no clipping.
                 */}
                 <div className="absolute -right-25 w-[50vw] max-w-[900px] top-[14.2vh] h-[75vh] z-20 pointer-events-none fade-in opacity-100">
-                    <View className="w-full h-full">
+                    <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="w-full h-full" style={{ pointerEvents: 'none' }}>
                         <GenbaAIScanner />
-                    </View>
+                    </Canvas>
                     {/* HTML overlay text with Inter font */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ paddingTop: '6vh' }}>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 'clamp(2rem, 4.5vw, 6rem)', fontWeight: 800, color: '#96CC39', lineHeight: 1, letterSpacing: '0.02em', opacity: 1 }}>

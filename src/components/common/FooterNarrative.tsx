@@ -2,8 +2,8 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { useWindowSize } from '@/hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
-import { useFrame } from '@react-three/fiber'
-import { View, PerspectiveCamera } from '@react-three/drei'
+import { Canvas, useFrame } from '@react-three/fiber'
+// import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { Send, MapPin, Mail, ArrowUpRight, Phone, Globe } from 'lucide-react'
 import { SoundController } from '../../utils/SoundController'
@@ -136,7 +136,7 @@ export const FooterNarrative = () => {
             gsap.set(contactRef.current, { x: W, opacity: 0 })
             gsap.set(leftHandRef.current, { x: '-60%', opacity: 0 })
             gsap.set(rightHandRef.current, { x: '60%', opacity: 0 })
-            gsap.set(globeContainerRef.current, { scale: 0, opacity: 0 })
+            gsap.set(globeContainerRef.current, { scale: 0.5, opacity: 0 })
 
             const tl = gsap.timeline({
                 scrollTrigger: {
@@ -164,7 +164,7 @@ export const FooterNarrative = () => {
         gsap.set(contactRef.current, { x: W, opacity: 0 })
         gsap.set(leftHandRef.current, { x: '-100%', opacity: 0 })
         gsap.set(rightHandRef.current, { x: '100%', opacity: 0 })
-        gsap.set(globeContainerRef.current, { scale: 0, opacity: 0 })
+        gsap.set(globeContainerRef.current, { scale: 0.3, opacity: 0 })
         if (logoRef.current) gsap.set(logoRef.current, { scale: 0, opacity: 0 })
         if (topCarRef.current) gsap.set(topCarRef.current, { scale: 0, opacity: 0 })
         if (bottomCarRef.current) gsap.set(bottomCarRef.current, { scale: 0, opacity: 0 })
@@ -291,10 +291,9 @@ export const FooterNarrative = () => {
                     <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(230,230,230,0.4)_0%,transparent_75%)] pointer-events-none" />
                     
                     <div ref={globeContainerRef} className="absolute w-[200px] h-[200px] z-20 pointer-events-none">
-                        <View className="w-full h-full">
-                            <PerspectiveCamera makeDefault position={[0, 0, 7.5]} fov={45} />
+                        <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} className="w-full h-full">
                             <FooterGlobe />
-                        </View>
+                        </Canvas>
                     </div>
 
                     <img
@@ -722,10 +721,9 @@ export const FooterNarrative = () => {
                 }} />
 
                 {/* Rotating Globe Canvas */}
-                <View style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-                    <PerspectiveCamera makeDefault position={[0, 0, 7.5]} fov={45} />
+                <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
                     <FooterGlobe />
-                </View>
+                </Canvas>
             </div>
 
         </footer >

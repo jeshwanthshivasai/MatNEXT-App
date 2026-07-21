@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment, PerspectiveCamera, View, Preload } from '@react-three/drei'
+import { Environment, PerspectiveCamera } from '@react-three/drei'
 import { BackgroundShader } from '@/components/common/BackgroundShader'
 import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
 import { HeroStats } from '@/components/common/HeroStats'
@@ -94,28 +94,27 @@ function App() {
     // Lenis Smooth Scroll Initialization
     useEffect(() => {
         const lenis = new Lenis({
-            duration: 1.2,
+            duration: 1.5,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: 'vertical',
             smoothWheel: true,
-            wheelMultiplier: 1.0,
+            wheelMultiplier: 1.1,
         })
 
         lenisRef.current = lenis
 
-        const updateLenis = (time: number) => {
-            lenis.raf(time * 1000)
+        function raf(time: number) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
         }
 
-        gsap.ticker.add(updateLenis)
-        gsap.ticker.lagSmoothing(0)
+        requestAnimationFrame(raf)
 
         lenis.on('scroll', () => {
             ScrollTrigger.update()
         })
 
         return () => {
-            gsap.ticker.remove(updateLenis)
             lenis.destroy()
         }
     }, [])
@@ -192,9 +191,9 @@ function App() {
     return (
         <main ref={container} className="relative w-full selection:bg-electric-sulfur selection:text-white overflow-x-hidden">
 
-            {/* BACKGROUND 3D CANVAS (renders full-screen background shader) */}
+            {/* GLOBAL 3D CANVAS */}
             <div
-                className="fixed inset-0 -z-20 h-screen w-full overflow-hidden"
+                className="fixed inset-0 -z-10 h-screen w-full overflow-hidden"
                 style={{
                     opacity: scrollProgress > 0.80 ? Math.max(0, 1 - ((scrollProgress - 0.80) / 0.15)) : 1,
                     pointerEvents: scrollProgress > 0.80 ? 'none' : 'auto'
@@ -204,25 +203,13 @@ function App() {
                     <Suspense fallback={null}>
                         <PerspectiveCamera makeDefault position={[0, 0.5, 20]} fov={18} near={0.1} far={10000} />
                         <BackgroundShader />
-                    </Suspense>
-                </Canvas>
-            </div>
-
-            {/* FOREGROUND 3D CANVAS (renders main car and all Drei virtual views on top of narrative content) */}
-            <div className="fixed inset-0 z-30 w-full h-screen pointer-events-none overflow-hidden">
-                <View className="w-full h-full">
-                    <Suspense fallback={null}>
-                        <PerspectiveCamera makeDefault position={[0, 0.5, 20]} fov={18} near={0.1} far={10000} />
                         <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : (entryProgress === 0 ? scrollProgress : -1))} isLoader={false} />
+
+                        {/* Traceability Map UI will overlay here - previously the 3D material nuggets were here */}
+
                         <Environment preset="city" />
                         <ambientLight intensity={1.5} />
                         <pointLight position={[10, 10, 10]} intensity={1} />
-                    </Suspense>
-                </View>
-                <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]} eventSource={container as any}>
-                    <Suspense fallback={null}>
-                        <View.Port />
-                        <Preload all />
                     </Suspense>
                 </Canvas>
             </div>
