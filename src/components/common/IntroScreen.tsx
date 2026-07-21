@@ -27,7 +27,7 @@ const PulsatingGrid: React.FC = () => {
         let frameId: number;
 
         const resizeCanvas = () => {
-            const dpr = window.devicePixelRatio || 1;
+            const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
             canvas.width = window.innerWidth * dpr;
             canvas.height = window.innerHeight * dpr;
             ctx.resetTransform();
@@ -49,53 +49,83 @@ const PulsatingGrid: React.FC = () => {
 
         const SPACING = 20;
         const INTERACTION_RADIUS = 160;
+        const RADIUS_SQ = INTERACTION_RADIUS * INTERACTION_RADIUS;
 
         const draw = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            ctx.clearRect(0, 0, width, height);
 
-            const cols = Math.ceil(window.innerWidth / SPACING) + 2;
-            const rows = Math.ceil(window.innerHeight / SPACING) + 2;
+            const cols = Math.ceil(width / SPACING) + 2;
+            const rows = Math.ceil(height / SPACING) + 2;
             const mouse = mousePosRef.current;
 
-            // 1. Draw Wavy Interactive Dot Grid
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < cols; j++) {
-                    const dotX = j * SPACING;
-                    const dotY = i * SPACING;
+            // Batch default non-interactive dots into a SINGLE draw call for maximum GPU performance
+            ctx.beginPath();
+            ctx.fillStyle = '#D1D5DB';
+            ctx.globalAlpha = 0.24;
 
-                    let drawX = dotX;
-                    let drawY = dotY;
-                    let size = 2.0;
-                    let opacity = 0.24;
-                    let color = '#D1D5DB';
+            const interactiveDots: Array<{ drawX: number; drawY: number; size: number; opacity: number; color: string }> = [];
 
-                    if (mouse) {
-                        const dx = dotX - mouse.x;
-                        const dy = dotY - mouse.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
+            if (mouse) {
+                // Bounding box spatial filter: compute math ONLY for dots near the cursor (~144 dots instead of 5,400)
+                const minCol = Math.max(0, Math.floor((mouse.x - INTERACTION_RADIUS) / SPACING));
+                const maxCol = Math.min(cols, Math.ceil((mouse.x + INTERACTION_RADIUS) / SPACING));
+                const minRow = Math.max(0, Math.floor((mouse.y - INTERACTION_RADIUS) / SPACING));
+                const maxRow = Math.min(rows, Math.ceil((mouse.y + INTERACTION_RADIUS) / SPACING));
 
-                        if (dist < INTERACTION_RADIUS) {
-                            const influence = 1 - dist / INTERACTION_RADIUS; // 1 to 0
-                            
-                            // Premium magnetic repulsion displacement (clean slide, zero jittering)
-                            const angle = Math.atan2(dy, dx);
-                            const push = 6 * influence;
-                            drawX = dotX + Math.cos(angle) * push;
-                            drawY = dotY + Math.sin(angle) * push;
+                for (let i = 0; i < rows; i++) {
+                    const isRowNear = i >= minRow && i <= maxRow;
+                    for (let j = 0; j < cols; j++) {
+                        const dotX = j * SPACING;
+                        const dotY = i * SPACING;
 
-                            // Spotlight sizes and opacities (highly visible near cursor)
-                            size = 2.0 + influence * 1.5;
-                            opacity = 0.24 + influence * 0.40;
-                            color = influence > 0.6 ? COLOR_TOKENS.primary : '#D1D5DB';
+                        if (isRowNear && j >= minCol && j <= maxCol) {
+                            const dx = dotX - mouse.x;
+                            const dy = dotY - mouse.y;
+                            const distSq = dx * dx + dy * dy;
+
+                            if (distSq < RADIUS_SQ) {
+                                const dist = Math.sqrt(distSq);
+                                const influence = 1 - dist / INTERACTION_RADIUS;
+                                const angle = Math.atan2(dy, dx);
+                                const push = 6 * influence;
+                                const drawX = dotX + Math.cos(angle) * push;
+                                const drawY = dotY + Math.sin(angle) * push;
+                                const size = 2.0 + influence * 1.5;
+                                const opacity = 0.24 + influence * 0.40;
+                                const color = influence > 0.6 ? COLOR_TOKENS.primary : '#D1D5DB';
+
+                                interactiveDots.push({ drawX, drawY, size, opacity, color });
+                                continue;
+                            }
                         }
-                    }
 
-                    ctx.beginPath();
-                    ctx.arc(drawX, drawY, size / 2, 0, 2 * Math.PI);
-                    ctx.fillStyle = color;
-                    ctx.globalAlpha = opacity;
-                    ctx.fill();
+                        // Default dot (batch path)
+                        ctx.moveTo(dotX + 1, dotY);
+                        ctx.arc(dotX, dotY, 1, 0, 2 * Math.PI);
+                    }
                 }
+            } else {
+                for (let i = 0; i < rows; i++) {
+                    for (let j = 0; j < cols; j++) {
+                        const dotX = j * SPACING;
+                        const dotY = i * SPACING;
+                        ctx.moveTo(dotX + 1, dotY);
+                        ctx.arc(dotX, dotY, 1, 0, 2 * Math.PI);
+                    }
+                }
+            }
+            ctx.fill();
+
+            // Render affected interactive dots near cursor in a minimal secondary batch
+            for (let k = 0; k < interactiveDots.length; k++) {
+                const dot = interactiveDots[k];
+                ctx.beginPath();
+                ctx.arc(dot.drawX, dot.drawY, dot.size / 2, 0, 2 * Math.PI);
+                ctx.fillStyle = dot.color;
+                ctx.globalAlpha = dot.opacity;
+                ctx.fill();
             }
 
             frameId = requestAnimationFrame(draw);
