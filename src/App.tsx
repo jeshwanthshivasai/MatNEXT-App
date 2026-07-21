@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment, PerspectiveCamera, View } from '@react-three/drei'
+import { Environment, PerspectiveCamera, View, Preload } from '@react-three/drei'
 import { BackgroundShader } from '@/components/common/BackgroundShader'
 import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
 import { HeroStats } from '@/components/common/HeroStats'
@@ -192,7 +192,7 @@ function App() {
     return (
         <main ref={container} className="relative w-full selection:bg-electric-sulfur selection:text-white overflow-x-hidden">
 
-            {/* BACKGROUND 3D CANVAS */}
+            {/* BACKGROUND 3D CANVAS (renders full-screen background shader) */}
             <div
                 className="fixed inset-0 -z-20 h-screen w-full overflow-hidden"
                 style={{
@@ -204,22 +204,25 @@ function App() {
                     <Suspense fallback={null}>
                         <PerspectiveCamera makeDefault position={[0, 0.5, 20]} fov={18} near={0.1} far={10000} />
                         <BackgroundShader />
-                        <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : (entryProgress === 0 ? scrollProgress : -1))} isLoader={false} />
-
-                        {/* Traceability Map UI will overlay here - previously the 3D material nuggets were here */}
-
-                        <Environment preset="city" />
-                        <ambientLight intensity={1.5} />
-                        <pointLight position={[10, 10, 10]} intensity={1} />
                     </Suspense>
                 </Canvas>
             </div>
 
-            {/* FOREGROUND 3D CANVAS (renders Drei virtual views on top of narrative content) */}
+            {/* FOREGROUND 3D CANVAS (renders main car and all Drei virtual views on top of narrative content) */}
             <div className="fixed inset-0 z-30 w-full h-screen pointer-events-none overflow-hidden">
+                <View className="w-full h-full">
+                    <Suspense fallback={null}>
+                        <PerspectiveCamera makeDefault position={[0, 0.5, 20]} fov={18} near={0.1} far={10000} />
+                        <DeconstructibleCar progress={loading ? -1 : (isLanding ? -entryProgress : (entryProgress === 0 ? scrollProgress : -1))} isLoader={false} />
+                        <Environment preset="city" />
+                        <ambientLight intensity={1.5} />
+                        <pointLight position={[10, 10, 10]} intensity={1} />
+                    </Suspense>
+                </View>
                 <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]} eventSource={container as any}>
                     <Suspense fallback={null}>
                         <View.Port />
+                        <Preload all />
                     </Suspense>
                 </Canvas>
             </div>
