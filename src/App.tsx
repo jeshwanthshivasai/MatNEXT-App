@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment, PerspectiveCamera } from '@react-three/drei'
+import { Environment, PerspectiveCamera, View } from '@react-three/drei'
 import { BackgroundShader } from '@/components/common/BackgroundShader'
 import { DeconstructibleCar } from '@/components/common/DeconstructibleCar'
 import { HeroStats } from '@/components/common/HeroStats'
@@ -210,6 +210,15 @@ function App() {
                         <Environment preset="city" />
                         <ambientLight intensity={1.5} />
                         <pointLight position={[10, 10, 10]} intensity={1} />
+                    </Suspense>
+                </Canvas>
+            </div>
+
+            {/* FOREGROUND 3D CANVAS (renders Drei virtual views for footer globe) */}
+            <div className="fixed inset-0 z-30 w-full h-screen pointer-events-none overflow-hidden">
+                <Canvas gl={{ antialias: true, alpha: true }} dpr={[1, 2]} eventSource={container as any}>
+                    <Suspense fallback={null}>
+                        <View.Port />
                     </Suspense>
                 </Canvas>
             </div>

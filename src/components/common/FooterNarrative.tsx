@@ -2,8 +2,8 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { useWindowSize } from '@/hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
-import { Canvas, useFrame } from '@react-three/fiber'
-// import { useGLTF } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
+import { View, PerspectiveCamera } from '@react-three/drei'
 import * as THREE from 'three'
 import { Send, MapPin, Mail, ArrowUpRight, Phone, Globe } from 'lucide-react'
 import { SoundController } from '../../utils/SoundController'
@@ -291,9 +291,10 @@ export const FooterNarrative = () => {
                     <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(230,230,230,0.4)_0%,transparent_75%)] pointer-events-none" />
                     
                     <div ref={globeContainerRef} className="absolute w-[200px] h-[200px] z-20 pointer-events-none">
-                        <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} className="w-full h-full">
+                        <View className="w-full h-full">
+                            <PerspectiveCamera makeDefault position={[0, 0, 7.5]} fov={45} />
                             <FooterGlobe />
-                        </Canvas>
+                        </View>
                     </div>
 
                     <img
@@ -721,9 +722,10 @@ export const FooterNarrative = () => {
                 }} />
 
                 {/* Rotating Globe Canvas */}
-                <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                <View style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                    <PerspectiveCamera makeDefault position={[0, 0, 7.5]} fov={45} />
                     <FooterGlobe />
-                </Canvas>
+                </View>
             </div>
 
         </footer >

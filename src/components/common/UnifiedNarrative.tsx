@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Canvas } from '@react-three/fiber'
 import { useTranslation, Trans } from 'react-i18next'
-import { Environment, PerspectiveCamera } from '@react-three/drei'
+import { Environment, PerspectiveCamera, View } from '@react-three/drei'
 
 import {
     BarChart3,
@@ -776,9 +776,10 @@ export const UnifiedNarrative = ({ onFooterReached }: { onFooterReached: (reache
                         }}
                     >
                         <div style={{ position: 'absolute', inset: '-10%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(230,230,230,0.4) 0%, transparent 75%)', pointerEvents: 'none' }} />
-                        <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                        <View style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                            <PerspectiveCamera makeDefault position={[0, 0, 7.5]} fov={45} />
                             <FooterGlobe />
-                        </Canvas>
+                        </View>
                     </div>
 
                 </div>
