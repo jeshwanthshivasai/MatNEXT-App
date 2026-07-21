@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react'
 import { useWindowSize } from '@/hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
 import { useFrame } from '@react-three/fiber'
-import { View } from '@react-three/drei'
+import { View, PerspectiveCamera } from '@react-three/drei'
 import * as THREE from 'three'
 import { Send, MapPin, Mail, ArrowUpRight, Phone, Globe } from 'lucide-react'
 import { SoundController } from '../../utils/SoundController'
@@ -292,6 +292,7 @@ export const FooterNarrative = () => {
                     
                     <div ref={globeContainerRef} className="absolute w-[200px] h-[200px] z-20 pointer-events-none">
                         <View className="w-full h-full">
+                            <PerspectiveCamera makeDefault position={[0, 0, 7.5]} fov={45} />
                             <FooterGlobe />
                         </View>
                     </div>
@@ -722,6 +723,7 @@ export const FooterNarrative = () => {
 
                 {/* Rotating Globe Canvas */}
                 <View style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                    <PerspectiveCamera makeDefault position={[0, 0, 7.5]} fov={45} />
                     <FooterGlobe />
                 </View>
             </div>
