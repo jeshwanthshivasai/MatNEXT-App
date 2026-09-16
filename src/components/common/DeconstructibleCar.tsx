@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
-const carModelUrl = '/models/generic_sedan_car_optimized.glb'
+const carModelUrl = 'https://phdpaaofvjwjl4ac.public.blob.vercel-storage.com/generic_sedan_car_optimized.glb'
 
 interface DeconstructibleCarProps {
     progress: number

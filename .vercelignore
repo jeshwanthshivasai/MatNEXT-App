@@ -1,0 +1,47 @@
+# .vercelignore - Exclude non-production & heavy assets from Vercel deployments
+
+# Version Control & Agent tooling
+.git
+.agents
+.claude
+.github
+
+# Documentation & Reports
+*.md
+!README.md
+docs/
+specs/
+
+# Large Unused 3D Assets & Raw Texture Archives (Save ~90MB+ per build)
+public/models/generic_sedan_car.glb
+public/models/generic_sedan_car/
+public/materials/
+public/ui_references/
+
+# Test & Quality Assurance
+test/
+tests/
+__tests__/
+cypress/
+playwright/
+*.spec.ts
+*.test.ts
+*.spec.tsx
+*.test.tsx
+coverage/
+
+# Local build artifacts and caches
+dist/
+dist-ssr/
+.cache/
+.turbo/
+.vercel/
+
+# Local Environment & Editor
+.env*.local
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
